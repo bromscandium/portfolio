@@ -1,0 +1,137 @@
+.list
+    background-color: #000
+    color: #fff
+    padding: 40px 10%
+    position: relative
+    max-width: 1600px
+    margin: 0 auto
+
+    &.highlight::before
+        opacity: 1
+
+    h1
+        text-align: left
+        font-size: 60px
+        margin-bottom: 20px
+        letter-spacing: 3px
+        color: #ffffff
+        font-weight: 100
+
+    .projects-grid
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        gap: 30px
+        justify-items: center
+        max-width: 1600px
+        margin: 0 auto
+
+        .projects-card
+            background: #000
+            border-radius: 12px
+            overflow: hidden
+            display: flex
+            flex-direction: column
+            justify-content: flex-start
+            height: 100%
+            transition: background 0.3s ease
+            width: 100%
+
+            &:hover
+                background: #121212
+
+            .projects-image
+                width: 100%
+                height: 200px
+                object-fit: cover
+
+            .projects-content
+                padding: 20px
+                display: flex
+                flex-direction: column
+                gap: 12px
+                flex-grow: 1
+
+                h3
+                    font-size: 24px
+                    font-weight: 400
+
+                p
+                    font-size: 18px
+                    line-height: 1.5
+                    color: #aaaaaa
+                    font-weight: 300
+
+                .projects-tags
+                    display: flex
+                    flex-wrap: wrap
+                    gap: 6px
+                    margin-top: 10px
+                    margin-bottom: 20px
+
+                    .tag
+                        border-radius: 3px
+                        font-size: 16px
+                        color: #f8ad40
+
+            .projects-buttons
+                display: flex
+                gap: 15px
+                margin-top: auto
+                justify-content: flex-start
+                align-items: center
+
+                .projects-note
+                    padding: 12px 24px
+                    font-size: 20px
+                    color: #f8ad40
+                    font-weight: 400
+                    display: flex
+                    align-items: center
+                    border: 1px solid #f8ad40
+                    background: rgba(248, 173, 64, 0.2)
+
+                .projects-button
+                    padding: 12px 24px
+                    font-size: 20px
+                    font-weight: 400
+                    border: 1px solid #f8ad40
+                    color: #ffffff
+                    background: transparent
+                    border-radius: 6px
+                    text-decoration: none
+                    transition: all 0.3s ease
+
+                    &:hover
+                        background: rgba(248, 173, 64, 0.5)
+
+                    .projects-button-icon
+                        color: #ffffff
+
+
+
+                .github-button
+                    display: flex
+                    padding: 8px 16px
+                    font-size: 16px
+                    font-weight: 400
+                    color: #ffffff
+                    background: transparent
+                    border-radius: 6px
+                    text-decoration: none
+                    transition: all 0.3s ease
+
+                    &:hover
+                        color: #f8ad40
+
+
+@media (max-width: 1024px)
+    .list
+        .projects-grid
+            grid-template-columns: repeat(2, 1fr)
+
+@media (max-width: 768px)
+    .list
+        .projects-grid
+            grid-template-columns: 1fr
+        .projects-card
+            padding: 10px 0

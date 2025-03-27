@@ -1,0 +1,50 @@
+.DesktopNavigation
+    height: 100px
+    background-color: #121212
+    border-bottom: 2px solid #ffffff
+    display: flex
+    padding-left: 10%
+    padding-right: 10%
+    transition: height 0.3s ease, border-bottom 0.3s ease
+
+    &:hover
+        border-bottom: 2px solid #f8ad40
+
+    .navbar
+        display: flex
+        align-items: center
+        width: 100%
+        justify-content: space-between
+
+    .logo
+        font-size: 28px
+        color: #ffffff
+        font-weight: bold
+        text-transform: uppercase
+        letter-spacing: 1.5px
+
+    ul
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
+        display: flex
+        list-style: none
+        align-items: center
+        gap: 15%
+
+        li
+            align-items: center
+
+            button
+                font-size: 22px
+                background: transparent
+                border: none
+                font-weight: 400
+                text-decoration: none
+                color: white
+                cursor: pointer
+                transition: color 0.3s ease
+
+                &:hover
+                    color: #f8ad40
+
