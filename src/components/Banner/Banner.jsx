@@ -21,7 +21,7 @@ function Banner({onHighlightReady}) {
         <div ref={ref} className={`banner ${isHighlighted ? "highlight" : ""}`} id="home">
             <div className="banner-content">
                 <h2>Hello, I'm</h2>
-                <h1>bromscandium</h1>
+                <h1>Yaroslav Yeromenko</h1>
                 <h2>Software developer, student, self-taught guy</h2>
                 <div className={`job-info ${isLoaded ? 'loaded' : ''}`}>
                     <h3>Currently looking for a job or internship</h3>

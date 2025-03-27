@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {FaGithub, FaExternalLinkAlt, FaLink} from "react-icons/fa";  // Додаємо FaExternalLinkAlt або FaLink
+import {FaGithub, FaExternalLinkAlt} from "react-icons/fa";
 import projects from "../../data/listData.js";
 import "./List.sass";
 import {useHighlightAnimation} from "../../hooks/useHighlightAnimation.js";
@@ -15,8 +15,12 @@ function List({onHighlightReady}) {
 
     return (
         <div ref={ref} className={`list ${isHighlighted ? "highlight" : ""}`} id="list">
-            <h1>Projects</h1>
+            <div className="list-header">
+                <h1>Projects</h1>
+            </div>
+
             <div className="projects-grid">
+
                 {projects.map((project) => (
                     <div key={project.id} className="projects-card">
                         <img src={project.image} alt={project.title} className="projects-image"/>

@@ -3,19 +3,23 @@
     color: #fff
     padding: 40px 10%
     position: relative
-    max-width: 1600px
+
     margin: 0 auto
 
     &.highlight::before
         opacity: 1
 
-    h1
-        text-align: left
-        font-size: 60px
-        margin-bottom: 20px
-        letter-spacing: 3px
-        color: #ffffff
-        font-weight: 100
+    .list-header
+        max-width: 1600px
+        margin: 0 auto
+
+        h1
+            text-align: left
+            font-size: 60px
+            margin-bottom: 20px
+            letter-spacing: 3px
+            color: #ffffff
+            font-weight: 100
 
     .projects-grid
         display: grid
@@ -89,6 +93,7 @@
                     align-items: center
                     border: 1px solid #f8ad40
                     background: rgba(248, 173, 64, 0.2)
+                    border-radius: 3px
 
                 .projects-button
                     padding: 12px 24px
@@ -97,7 +102,7 @@
                     border: 1px solid #f8ad40
                     color: #ffffff
                     background: transparent
-                    border-radius: 6px
+                    border-radius: 3px
                     text-decoration: none
                     transition: all 0.3s ease
 
@@ -106,7 +111,6 @@
 
                     .projects-button-icon
                         color: #ffffff
-
 
 
                 .github-button
@@ -126,12 +130,48 @@
 
 @media (max-width: 1024px)
     .list
+        padding: 40px 4%
+
+        .list-header
+            h1
+                font-size: 50px
+                text-align: center
+
         .projects-grid
             grid-template-columns: repeat(2, 1fr)
 
+            .projects-tags
+                .tag
+                    font-size: 14px
+
+            .projects-card
+                .projects-content
+                    h3
+                        font-size: 20px
+                    p
+                        font-size: 18px
+
 @media (max-width: 768px)
     .list
+        padding: 40px 2%
+
+        .list-header
+            h1
+                font-size: 44px
+                text-align: center
+
+        .projects-tags
+            .tag
+                font-size: 12px
+
         .projects-grid
             grid-template-columns: 1fr
-        .projects-card
-            padding: 10px 0
+
+            .projects-card
+                padding: 10px 0
+
+                .projects-content
+                    h3
+                        font-size: 20px
+                    p
+                        font-size: 16px

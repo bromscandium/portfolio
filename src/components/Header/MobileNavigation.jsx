@@ -88,7 +88,7 @@ function MobileNavigation({
                     <div className="social-icons">
                         <a href="mailto:kkmshbiu@protonmail.com" target="_blank" rel="noopener noreferrer"
                            className="contact-icon"><FaEnvelope size={32}/></a>
-                        <a href="https://www.linkedin.com/in/yaroslav.yeromenko" target="_blank"
+                        <a href="https://www.linkedin.com/in/yaroslav-yeromenko/" target="_blank"
                            rel="noopener noreferrer"
                            className="contact-icon"><FaLinkedin size={32}/></a>
                         <a href="https://github.com/bromscandium" target="_blank" rel="noopener noreferrer"

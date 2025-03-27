@@ -33,7 +33,7 @@ function Footer({ onHighlightReady }) {
                             <FaEnvelope size={32} />
                             <span className="tooltip">Email me</span>
                         </a>
-                        <a href="https://www.linkedin.com/in/yaroslav.yeromenko" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/in/yaroslav-yeromenko/" target="_blank" rel="noopener noreferrer">
                             <FaLinkedin size={32} />
                             <span className="tooltip">LinkedIn</span>
                         </a>

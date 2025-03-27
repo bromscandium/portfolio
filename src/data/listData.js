@@ -64,7 +64,7 @@ const listData = [
         ],
         technologies: ["React", "SASS", "Vite", "UX/UI", "Web Design"],
         live: null,
-        github: "https://github.com/bromscandium/own-profile"
+        github: "https://github.com/bromscandium/portfolio/tree/main"
     }
 ];
 
