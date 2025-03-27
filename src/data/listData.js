@@ -1,7 +1,6 @@
 import astro from "/astro_cover.png";
 import bot from "/bot_cover.jpg";
 import hub from "/hub_cover.jpg";
-import asset from "/asset_cover.png";
 import valli from "/valli_cover.png";
 import profile from "/profile_cover.png";
 
