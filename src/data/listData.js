@@ -45,18 +45,6 @@ const listData = [
     },
     {
         id: 4,
-        image: asset,
-        title: "Asset Manager",
-        description: [
-            "Solves inventory tracking for technical equipment.",
-            "Streamlines moderation and control with Microsoft tools."
-        ],
-        technologies: ["SharePoint", "PowerApps", "PowerAutomate"],
-        live: null,
-        github: null
-    },
-    {
-        id: 5,
         image: valli,
         title: "Valli",
         description: [
@@ -68,7 +56,7 @@ const listData = [
         github: "https://github.com/bromscandium/BioGrow/tree/main"
     },
     {
-        id: 6,
+        id: 5,
         image: profile,
         title: "Own Profile",
         description: [
