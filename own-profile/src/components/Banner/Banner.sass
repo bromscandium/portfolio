@@ -1,0 +1,273 @@
+.banner
+    background: linear-gradient(135deg, #000000 0%, #151717 74%)
+    position: relative
+    display: flex
+    align-items: center
+    height: 1250px
+    text-align: left
+    padding-bottom: 10px
+    padding-left: 10%
+    padding-right: 10%
+
+    &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background-color: rgba(248, 173, 64, 0.3)
+        opacity: 0
+        transition: opacity 0.5s ease
+        pointer-events: none
+        z-index: 1
+
+    &.highlight::before
+        opacity: 1
+
+
+    h1
+        font-size: 80px
+        color: #ffffff
+        font-weight: 100
+
+    h2
+        font-weight: 100
+        font-size: 44px
+        color: #ffffff
+        padding-top: 5px
+
+
+.banner-content
+    max-width: 50%
+    margin-right: 40px
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+
+.job-info
+    display: flex
+    align-items: center
+    margin-top: 40px
+    opacity: 0
+    transition: opacity 2s ease
+
+    &.loaded
+        opacity: 1
+
+    h3
+        margin-left: 30px
+        font-weight: 300
+        font-size: 24px
+        position: relative
+
+        &:before
+            content: ""
+            position: absolute
+            top: 50%
+            left: -25px
+            transform: translateY(-50%)
+            width: 12px
+            height: 12px
+            background-color: #f8ad40
+            border-radius: 50%
+            animation: blink 2s infinite
+
+            @keyframes blink
+                0%, 100%
+                    opacity: 1
+                50%
+                    opacity: 0
+
+.contact-button
+    padding: 12px 24px
+    margin-left: 30px
+    background: rgba(0, 0, 0, 0)
+    color: #ffffff
+    text-decoration: none
+    border: #f8ad40 solid 1px
+    border-radius: 3px
+    font-size: 22px
+    font-weight: 400
+    transition: background-color 0.3s
+
+    &:hover
+        background-color: rgba(248, 173, 64, 0.5)
+        color: #ffffff
+
+.pendulum
+    position: absolute
+    top: 500px
+    right: 10%
+    width: 297px
+    height: 243px
+    background-color: #FFEDD5
+    align-items: center
+    border-top: 27px solid #f9892e
+    box-shadow: #c76a1e 27px 27px
+    border-radius: 5.4px
+
+.pendulum_box
+    display: flex
+    padding: 162px 0 0 13.5px
+    flex: 1
+
+.ball
+    height: 54px
+    width: 54px
+    border-radius: 50%
+    background-color: #f8ad40
+    position: relative
+    transform-origin: 50% -300%
+    animation-play-state: running
+
+    &::before
+        content: ''
+        width: 2px
+        height: 162px
+        background-color: #a4a4a4
+        left: 27px
+        top: -162px
+        position: absolute
+
+
+.ball.first
+    animation: firstball 1.0s alternate ease-in infinite
+
+@keyframes firstball
+    0%
+        transform: rotate(35deg)
+    50%
+        transform: rotate(0deg)
+
+.ball.last
+    animation: lastball 1.0s alternate ease-out infinite
+
+@keyframes lastball
+    50%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(-35deg)
+
+.me3
+    position: absolute
+    top: -110px
+    left: 50%
+    transform: translateX(-50%)
+    width: 90px
+    height: 90px
+    z-index: 2
+
+@media (max-width: 1024px)
+    .banner
+        height: 100vh
+    .pendulum
+        display: none
+    //.pendulum
+    //    top: 80px
+    //    right: 10%
+    //    width: 264px
+    //    height: 216px
+    //    border-top: 24px solid #f9892e
+    //    box-shadow: #c76a1e 24px 24px
+    //    border-radius: 4.8px
+    //
+    //.pendulum_box
+    //    padding: 144px 0 0 12px
+    //
+    //.ball
+    //    height: 48px
+    //    width: 48px
+    //
+    //    &::before
+    //        height: 144px
+    //        left: 24px
+    //        top: -144px
+    //
+    //.me3
+    //    top: -98px
+    //    width: 80px
+    //    height: 80px
+
+    .banner-content
+        max-width: 100%
+        margin-right: 0
+
+        h1
+            font-size: 60px
+
+        h2
+            font-size: 34px
+
+    .job-info
+        padding: 5px 10px
+        max-width: 100%
+
+        h3
+            font-size: 24px
+            margin-left: 10px
+
+            &:before
+                width: 11px
+                height: 11px
+
+    .contact-button
+        padding: 6px 20px
+        font-size: 22px
+        margin-left: 20px
+
+@media (max-width: 768px)
+    .pendulum
+        display: none
+    //.pendulum
+    //    top: 64px
+    //    right: 8%
+    //    width: 211px
+    //    height: 173px
+    //    border-top: 19px solid #f9892e
+    //    box-shadow: #c76a1e 19px 19px
+    //    border-radius: 3.8px
+    //
+    //.pendulum_box
+    //    padding: 115px 0 0 10px
+    //
+    //.ball
+    //    height: 38px
+    //    width: 38px
+    //
+    //    &::before
+    //        height: 115px
+    //        left: 19px
+    //        top: -115px
+
+    .me3
+        top: -78px
+        width: 64px
+        height: 64px
+
+    .banner-content
+        max-width: 100%
+        margin-right: 0
+
+        h1
+            font-size: 48px
+
+        h2
+            font-size: 24px
+
+    .job-info
+        padding: 5px 10px
+        max-width: 100%
+
+        h3
+            font-size: 20px
+            margin-left: 10px
+
+            &:before
+                width: 10px
+                height: 10px
+
+    .contact-button
+        padding: 6px 20px
+        font-size: 18px
+        margin-left: 20px
