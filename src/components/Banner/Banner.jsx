@@ -24,7 +24,7 @@ function Banner({onHighlightReady}) {
                 <h1>Yaroslav Yeromenko</h1>
                 <h2>Software developer, student, self-taught guy</h2>
                 <div className={`job-info ${isLoaded ? 'loaded' : ''}`}>
-                    <h3>Currently looking for a job or internship</h3>
+                    <h3>Currently looking for a job or an internship</h3>
                     <a href="mailto:kkmshbiu@protonmail.com">
                         <button className="contact-button">Contact me</button>
                     </a>
