@@ -25,12 +25,6 @@ function Introduction({ onHighlightReady }) {
         }
     }, [onHighlightReady, triggerHighlight]);
 
-    useEffect(() => {
-        if (onHighlightReady) {
-            onHighlightReady(triggerHighlight);
-        }
-    }, [onHighlightReady, triggerHighlight]);
-
     return (
         <div ref={ref} className={`introduction ${isHighlighted ? "highlight" : ""}`} id="home">
             <div className="intro-container">

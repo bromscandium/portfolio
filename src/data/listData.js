@@ -48,7 +48,8 @@ const listData = [
         title: "Valli",
         description: [
             "An experimental project exploring visual design and user flow.",
-            "Focuses on animated interfaces and modular components."
+            "Focuses on animated interfaces and modular components.",
+            "This project was made in cooperation with backender, my role is frontend",
         ],
         technologies: ["React", "SASS", "Python", "Docker", "OpenAI API"],
         live: null,

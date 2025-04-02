@@ -13,7 +13,6 @@ function Footer({ onHighlightReady }) {
         }
     }, [onHighlightReady, triggerHighlight]);
 
-
     return (
         <footer ref={ref} className={`footer ${isHighlighted ? "highlight" : ""}`} id="home">
             <img src={me4} alt="me4" className="me4" />
