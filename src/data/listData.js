@@ -5,8 +5,36 @@ import valli from "/valli_cover.png";
 import profile from "/profile_cover.png";
 import weatherai from "/weather-ai.png";
 import digitalkraj from "/digitalkraj.png";
+import whelm from "/whelm.png";
+import jigsawsudoku from "/jigsawsudoku.png";
 
 const listData = [
+    {
+        id: 9,
+        image: whelm,
+        title: "Whelm",
+        description: [
+            "Whelm is a project created for the Cassini Hackathon — a disaster response simulator powered by Copernicus data.",
+            "It features an interactive React frontend and a Python backend with AI integration via the OpenAI API.",
+            "The app is fully containerized with Docker, showcasing real-time map interactions, decision-making, and gamified UX."
+        ],
+        technologies: ["React", "Python", "OpenAI", "MapLibre", "Docker", "SCSS"],
+        live: null,
+        github: "https://github.com/bromscandium/cassini-hackathon-komorebi"
+    },
+    {
+        id: 8,
+        image: jigsawsudoku,
+        title: "Jigsaw Sudoku",
+        description: [
+            "This is my second university project, creating a game in Java, Spring, and part of the frontend.",
+            "I chose Angular as the frontend because I wanted to kill two birds with one stone (Learn Java and Typescript)",
+            "The game is small, but the biggest focus was the design."
+        ],
+        technologies: ["Java", "Spring Boot", "Angular", "REST", "SCSS", "NodeJS", "Railway"],
+        live: "https://jigsawsudoku-brsc.up.railway.app",
+        github: "https://github.com/bromscandium/jigsawsudoku"
+    },
     {
         id: 7,
         image: digitalkraj,
