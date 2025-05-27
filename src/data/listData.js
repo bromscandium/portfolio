@@ -7,8 +7,36 @@ import weatherai from "/weather-ai.png";
 import digitalkraj from "/digitalkraj.png";
 import whelm from "/whelm.png";
 import jigsawsudoku from "/jigsawsudoku.png";
+import dest from "/dest.png";
+import uaconsulting from "/uaconsulting.png";
 
 const listData = [
+    {
+        id: 11,
+        image: uaconsulting,
+        title: "UA Consulting",
+        description: [
+            "This is a self-made site on the WordPress builder, and previous projects were in groups.",
+            "The site itself provides legal consulting services in various fields.",
+            "This project was built from the very beginning: from connecting the hosting to the design structure."
+        ],
+        technologies: ["Wordpress", "Vamtam Builder"],
+        live: "uaconsulting.eu",
+        github: null
+    },
+    {
+        id: 10,
+        image: dest,
+        title: "dEST",
+        description: [
+            "A decentralized real estate marketplace and the winning project of the ETHBratislava hackathon on the EURØP Challenge track.",
+            "It allows users to list, buy, and auction properties as NFTs, with transactions powered by Solidity smart contracts.",
+            "The platform ensures transparency, reduces commission fees, and simplifies the property exchange process through blockchain technology."
+        ],
+        technologies: ["React", "Python", "Solidity", "MetaMask", "Uvicorn", "MapLibre", "SCSS", "Webpack"],
+        live: null,
+        github: "https://github.com/bromscandium/eth-bratislava"
+    },
     {
         id: 9,
         image: whelm,

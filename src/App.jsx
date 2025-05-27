@@ -27,7 +27,7 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/portfolio/" element={<Home/>}/>
+                <Route path="/" element={<Home/>}/>
             </Routes>
         </Router>
     );

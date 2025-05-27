@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
-  "homepage": "https://bromscandium.github.io/portfolio/",
-  "version": "1.1.4",
+  "homepage": "https://bromscandium.com",
+  "version": "2.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
