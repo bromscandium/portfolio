@@ -21,7 +21,7 @@ const listData = [
             "This project was built from the very beginning: from connecting the hosting to the design structure."
         ],
         technologies: ["Wordpress", "Vamtam Builder"],
-        live: "uaconsulting.eu",
+        live: "https://www.uaconsulting.eu",
         github: null
     },
     {
