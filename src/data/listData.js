@@ -60,7 +60,7 @@ const listData = [
             "The game is small, but the biggest focus was the design."
         ],
         technologies: ["Java", "Spring Boot", "Angular", "REST", "SCSS", "NodeJS", "Railway"],
-        live: "https://jigsawsudoku-brsc.up.railway.app",
+        live: null,
         github: "https://github.com/bromscandium/jigsawsudoku"
     },
     {
