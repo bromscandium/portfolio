@@ -59,7 +59,7 @@ const listData = [
             "I chose Angular as the frontend because I wanted to kill two birds with one stone (Learn Java and Typescript)",
             "The game is small, but the biggest focus was the design."
         ],
-        technologies: ["Java", "Spring Boot", "Angular", "REST", "SCSS", "NodeJS", "Railway"],
+        technologies: ["Java", "Spring Boot", "Angular", "REST", "SCSS", "NodeJS"],
         live: null,
         github: "https://github.com/bromscandium/jigsawsudoku"
     },
