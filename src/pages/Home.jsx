@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {useRef} from "react";
 import {Helmet} from 'react-helmet';
 import Header from "../components/Header/Header";
 import Banner from "../components/Banner/Banner";
@@ -24,10 +24,10 @@ function Home() {
                 triggerFooterHighlight={() => footerRef.current && footerRef.current()}
             />
 
-            <Banner onHighlightReady={(fn) => (bannerRef.current = fn)} />
-            <Introduction onHighlightReady={(fn) => (introRef.current = fn)} />
-            <List onHighlightReady={(fn) => (projectsRef.current = fn)} />
-            <Footer onHighlightReady={(fn) => (footerRef.current = fn)} />
+            <Banner onHighlightReady={(fn) => (bannerRef.current = fn)}/>
+            <Introduction onHighlightReady={(fn) => (introRef.current = fn)}/>
+            <List onHighlightReady={(fn) => (projectsRef.current = fn)}/>
+            <Footer onHighlightReady={(fn) => (footerRef.current = fn)}/>
         </>
     );
 }

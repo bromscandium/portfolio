@@ -1,14 +1,14 @@
-import astro from "/astro_cover.png";
-import bot from "/bot_cover.jpg";
-import hub from "/hub_cover.jpg";
-import valli from "/valli_cover.png";
-import profile from "/profile_cover.png";
-import weatherai from "/weather-ai.png";
-import digitalkraj from "/digitalkraj.png";
-import whelm from "/whelm.png";
-import jigsawsudoku from "/jigsawsudoku.png";
-import dest from "/dest.png";
-import uaconsulting from "/uaconsulting.png";
+import astro from "/astro_cover.webp";
+import bot from "/bot_cover.webp";
+import hub from "/hub_cover.webp";
+import valli from "/valli_cover.webp";
+import profile from "/profile_cover.webp";
+import weatherai from "/weather-ai.webp";
+import digitalkraj from "/digitalkraj.webp";
+import whelm from "/whelm.webp";
+import jigsawsudoku from "/jigsawsudoku.webp";
+import dest from "/dest.webp";
+import uaconsulting from "/uaconsulting.webp";
 
 const listData = [
     {
