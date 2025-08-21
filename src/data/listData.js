@@ -9,8 +9,22 @@ import whelm from "/whelm.webp";
 import jigsawsudoku from "/jigsawsudoku.webp";
 import dest from "/dest.webp";
 import uaconsulting from "/uaconsulting.webp";
+import strapinext from "/strapinext.webp";
 
 const listData = [
+    {
+        id: 12,
+        image: strapinext,
+        title: "Strapi+Next.js",
+        description: [
+            "Small pet project with combining Next and Strapi as CMS.",
+            "Main Purpose of it is understanding how to create own CMS (it's popular tech).",
+            "Basically, I was trying to understand how it works and how to create a connection between website and content system."
+        ],
+        technologies: ["Next.js", "Strapi", "Tailwind", "Vitest"],
+        live: null,
+        github: "https://github.com/bromscandium/strapi-usage"
+    },
     {
         id: 11,
         image: uaconsulting,
