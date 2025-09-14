@@ -32,7 +32,7 @@ function Portfolio({ onHighlightReady }) {
     return (
         <div ref={ref} className={`portfolio ${isHighlighted ? "highlight" : ""}`} id="list">
             <div className="list-header">
-                <h1>Portofolio</h1>
+                <h1>Portfolio</h1>
             </div>
             
             <div className="projects-filters">
