@@ -55,7 +55,7 @@ function MobileNavigation({
                                 duration={1500}
                                 onClick={() => {
                                     setIsOpen(false);
-                                    if (triggerIntroHighlight) {
+                                    if (triggerAboutHighlight) {
                                         setTimeout(() => triggerAboutHighlight(), 1600);
                                     }
                                 }}
