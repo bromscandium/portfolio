@@ -4,6 +4,24 @@
     color: #ffffff
     height: auto
 
+
+    &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background-color: rgba(248, 173, 64, 0.3)
+        opacity: 0
+        transition: opacity 0.5s ease
+        pointer-events: none
+        z-index: 1
+
+    &.highlight::before
+        opacity: 1
+
+
     .skills__header
         flex: 0 0 500px
         margin-bottom: 2rem

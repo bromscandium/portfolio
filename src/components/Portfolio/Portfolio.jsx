@@ -30,9 +30,9 @@ function Portfolio({ onHighlightReady }) {
     }, [category, sort]);
 
     return (
-        <div ref={ref} className={`list ${isHighlighted ? "highlight" : ""}`} id="list">
+        <div ref={ref} className={`portfolio ${isHighlighted ? "highlight" : ""}`} id="list">
             <div className="list-header">
-                <h1>Projects</h1>
+                <h1>Portofolio</h1>
             </div>
             
             <div className="projects-filters">

@@ -1,12 +1,21 @@
 import "./Footer.sass";
 import me4 from '/home/me4.png';
-import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import {FaEnvelope, FaLinkedin, FaGithub} from "react-icons/fa";
+import {useHighlightAnimation} from "../../hooks/useHighlightAnimation.js";
+import {useEffect} from "react";
 
-function Footer() {
+function Footer({onHighlightReady}) {
+    const [ref, isHighlighted, triggerHighlight] = useHighlightAnimation();
+
+    useEffect(() => {
+        if (onHighlightReady) {
+            onHighlightReady(triggerHighlight);
+        }
+    }, [onHighlightReady, triggerHighlight]);
 
     return (
-        <footer className="footer">
-            <img src={me4} alt="me4" className="me4" />
+        <footer ref={ref} className={`footer ${isHighlighted ? "highlight" : ""}`} id="home">
+            <img src={me4} alt="me4" className="me4"/>
             <div className="footer-content">
                 <div className="contacts-section">
                     <h2>Yaroslav Yeromenko</h2>
@@ -20,15 +29,16 @@ function Footer() {
                     <h4>Contacts</h4>
                     <div className="media-icons">
                         <a href="mailto:kkmshbiu@protonmail.com" target="_blank" rel="noopener noreferrer">
-                            <FaEnvelope size={32} />
+                            <FaEnvelope size={32}/>
                             <span className="tooltip">Email me</span>
                         </a>
-                        <a href="https://www.linkedin.com/in/yaroslav-yeromenko/" target="_blank" rel="noopener noreferrer">
-                            <FaLinkedin size={32} />
+                        <a href="https://www.linkedin.com/in/yaroslav-yeromenko/" target="_blank"
+                           rel="noopener noreferrer">
+                            <FaLinkedin size={32}/>
                             <span className="tooltip">LinkedIn</span>
                         </a>
                         <a href="https://github.com/bromscandium" target="_blank" rel="noopener noreferrer">
-                            <FaGithub size={32} />
+                            <FaGithub size={32}/>
                             <span className="tooltip">GitHub</span>
                         </a>
                     </div>

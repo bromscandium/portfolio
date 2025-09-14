@@ -21,7 +21,7 @@ function Banner({onHighlightReady}) {
                 <h2>Full-Stack developer</h2>
                 <div className={`job-info`}>
                     <ScrollLink
-                        to="skills"
+                        to="portfolio"
                         smooth
                         duration={1500}
                     >

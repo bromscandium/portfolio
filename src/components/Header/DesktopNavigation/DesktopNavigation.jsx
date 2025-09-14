@@ -79,7 +79,7 @@ function DesktopNavigation({
                     </li>
                     <li>
                         <ScrollLink
-                            to="contacts"
+                            to="footer"
                             smooth
                             duration={1500}
                             onClick={() => {

@@ -95,7 +95,7 @@ function MobileNavigation({
                         </li>
                         <li>
                             <ScrollLink
-                                to="сontacts"
+                                to="footer"
                                 smooth
                                 duration={1500}
                                 onClick={() => {
