@@ -1,17 +1,25 @@
 import {Link as ScrollLink} from "react-scroll";
 import './DesktopNavigation.sass';
-
+import {useState} from "react";
 
 function DesktopNavigation({
                                triggerBannerHighlight,
-                               triggerIntroHighlight,
-                               triggerProjectsHighlight,
-                               triggerFooterHighlight
+                               triggerAboutHighlight,
+                               triggerSkillsHighlight,
+                               triggerPortfolioHighlight,
+                               triggerContactsHighlight
                            }) {
+    const [lang, setLang] = useState("EN");
+
+    const handleLanguageChange = (e) => {
+        const newLang = e.target.value;
+        setLang(newLang);
+    };
+
     return (
         <header className="DesktopNavigation">
             <nav className="navbar">
-                <h1 className="logo">bromscandium</h1>
+                <h1 className="logo">Yaroslav Yeromenko</h1>
                 <ul className="navlinks">
                     <li>
                         <ScrollLink
@@ -29,12 +37,12 @@ function DesktopNavigation({
                     </li>
                     <li>
                         <ScrollLink
-                            to="introduction"
+                            to="about"
                             smooth
                             duration={1500}
                             onClick={() => {
-                                if (triggerIntroHighlight) {
-                                    setTimeout(() => triggerIntroHighlight(), 1600);
+                                if (triggerAboutHighlight) {
+                                    setTimeout(() => triggerAboutHighlight(), 1600);
                                 }
                             }}
                         >
@@ -43,26 +51,40 @@ function DesktopNavigation({
                     </li>
                     <li>
                         <ScrollLink
-                            to="list"
+                            to="skills"
                             smooth
                             duration={1500}
                             onClick={() => {
-                                if (triggerProjectsHighlight) {
-                                    setTimeout(() => triggerProjectsHighlight(), 1600);
+                                if (triggerSkillsHighlight) {
+                                    setTimeout(() => triggerSkillsHighlight(), 1600);
                                 }
                             }}
                         >
-                            <button>Projects</button>
+                            <button>Skills</button>
                         </ScrollLink>
                     </li>
                     <li>
                         <ScrollLink
-                            to="footer"
+                            to="portfolio"
                             smooth
                             duration={1500}
                             onClick={() => {
-                                if (triggerFooterHighlight) {
-                                    setTimeout(() => triggerFooterHighlight(), 1600);
+                                if (triggerPortfolioHighlight) {
+                                    setTimeout(() => triggerPortfolioHighlight(), 1600);
+                                }
+                            }}
+                        >
+                            <button>Portfolio</button>
+                        </ScrollLink>
+                    </li>
+                    <li>
+                        <ScrollLink
+                            to="contacts"
+                            smooth
+                            duration={1500}
+                            onClick={() => {
+                                if (triggerContactsHighlight) {
+                                    setTimeout(() => triggerContactsHighlight(), 1600);
                                 }
                             }}
                         >
@@ -70,7 +92,6 @@ function DesktopNavigation({
                         </ScrollLink>
                     </li>
                 </ul>
-
             </nav>
         </header>
     );

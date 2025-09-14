@@ -3,7 +3,6 @@
     color: #fff
     padding: 40px 10%
     position: relative
-
     margin: 0 auto
 
     &::before
@@ -139,6 +138,49 @@
 
                     &:hover
                         color: #f8ad40
+
+
+.projects-filters
+    display: flex
+    justify-content: space-between
+    align-items: center
+    flex-wrap: wrap
+    gap: 1rem
+    margin: 1rem 0 2rem
+
+    @media (max-width: 1024px)
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        text-align: center
+
+.categories
+    display: flex
+    flex-wrap: wrap
+    gap: .5rem
+    justify-content: flex-start
+
+
+    @media (max-width: 1024px)
+        justify-content: center
+
+.chip
+    padding: 12px 24px
+    font-size: 20px
+    font-weight: 400
+    border: 1px solid #f8ad40
+    color: #ffffff
+    background: transparent
+    border-radius: 3px
+    text-decoration: none
+    transition: all 0.3s ease
+
+    &:hover
+        background: rgba(248, 173, 64, 0.5)
+
+    &.active
+        background: #cf8d2c
+
 
 
 @media (max-width: 1024px)

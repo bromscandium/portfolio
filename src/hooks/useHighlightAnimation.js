@@ -5,7 +5,6 @@ export function useHighlightAnimation(duration = 1000) {
     const [isHighlighted, setIsHighlighted] = useState(false);
 
     const triggerHighlight = () => {
-        console.log("Trigger highlight!");
         setIsHighlighted(true);
         setTimeout(() => setIsHighlighted(false), duration);
     };

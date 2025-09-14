@@ -1,0 +1,117 @@
+.skills
+    padding: 1rem 10% 4rem
+    background: #000
+    color: #ffffff
+    height: auto
+
+    .skills__header
+        flex: 0 0 500px
+        margin-bottom: 2rem
+
+        h1
+            font-size: 60px
+            margin-bottom: 20px
+            letter-spacing: 3px
+            color: #ffffff
+            font-weight: 100
+
+    .skills__grid
+        display: grid
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+        gap: 2rem
+
+    .skills__card
+        background: #000
+        border: 1px solid #333333
+        border-radius: 12px
+        padding: 1.5rem
+        height: 100px
+        overflow: hidden
+        transition: height .5s ease, border-color .5s ease
+        cursor: pointer
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+
+        &:hover
+            border-color: #f8ad40
+            height: 340px
+
+        .skills__card-title
+            font-size: 1.2rem
+            font-weight: 600
+            color: #f8ad40
+            margin-bottom: 1rem
+
+        .skills__list
+            list-style: none
+            margin: 0
+            padding: 0
+            display: flex
+            flex-direction: column
+            gap: .5rem
+            opacity: 0
+            transform: translateY(10px)
+            transition: opacity .5s ease, transform .5s ease
+
+        &:hover .skills__list
+            opacity: 1
+            transform: translateY(0)
+
+        .skills__item
+            font-size: 1rem
+            color: #ffffff
+
+            @media (max-width: 1024px)
+
+    .skills
+        height: auto
+        padding: 2rem 8%
+
+        .skills__header h1
+            font-size: 48px
+
+        .skills__card
+            height: 90px
+
+            &:hover
+                height: 300px
+
+@media (max-width: 1024px)
+    .skills
+        height: auto
+        padding: 2rem 8%
+
+        .skills__header h1
+            font-size: 50px
+            text-align: center
+
+        .skills__card
+            height: 100px
+
+            &:hover
+                height: 350px
+
+
+@media (max-width: 768px)
+    .skills
+        height: auto
+        padding: 2rem 5%
+
+        .skills__header h1
+            font-size: 44px
+            text-align: center
+
+        .skills__grid
+            grid-template-columns: 1fr
+
+        .skills__card
+            height: auto
+            cursor: default
+
+            &:hover
+                height: auto
+
+            .skills__list
+                opacity: 1
+                transform: none

@@ -1,27 +1,18 @@
-import React, { useEffect } from "react";
 import "./Footer.sass";
 import me4 from '/home/me4.png';
 import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
-import { useHighlightAnimation } from "../../hooks/useHighlightAnimation";
 
-function Footer({ onHighlightReady }) {
-    const [ref, isHighlighted, triggerHighlight] = useHighlightAnimation();
-
-    useEffect(() => {
-        if (onHighlightReady) {
-            onHighlightReady(triggerHighlight);
-        }
-    }, [onHighlightReady, triggerHighlight]);
+function Footer() {
 
     return (
-        <footer ref={ref} className={`footer ${isHighlighted ? "highlight" : ""}`} id="home">
+        <footer className="footer">
             <img src={me4} alt="me4" className="me4" />
             <div className="footer-content">
                 <div className="contacts-section">
-                    <h2>bromscandium</h2>
+                    <h2>Yaroslav Yeromenko</h2>
                     <div className="divider"></div>
                     <p className="contacts-text">
-                        Web designer and software developer
+                        Full-Stack developer
                     </p>
                 </div>
 
@@ -44,7 +35,7 @@ function Footer({ onHighlightReady }) {
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>© 2025, Made by bromscandium</p>
+                <p>© 2025, Made by Yaroslav Yeromenko</p>
             </div>
         </footer>
     );

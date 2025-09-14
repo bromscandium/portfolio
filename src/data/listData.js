@@ -23,7 +23,8 @@ const listData = [
         ],
         technologies: ["Next.js", "Strapi", "Tailwind", "Vitest"],
         live: null,
-        github: "https://github.com/bromscandium/strapi-usage"
+        github: "https://github.com/bromscandium/strapi-usage",
+        category: "pet",
     },
     {
         id: 11,
@@ -34,9 +35,10 @@ const listData = [
             "The site itself provides legal consulting services in various fields.",
             "This project was built from the very beginning: from connecting the hosting to the design structure."
         ],
-        technologies: ["Wordpress", "Vamtam Builder"],
+        technologies: ["Wordpress"],
         live: "https://www.uaconsulting.eu",
-        github: null
+        github: null,
+        category: "professional",
     },
     {
         id: 10,
@@ -49,7 +51,8 @@ const listData = [
         ],
         technologies: ["React", "Python", "Solidity", "MetaMask", "Uvicorn", "MapLibre", "SCSS", "Webpack"],
         live: null,
-        github: "https://github.com/bromscandium/eth-bratislava"
+        github: "https://github.com/bromscandium/eth-bratislava",
+        category: "hackathon",
     },
     {
         id: 9,
@@ -60,9 +63,10 @@ const listData = [
             "It features an interactive React frontend and a Python backend with AI integration via the OpenAI API.",
             "The app is fully containerized with Docker, showcasing real-time map interactions, decision-making, and gamified UX."
         ],
-        technologies: ["React", "Python", "OpenAI", "MapLibre", "Docker", "SCSS"],
+        technologies: ["React", "Python", "OpenAI", "MapLibre", "Docker", "SCSS", "FastAPI"],
         live: null,
-        github: "https://github.com/bromscandium/cassini-hackathon-komorebi"
+        github: "https://github.com/bromscandium/cassini-hackathon-komorebi",
+        category: "hackathon",
     },
     {
         id: 8,
@@ -73,9 +77,10 @@ const listData = [
             "I chose Angular as the frontend because I wanted to kill two birds with one stone (Learn Java and Typescript)",
             "The game is small, but the biggest focus was the design."
         ],
-        technologies: ["Java", "Spring Boot", "Angular", "REST", "SCSS", "NodeJS"],
+        technologies: ["Java", "Spring Boot", "Angular", "REST API", "SCSS", "NodeJS"],
         live: null,
-        github: "https://github.com/bromscandium/jigsawsudoku"
+        github: "https://github.com/bromscandium/jigsawsudoku",
+        category: "university",
     },
     {
         id: 7,
@@ -88,7 +93,8 @@ const listData = [
         ],
         technologies: ["React", "SCSS", "JSON-Server", "Leaflet", "Gemini API", "FastAPI"],
         live: null,
-        github: "https://github.com/bromscandium/digitalny-kraj"
+        github: "https://github.com/bromscandium/digitalny-kraj",
+        category: "hackathon",
     },
     {
         id: 6,
@@ -101,10 +107,11 @@ const listData = [
         ],
         technologies: ["React", "SASS", "Node.js", "OpenWeatherMap API", "OpenAI API"],
         live: null,
-        github: "https://github.com/bromscandium/weather-ai"
+        github: "https://github.com/bromscandium/weather-ai",
+        category: "pet",
     },
     {
-        id: 4,
+        id: 5,
         image: valli,
         title: "Valli",
         description: [
@@ -112,12 +119,13 @@ const listData = [
             "Focuses on animated interfaces and modular components.",
             "This project was made in cooperation with backender, my role is frontend",
         ],
-        technologies: ["React", "SASS", "Python", "Docker", "OpenAI API"],
+        technologies: ["React", "SASS", "Python", "Docker", "OpenAI API", "Django", "FastAPI"],
         live: null,
-        github: "https://github.com/bromscandium/BioGrow/tree/main"
+        github: "https://github.com/bromscandium/BioGrow/tree/main",
+        category: "hackathon",
     },
     {
-        id: 5,
+        id: 4,
         image: profile,
         title: "Own Profile",
         description: [
@@ -126,10 +134,11 @@ const listData = [
         ],
         technologies: ["React", "SASS", "Vite", "UX/UI", "Web Design"],
         live: null,
-        github: "https://github.com/bromscandium/portfolio/tree/main"
+        github: "https://github.com/bromscandium/portfolio/tree/main",
+        category: "professional",
     },
     {
-        id: 2,
+        id: 3,
         image: bot,
         title: "Telegram Bot",
         description: [
@@ -138,10 +147,11 @@ const listData = [
         ],
         technologies: ["Python", "Telegram API", "PostgreSQL"],
         live: null,
-        github: "https://github.com/bromscandium/telegram-bot"
+        github: "https://github.com/bromscandium/telegram-bot",
+        category: "professional",
     },
     {
-        id: 1,
+        id: 2,
         image: astro,
         title: "Astro",
         description: [
@@ -151,19 +161,21 @@ const listData = [
         ],
         technologies: ["C", "NCurses"],
         live: null,
-        github: "https://github.com/bromscandium/astro"
+        github: "https://github.com/bromscandium/astro",
+        category: "university",
     },
     {
-        id: 3,
+        id: 1,
         image: hub,
         title: "Ukrainian Hub",
         description: [
             "A site for Promote Ukraine to showcase projects, cultural events, and advocacy efforts.",
             "Supports communication and outreach for an NGO."
         ],
-        technologies: ["Wix Studio", "Figma", "Web Design"],
+        technologies: ["Wix Studio"],
         live: "https://ukrainianhub.com",
-        github: null
+        github: null,
+        category: "professional",
     },
 ];
 
