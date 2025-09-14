@@ -27,7 +27,7 @@ function Home() {
                 triggerContactsHighlight={() => contactsRef.current && contactsRef.current()}
             />
 
-            <Banner onHighlightReady={(fn) => (bannerRef.current = fn)}/>
+            <Banner onHighlightReady={(fn) => (bannerRef.current = fn)} triggerContactsHighlight={() => contactsRef.current && contactsRef.current()} triggerPortfolioHighlight={() => portfolioRef.current && portfolioRef.current()}/>
             <About onHighlightReady={(fn) => (aboutRef.current = fn)}/>
             <Skills onHighlightReady={(fn) => (skillsRef.current = fn)}/>
             <Portfolio onHighlightReady={(fn) => (portfolioRef.current = fn)}/>

@@ -1,4 +1,6 @@
 import "./Skills.sass";
+import {useEffect} from "react";
+import {useHighlightAnimation} from "../../hooks/useHighlightAnimation.js";
 
 const CATEGORIES = [
     {
@@ -53,9 +55,18 @@ const CATEGORIES = [
     },
 ];
 
-export default function Skills() {
+export default function Skills({ onHighlightReady }) {
+    const [ref, isHighlighted, triggerHighlight] = useHighlightAnimation();
+
+    useEffect(() => {
+        if (onHighlightReady) {
+            onHighlightReady(triggerHighlight);
+        }
+    }, [onHighlightReady, triggerHighlight]);
+
+
     return (
-        <section className="skills" id="skills">
+        <div ref={ref} className={`skills ${isHighlighted ? "highlight" : ""}`} id="skills">
             <div className="skills__header">
                 <h1 className="skills__title">Skills</h1>
             </div>
@@ -74,6 +85,6 @@ export default function Skills() {
                     </div>
                 ))}
             </div>
-        </section>
+        </div>
     );
 }

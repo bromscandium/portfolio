@@ -1,6 +1,5 @@
 import {Link as ScrollLink} from "react-scroll";
 import './DesktopNavigation.sass';
-import {useState} from "react";
 
 function DesktopNavigation({
                                triggerBannerHighlight,
@@ -9,12 +8,6 @@ function DesktopNavigation({
                                triggerPortfolioHighlight,
                                triggerContactsHighlight
                            }) {
-    const [lang, setLang] = useState("EN");
-
-    const handleLanguageChange = (e) => {
-        const newLang = e.target.value;
-        setLang(newLang);
-    };
 
     return (
         <header className="DesktopNavigation">

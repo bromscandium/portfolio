@@ -4,7 +4,8 @@ import './Banner.sass';
 import me3 from '/home/me3.png';
 import {useHighlightAnimation} from "../../hooks/useHighlightAnimation";
 
-function Banner({onHighlightReady}) {
+
+function Banner({onHighlightReady, triggerPortfolioHighlight, triggerContactsHighlight}) {
     const [ref, isHighlighted, triggerHighlight] = useHighlightAnimation();
 
     useEffect(() => {
@@ -24,13 +25,23 @@ function Banner({onHighlightReady}) {
                         to="portfolio"
                         smooth
                         duration={1500}
+                        onClick={() => {
+                            if (triggerPortfolioHighlight) {
+                                setTimeout(() => triggerPortfolioHighlight(), 1600);
+                            }
+                        }}
                     >
                         <button className="portfolio-button">Check Portfolio</button>
                     </ScrollLink>
                     <ScrollLink
-                        to="contacts"
+                        to="footer"
                         smooth
                         duration={1500}
+                        onClick={() => {
+                            if (triggerContactsHighlight) {
+                                setTimeout(() => triggerContactsHighlight(), 1600);
+                            }
+                        }}
                     >
                         <button className="contact-button">Contact me</button>
                     </ScrollLink>
