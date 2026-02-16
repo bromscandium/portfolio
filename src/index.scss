@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Jura', sans-serif;
+    background-color: #000;
+    color: #ffffff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Jura', sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 60px;
+    letter-spacing: 3px;
+    font-weight: 700;
+
+    @media (max-width: 1024px) {
+        font-size: 50px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 44px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 36px;
+    }
+}
+
+h2 {
+    font-size: 48px;
+    letter-spacing: 2px;
+
+    @media (max-width: 1024px) {
+        font-size: 40px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 36px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 28px;
+    }
+}
+
+h3 {
+    font-size: 32px;
+    letter-spacing: 1.5px;
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 24px;
+    }
+}
+
+h4 {
+    font-size: 24px;
+    letter-spacing: 1px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+}
+
+p {
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: #ffffff;
+
+    @media (max-width: 1024px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: #f8ad40;
+    }
+}
+
+.divider {
+    width: 50px;
+    height: 2px;
+    background-color: #f9892e;
+    margin: 15px 0;
+}
+
+button {
+    font-family: 'Jura', sans-serif;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.btn-primary {
+    padding: 15px 40px;
+    background-color: #f8ad40;
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    letter-spacing: 1px;
+
+    &:hover {
+        background-color: #f9892e;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(248, 173, 64, 0.4);
+    }
+}
+
+.btn-secondary {
+    padding: 15px 40px;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    border: 2px solid #f8ad40;
+    border-radius: 8px;
+    letter-spacing: 1px;
+
+    &:hover {
+        background-color: #f8ad40;
+        color: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(248, 173, 64, 0.4);
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-accent {
+    color: #f8ad40;
+}
+
+.section-padding {
+    padding: 80px 10%;
+
+    @media (max-width: 1024px) {
+        padding: 60px 5%;
+    }
+
+    @media (max-width: 768px) {
+        padding: 40px 1.25rem;
+    }
+}
+
+.section-header {
+    margin-bottom: 3rem;
+    text-align: left;
+    padding-top: 80px;
+
+    h1 {
+        font-size: 60px;
+        letter-spacing: 3px;
+        color: #ffffff;
+        font-weight: 100;
+    }
+
+    @media (max-width: 1024px) {
+        padding-top: 60px;
+
+        h1 {
+            font-size: 50px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding-top: 40px;
+
+        h1 {
+            font-size: 44px;
+        }
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+}
+
+:root {
+    --color-primary: #f8ad40;
+    --color-primary-dark: #f9892e;
+    --color-background: #000;
+    --color-text: #ffffff;
+    --color-border: #333333;
+    --color-overlay: rgba(248, 173, 64, 0.3);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f8ad40;
+    border-radius: 5px;
+
+    &:hover {
+        background: #f9892e;
+    }
+}

@@ -1,36 +1,26 @@
-import {useEffect} from "react";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Home from './pages/Home';
+import { Helmet } from 'react-helmet';
+import { useState } from 'react';
+import {SectionScroller} from './components/SectionScroller';
+import {Banner} from './sections/banner/Banner';
+import {About} from './sections/about/About';
+import {Skills} from './sections/skills/Skills';
+import {Portfolio} from './sections/portfolio/Portfolio';
+import {Contacts} from './sections/contacts/Contacts';
+import './index.scss';
 
-function App() {
-    useEffect(() => {
-        let lastScrollY = window.scrollY;
+export default function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            const direction = currentScrollY > lastScrollY ? "down" : "up";
+  const PortfolioWithModal = () => <Portfolio onModalChange={setIsModalOpen} />;
 
-            if (direction === "down") {
-                document.body.style.background = "#000";
-            } else {
-                document.body.style.background = "#121212";
-            }
+  const sections = [Banner, About, Skills, PortfolioWithModal, Contacts];
 
-            lastScrollY = currentScrollY;
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-            </Routes>
-        </Router>
-    );
+  return (
+    <>
+      <Helmet>
+        <title>Portfolio | Yaroslav Yeromenko</title>
+      </Helmet>
+      <SectionScroller sections={sections} isModalOpen={isModalOpen} />
+    </>
+  );
 }
-
-export default App
