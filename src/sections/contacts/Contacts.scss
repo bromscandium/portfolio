@@ -1,7 +1,7 @@
 .contacts {
     position: relative;
     padding: 80px 10%;
-    background: #000;
+    background: var(--color-background);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -35,13 +35,13 @@
             h2 {
                 font-size: 48px;
                 margin-bottom: 20px;
-                color: #ffffff;
+                color: var(--color-text);
                 font-weight: 600;
             }
 
             .contacts-text {
                 font-size: 24px;
-                color: #ffffff;
+                color: var(--color-text);
                 font-weight: 300;
             }
         }
@@ -52,7 +52,7 @@
             h4 {
                 font-size: 28px;
                 margin-bottom: 1.5rem;
-                color: #ffffff;
+                color: var(--color-text);
             }
 
             .media-icons {
@@ -62,11 +62,11 @@
 
                 a {
                     position: relative;
-                    color: #ffffff;
+                    color: var(--color-text);
                     transition: all 0.3s ease;
 
                     &:hover {
-                        color: #f8ad40;
+                        color: var(--color-primary);
                         transform: translateY(-5px);
                     }
 
@@ -75,8 +75,8 @@
                         bottom: -35px;
                         left: 50%;
                         transform: translateX(-50%);
-                        background: #f8ad40;
-                        color: #000;
+                        background: var(--color-primary);
+                        color: var(--color-black);
                         padding: 6px 12px;
                         border-radius: 6px;
                         font-size: 14px;
@@ -103,7 +103,7 @@
         left: 0;
         transform: none;
         font-size: 16px;
-        color: #ffffff;
+        color: var(--color-text);
         font-weight: 300;
 
         &.fade-down {

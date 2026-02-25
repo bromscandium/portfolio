@@ -4,90 +4,32 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const lastScrollTime = useRef(Date.now());
-  const touchStartY = useRef(0);
+
+  const scrollToSection = (index) => {
+    if (!isTransitioning && !isModalOpen) {
+      setIsTransitioning(true);
+      setCurrentSection(index);
+      lastScrollTime.current = Date.now();
+      setTimeout(() => setIsTransitioning(false), 1500);
+    }
+  };
 
   useEffect(() => {
-    const handleWheel = (e) => {
-      if (isModalOpen) return;
-
-      e.preventDefault();
-
-      if (isTransitioning) return;
-
-      const now = Date.now();
-      if (now - lastScrollTime.current < 1500) return;
-
-      lastScrollTime.current = now;
-      setIsTransitioning(true);
-
-      if (e.deltaY > 0) {
-        setCurrentSection(prev => (prev + 1) % sections.length);
-      } else if (e.deltaY < 0) {
-        setCurrentSection(prev => (prev - 1 + sections.length) % sections.length);
-      }
-
-      setTimeout(() => setIsTransitioning(false), 1500);
-    };
-
-    const handleTouchStart = (e) => {
-      if (isModalOpen) return;
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e) => {
+    const handleWheelGlobal = (e) => {
       if (isModalOpen || isTransitioning) return;
 
-      const now = Date.now();
-      if (now - lastScrollTime.current < 1500) return;
-
-      const touchEndY = e.changedTouches[0].clientY;
-      const diff = touchStartY.current - touchEndY;
-
-      if (Math.abs(diff) > 50) {
-        lastScrollTime.current = now;
-        setIsTransitioning(true);
-
-        if (diff > 0) {
-          setCurrentSection(prev => (prev + 1) % sections.length);
-        } else {
-          setCurrentSection(prev => (prev - 1 + sections.length) % sections.length);
+      if (Date.now() - lastScrollTime.current > 1500) {
+        if (e.deltaY > 0 && currentSection < sections.length - 1) {
+          scrollToSection(currentSection + 1);
+        } else if (e.deltaY < 0 && currentSection > 0) {
+          scrollToSection(currentSection - 1);
         }
-
-        setTimeout(() => setIsTransitioning(false), 1500);
       }
     };
 
-    const handleKeyDown = (e) => {
-      if (isModalOpen || isTransitioning) return;
-
-      const now = Date.now();
-      if (now - lastScrollTime.current < 1500) return;
-
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        lastScrollTime.current = now;
-        setIsTransitioning(true);
-        setCurrentSection(prev => (prev + 1) % sections.length);
-        setTimeout(() => setIsTransitioning(false), 1500);
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        lastScrollTime.current = now;
-        setIsTransitioning(true);
-        setCurrentSection(prev => (prev - 1 + sections.length) % sections.length);
-        setTimeout(() => setIsTransitioning(false), 1500);
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchend', handleTouchEnd);
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentSection, sections.length, isTransitioning, isModalOpen]);
+    window.addEventListener('wheel', handleWheelGlobal, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheelGlobal);
+  }, [currentSection, isTransitioning, isModalOpen, sections.length]);
 
   return (
     <div style={{
@@ -111,10 +53,10 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
             opacity: currentSection === index ? 1 : 0,
             transition: 'opacity 1s ease-in-out',
             pointerEvents: currentSection === index ? 'auto' : 'none',
-            overflow: 'auto'
+            overflow: 'hidden'
           }}
         >
-          <Section />
+          <Section scrollToSection={scrollToSection} />
         </div>
       ))}
 
@@ -131,14 +73,7 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
         {sections.map((_, index) => (
           <button
             key={index}
-            onClick={() => {
-              if (!isTransitioning && !isModalOpen) {
-                setIsTransitioning(true);
-                setCurrentSection(index);
-                lastScrollTime.current = Date.now();
-                setTimeout(() => setIsTransitioning(false), 1500);
-              }
-            }}
+            onClick={() => scrollToSection(index)}
             style={{
               width: '12px',
               height: '12px',

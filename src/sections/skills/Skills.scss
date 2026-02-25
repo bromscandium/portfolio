@@ -1,7 +1,7 @@
 .skills {
     padding: 0 10% 80px;
-    background: #000;
-    color: #ffffff;
+    background: var(--color-background);
+    color: var(--color-text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -16,6 +16,13 @@
         margin: 0 auto;
     }
 
+    .gallery-divider {
+        width: 100%;
+        height: 1px;
+        background: var(--color-primary-alpha-30);
+        margin: 10px 0;
+    }
+
     .skills__gallery {
         display: flex;
         gap: 2rem;
@@ -24,22 +31,22 @@
         scroll-behavior: smooth;
         padding-bottom: 1rem;
         padding-top: 1rem;
-        touch-action: pan-x;
+        touch-action: pan-y;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         -ms-overflow-style: none;
-    }
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
-    scroll-snap-type: x proximity;
+        scroll-snap-type: x proximity;
+    }
 
     .skills__card {
         flex: 0 0 400px;
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-bg-grad-end) 100%);
+        border: 1px solid var(--color-border);
         border-radius: 16px;
         padding: 2rem;
         display: flex;
@@ -58,21 +65,23 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #f8ad40 0%, #f9892e 100%);
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.4s ease;
         }
 
-        &:hover {
-            border-color: #f8ad40;
+        @media (hover: hover) {
+            &:hover {
+                border-color: var(--color-primary);
 
-            &::before {
-                transform: scaleX(1);
-            }
+                &::before {
+                    transform: scaleX(1);
+                }
 
-            .skills__card-number {
-                color: #f8ad40;
+                .skills__card-number {
+                    color: var(--color-primary);
+                }
             }
         }
 
@@ -81,13 +90,13 @@
             align-items: center;
             gap: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid var(--color-border-dark);
         }
 
         .skills__card-number {
             font-size: 2rem;
             font-weight: 700;
-            color: #333;
+            color: var(--color-border);
             transition: color 0.3s ease;
             font-family: monospace;
         }
@@ -95,7 +104,7 @@
         .skills__card-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #f8ad40;
+            color: var(--color-primary);
             flex: 1;
             letter-spacing: 0.5px;
         }
@@ -111,7 +120,7 @@
 
         .skills__item {
             font-size: 1rem;
-            color: #ccc;
+            color: var(--color-text-muted);
             font-weight: 300;
             padding-left: 1.5rem;
             position: relative;
@@ -120,19 +129,44 @@
                 content: '▹';
                 position: absolute;
                 left: 0;
-                color: #f8ad40;
+                color: var(--color-primary);
                 font-weight: bold;
             }
         }
     }
 
-    .skills__scroll-indicator {
-        text-align: center;
+    .gallery-navigation {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
         margin-top: 1.5rem;
-        color: #666;
-        font-size: 0.9rem;
-    }
 
+        .nav-arrow {
+            background: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover:not(:disabled) {
+                background: var(--color-primary);
+                color: var(--color-black);
+            }
+
+            &:disabled {
+                border-color: var(--color-border);
+                color: var(--color-border);
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+    }
 
     @media (max-width: 1024px) {
         .skills {

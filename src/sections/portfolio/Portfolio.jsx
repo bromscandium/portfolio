@@ -1,6 +1,7 @@
-import { useMemo, useState, useEffect } from "react";
-import { FaGithub, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { portfolio } from "../../data/portfolio.js";
+import { ProjectModal } from "./ProjectModal.jsx";
 import "./portfolio.scss";
 
 const CATEGORIES = [
@@ -14,8 +15,12 @@ const CATEGORIES = [
 export const Portfolio = ({ onModalChange }) => {
   const [category, setCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [, setHasAnimated] = useState(false);
   const [isChangingCategory, setIsChangingCategory] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const galleryRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const visible = useMemo(() => {
     let arr = category === "all" ? portfolio : portfolio.filter(p => p.category === category);
@@ -23,43 +28,74 @@ export const Portfolio = ({ onModalChange }) => {
   }, [category]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setHasAnimated(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+    if (selectedProject && !isClosing) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject, isClosing]);
+
+  const checkScroll = () => {
+    if (galleryRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = galleryRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [visible]);
+
+  const scroll = (direction) => {
+    if (galleryRef.current) {
+      const scrollAmount = direction === 'left' ? -400 : 400;
+      galleryRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      setTimeout(checkScroll, 350);
+    }
+  };
 
   const handleCategoryChange = (newCategory) => {
     if (newCategory === category) return;
-
     setIsChangingCategory(true);
     setTimeout(() => {
       setCategory(newCategory);
       setIsChangingCategory(false);
+      if (galleryRef.current) {
+        galleryRef.current.scrollLeft = 0;
+        checkScroll();
+      }
     }, 300);
   };
 
   const openModal = (project) => {
     setSelectedProject(project);
-    document.body.style.overflow = 'hidden';
+    setIsClosing(false);
     onModalChange?.(true);
   };
 
   const closeModal = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = 'auto';
-    onModalChange?.(false);
+    setIsClosing(true);
+    setTimeout(() => {
+      setSelectedProject(null);
+      setIsClosing(false);
+      onModalChange?.(false);
+    }, 300);
   };
 
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape' && selectedProject) {
-        closeModal();
-      }
+      if (e.key === 'Escape') closeModal();
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [selectedProject]);
+  }, []);
 
   return (
     <div className="portfolio">
@@ -82,7 +118,12 @@ export const Portfolio = ({ onModalChange }) => {
       </div>
 
       <div className="projects-gallery-wrapper">
-        <div className={`projects-gallery ${isChangingCategory ? 'fade-out' : 'fade-in'}`}>
+        <div className="gallery-divider"></div>
+        <div
+          className={`projects-gallery ${isChangingCategory ? 'fade-out' : 'fade-in'}`}
+          ref={galleryRef}
+          onScroll={checkScroll}
+        >
           {visible.map((project) => (
             <div
               key={project.id}
@@ -109,60 +150,33 @@ export const Portfolio = ({ onModalChange }) => {
             </div>
           ))}
         </div>
-        <div className="projects__scroll-indicator">
-          Scroll to explore more projects
+        <div className="gallery-divider"></div>
+
+        <div className="gallery-navigation">
+          <button
+            className="nav-arrow"
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+          >
+            <FaChevronLeft size={20} />
+          </button>
+          <button
+            className="nav-arrow"
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+          >
+            <FaChevronRight size={20} />
+          </button>
         </div>
       </div>
 
       {selectedProject && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>
-              <FaTimes size={24} />
-            </button>
-
-            <div className="modal-image">
-              <img src={selectedProject.image} alt={selectedProject.title} />
-            </div>
-
-            <div className="modal-info">
-              <h2>{selectedProject.title}</h2>
-
-              <div className="modal-description">
-                {selectedProject.description.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
-              </div>
-
-              <div className="modal-technologies">
-                <h4>Technologies:</h4>
-                <div className="modal-tags">
-                  {selectedProject.technologies.map((tech, idx) => (
-                    <span key={idx} className="modal-tag">{tech}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="modal-buttons">
-                {selectedProject.title === "Own Profile" ? (
-                  <span className="projects-note">Well, you're here already :D</span>
-                ) : selectedProject.live ? (
-                  <a href={selectedProject.live} className="modal-button primary" target="_blank" rel="noopener noreferrer">
-                    <FaExternalLinkAlt size={18} />
-                    Live Project
-                  </a>
-                ) : null}
-                {selectedProject.github && (
-                  <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" className="modal-button secondary">
-                    <FaGithub size={24} />
-                    View Code
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProjectModal
+          project={selectedProject}
+          isClosing={isClosing}
+          onClose={closeModal}
+        />
       )}
     </div>
   );
-}
+};

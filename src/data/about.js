@@ -1,15 +1,15 @@
 export const about = {
   paragraphs: [
     {
-      text: "I'm a Full-Stack Developer with experience in building modern web and mobile applications. On the frontend I work with React or Next.js, focusing on creating fast, responsive, and clean user interfaces.",
+      text: "I'm a Full-Stack Developer with solid experience in building modern web applications. On the frontend, I specialize in JavaScript/TypeScript using React and Next.js, focusing on creating fast, responsive UIs and modernizing legacy websites with Headless CMS architectures.",
       highlight: []
     },
     {
-      text: "On the backend I use Node.js, NestJS, Python (Django, FastAPI) and PostgreSQL as database to design APIs, manage data, and ensure scalable architectures. I'm comfortable with the full development cycle - from database schema design to deploying apps on VPS or cloud platforms.",
+      text: "On the backend, I work extensively with Python (FastAPI) and Node.js. I design robust APIs using REST and GraphQL, implement WebSockets for real-time features, and manage SQL/NoSQL databases including PostgreSQL, SQLite, Redis, and MariaDB. I also have experience building interactive chatbots and utilizing modern ORMs like SQLAlchemy and Tortoise ORM.",
       highlight: []
     },
     {
-      text: "My projects range from news portals and expense trackers to custom CMS and Telegram bots, where I integrate different technologies into solid, production-ready solutions. I enjoy solving complex problems and delivering software that is both practical and user-friendly.",
+      text: "I am highly proficient in the complete DevOps lifecycle, utilizing Docker for containerization and GitHub Actions for CI/CD pipelines. From deploying scalable applications on AWS and VPS/PaaS platforms to optimizing technical SEO and performance, I focus on delivering efficient, production-ready solutions.",
       highlight: []
     }
   ],
@@ -29,7 +29,7 @@ export const about = {
     },
     {
       label: "Languages:",
-      value: "Ukrainian (Native) | English (B2) | Slovak (B1)"
+      value: "Ukrainian (Native) | English (B2) | Slovak (B2)"
     }
   ]
 };

@@ -1,5 +1,5 @@
 .banner {
-    background: #000;
+    background: var(--color-background);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,7 +10,7 @@
 
     h1 {
         font-size: 80px;
-        color: #ffffff;
+        color: var(--color-text);
         font-weight: 100;
         margin: 10px 0;
     }
@@ -18,7 +18,7 @@
     h2 {
         font-weight: 100;
         font-size: 44px;
-        color: #ffffff;
+        color: var(--color-text);
         padding-top: 5px;
     }
 }
@@ -46,7 +46,7 @@
 .portfolio-button,
 .contact-button {
     padding: 15px 40px;
-    color: #ffffff;
+    color: var(--color-text);
     text-decoration: none;
     border-radius: 8px;
     font-size: 18px;
@@ -57,26 +57,26 @@
 }
 
 .portfolio-button {
-    background: #f8ad40;
-    border: 2px solid #f8ad40;
-    color: #000;
+    background: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    color: var(--color-black);
 
     &:hover {
-        background-color: #f9892e;
+        background-color: var(--color-primary-dark);
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(248, 173, 64, 0.4);
+        box-shadow: 0 8px 20px var(--color-primary-alpha-40);
     }
 }
 
 .contact-button {
     background: transparent;
-    border: 2px solid #f8ad40;
+    border: 2px solid var(--color-primary);
 
     &:hover {
-        background-color: #f8ad40;
-        color: #000;
+        background-color: var(--color-primary);
+        color: var(--color-black);
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(248, 173, 64, 0.4);
+        box-shadow: 0 8px 20px var(--color-primary-alpha-40);
     }
 }
 
@@ -85,10 +85,10 @@
     right: 10%;
     width: 297px;
     height: 243px;
-    background-color: #FFEDD5;
+    background-color: var(--color-pendulum-bg);
     align-items: center;
-    border-top: 27px solid #f9892e;
-    box-shadow: #c76a1e 27px 27px;
+    border-top: 27px solid var(--color-primary-dark);
+    box-shadow: var(--color-pendulum-shadow) 27px 27px;
     border-radius: 5.4px;
     opacity: 1;
 
@@ -107,7 +107,7 @@
     height: 54px;
     width: 54px;
     border-radius: 50%;
-    background-color: #f8ad40;
+    background-color: var(--color-primary);
     position: relative;
     transform-origin: 50% -300%;
     animation-play-state: running;
@@ -116,7 +116,7 @@
         content: '';
         width: 2px;
         height: 162px;
-        background-color: #a4a4a4;
+        background-color: var(--color-pendulum-line);
         left: 27px;
         top: -162px;
         position: absolute;

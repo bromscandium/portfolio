@@ -3,37 +3,51 @@ export const skills = [
     title: "Languages & Frameworks",
     items: [
       "JavaScript/TypeScript",
-      "Python",
       "React",
       "Next.js",
+      "Node.js",
+      "Python",
       "FastAPI"
     ],
   },
   {
-    title: "Databases",
-    items: ["PostgreSQL", "MySQL", "MongoDB", "MariaDB"],
+    title: "Databases & Caching",
+    items: [
+      "PostgreSQL",
+      "SQLite",
+      "Redis",
+      "MariaDB"
+    ],
   },
   {
-    title: "Libraries",
+    title: "Libraries & ORMs",
     items: [
       "Redux",
-      "Axios",
       "GraphQL",
       "REST API",
       "WebSockets",
-      "shadcn/Material UI"
+      "SQLAlchemy",
+      "Tortoise ORM",
+      "Tailwind CSS / shadcn-ui",
+      "MUI"
+    ],
+  },
+  {
+    title: "Testing",
+    items: [
+      "Pytest (Polyfactory)",
+      "Jest"
     ],
   },
   {
     title: "Tools & DevOps",
     items: [
-      "GitHub Actions",
+      "GitHub/GitLab",
+      "GitHub Actions (CI/CD)",
       "Docker",
-      "VPS deployment",
-      "CI/CD",
       "AWS",
-      "Postman",
-      "Wordpress (headless)"
+      "VPS/PaaS deployment",
+      "Headless Wordpress"
     ],
   }
 ];

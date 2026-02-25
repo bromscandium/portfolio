@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { skills } from "../../data/skills.js";
 import "./skills.scss";
 
 export const Skills = () => {
   const [, setHasAnimated] = useState(false);
+
+  const galleryRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -12,6 +17,28 @@ export const Skills = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const checkScroll = () => {
+    if (galleryRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = galleryRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const scroll = (direction) => {
+    if (galleryRef.current) {
+      const scrollAmount = direction === 'left' ? -420 : 420;
+      galleryRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      setTimeout(checkScroll, 350);
+    }
+  };
+
   return (
     <div className="skills">
       <div className="section-header">
@@ -19,7 +46,12 @@ export const Skills = () => {
       </div>
 
       <div className="skills__gallery-wrapper">
-        <div className="skills__gallery">
+        <div className="gallery-divider"></div>
+        <div
+          className="skills__gallery"
+          ref={galleryRef}
+          onScroll={checkScroll}
+        >
           {skills.map((cat, index) => (
             <div
               className="skills__card"
@@ -39,8 +71,23 @@ export const Skills = () => {
             </div>
           ))}
         </div>
-        <div className="skills__scroll-indicator">
-          Scroll to explore
+        <div className="gallery-divider"></div>
+
+        <div className="gallery-navigation">
+          <button
+            className="nav-arrow"
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+          >
+            <FaChevronLeft size={20} />
+          </button>
+          <button
+            className="nav-arrow"
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+          >
+            <FaChevronRight size={20} />
+          </button>
         </div>
       </div>
     </div>

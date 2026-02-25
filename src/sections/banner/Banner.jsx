@@ -1,33 +1,22 @@
-import { useState, useEffect } from 'react';
 import './banner.scss';
 
-export const Banner = () => {
-    const [hasAnimated, setHasAnimated] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setHasAnimated(true);
-        }, 100);
-
-        return () => clearTimeout(timer);
-    }, []);
-
+export const Banner = ({ scrollToSection }) => {
     return (
       <div className="banner">
-          <div className={`banner-content ${hasAnimated ? 'fade-up' : ''}`}>
+          <div className="banner-content">
               <h2>Hello, I'm</h2>
               <h1>Yaroslav Yeromenko</h1>
               <h2>Full-Stack developer</h2>
               <div className="job-info">
-                  <button className="portfolio-button">
+                  <button className="portfolio-button" onClick={() => scrollToSection(3)}>
                       Check Portfolio
                   </button>
-                  <button className="contact-button">
+                  <button className="contact-button" onClick={() => scrollToSection(4)}>
                       Contact me
                   </button>
               </div>
           </div>
-          <div className={`pendulum ${hasAnimated ? 'fade-up' : ''}`} style={{ animationDelay: '0.3s' }}>
+          <div className="pendulum">
               <div className="pendulum_box">
                   <div className="ball first"></div>
                   <div className="ball"></div>
