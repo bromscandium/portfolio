@@ -13,8 +13,23 @@ import strapinext from "/strapinext.webp";
 import tretiakovconsulting from "/tretiakovconsulting.webp"
 import sparrowai from "/sparrowai.webp"
 import sparrowiot from "/sparrowiot.webp"
+import intelmarket from "/intelmarket.webp"
 
 export const portfolio = [
+  {
+    id: 16,
+    image: intelmarket,
+    title: "IntelMarket",
+    description: [
+      "An advanced OSINT and Market Analysis platform developed as a collaborative Data Science project to track blockchain activity and web-based intelligence.",
+      "Built custom scrapers and analytical modules to process large datasets, enabling deep-dive forensics into holder behavior and trading patterns.",
+      "Features a high-performance architecture using FastAPI and Next.js 15 to generate automated investigative reports and real-time market metrics."
+    ],
+    technologies: ["Next.js", "FastAPI", "Python", "BeautifulSoup", "PostgreSQL", "Tailwind CSS", "pandas"],
+    live: null,
+    github: "https://github.com/bromscandium/edth-athens",
+    category: "hackathon",
+  },
   {
     id: 15,
     image: uaconsulting,
