@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { about } from "../../data/about.js";
-import "./about.scss";
+import "./About.scss";
 
 export const About = () => {
   const [, setHasAnimated] = useState(false);

@@ -39,7 +39,7 @@ export const portfolio = [
       "The architecture utilizes WordPress strictly as a headless CMS, separating content management from the frontend presentation layer via GraphQL.",
       "The primary goal of this migration was to significantly boost loading speeds, optimize SEO rankings, and enhance the overall user experience."
     ],
-    technologies: ["Next.js", "GraphQL", "Node.js", "Docker", "headless Wordpress"],
+    technologies: ["Next.js", "GraphQL", "Node.js", "Docker", "Headless WordPress"],
     live: "https://www.uaconsulting.eu",
     github: null,
     category: "professional",
@@ -95,7 +95,7 @@ export const portfolio = [
       "The site itself provides legal consulting services in various fields.",
       "This project was built from the very beginning: from connecting the hosting to the design structure."
     ],
-    technologies: ["Wordpress"],
+    technologies: ["WordPress"],
     live: "https://tretiakov.consulting/",
     github: null,
     category: "professional",

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { skills } from "../../data/skills.js";
-import "./skills.scss";
+import "./Skills.scss";
 
 export const Skills = () => {
   const [, setHasAnimated] = useState(false);

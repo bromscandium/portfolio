@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./contacts.scss";
+import "./Contacts.scss";
 import { contacts } from "../../data/contacts.js";
 
 export const Contacts = () => {

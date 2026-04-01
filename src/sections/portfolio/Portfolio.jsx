@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { portfolio } from "../../data/portfolio.js";
 import { ProjectModal } from "./ProjectModal.jsx";
-import "./portfolio.scss";
+import "./Portfolio.scss";
 
 const CATEGORIES = [
   { key: "all", label: "All" },
