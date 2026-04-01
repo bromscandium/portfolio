@@ -233,7 +233,7 @@ export const portfolio = [
       "Supports communication and outreach for an NGO."
     ],
     technologies: ["Wix Studio"],
-    live: "https://ukrainianhub.com",
+    live: "https://ukrainianhub.eu",
     github: null,
     category: "professional",
   },
