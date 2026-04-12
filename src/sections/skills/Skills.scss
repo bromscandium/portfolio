@@ -1,18 +1,16 @@
 .skills {
-    padding: 0 10% 80px;
+    padding: 0 15% 80px;
     background: var(--color-background);
     color: var(--color-text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
     position: relative;
 
     .skills__gallery-wrapper {
         position: relative;
         width: 100%;
-        max-width: 1600px;
         margin: 0 auto;
     }
 

@@ -12,6 +12,13 @@ const CATEGORIES = [
   { key: "professional", label: "Professional" }
 ];
 
+const CATEGORY_LABELS = {
+  pet: "Pet Project",
+  hackathon: "Hackathon",
+  university: "University",
+  professional: "Professional"
+};
+
 export const Portfolio = ({ onModalChange }) => {
   const [category, setCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
@@ -146,6 +153,7 @@ export const Portfolio = ({ onModalChange }) => {
                     <span className="tag-more">+{project.technologies.length - 3}</span>
                   )}
                 </div>
+                <span className="projects-card-category">{CATEGORY_LABELS[project.category]}</span>
               </div>
             </div>
           ))}

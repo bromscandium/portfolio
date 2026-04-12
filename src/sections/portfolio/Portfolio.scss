@@ -1,14 +1,12 @@
 .portfolio {
     background-color: var(--color-background);
     color: var(--color-text);
-    padding: 0 10% 80px;
+    padding: 0 15% 80px;
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
-
     .projects-filters {
         display: flex;
         justify-content: space-between;
@@ -52,7 +50,8 @@
     .projects-gallery-wrapper {
         position: relative;
         width: 100%;
-        max-width: 1600px;
+
+        margin: 0 auto;
     }
 
     .gallery-divider {
@@ -160,8 +159,8 @@
                 padding: 1.5rem;
                 display: flex;
                 flex-direction: column;
-                gap: 1rem;
-                height: 140px;
+                gap: 0.6rem;
+                height: 160px;
 
                 h3 {
                     font-size: 1.2rem;
@@ -196,6 +195,21 @@
                         color: var(--color-text-light);
                         padding: 0.35rem 0.85rem;
                     }
+                }
+
+                .projects-card-category {
+                    align-self: flex-start;
+                    margin-top: auto;
+                    font-size: 0.7rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: var(--color-text-light);
+                    padding: 0.3rem 0.8rem;
+                    border: 1px solid var(--color-border);
+                    border-radius: 20px;
+                    background: var(--color-bg-grad-end);
+                    margin-bottom: 0.75rem;
                 }
             }
         }

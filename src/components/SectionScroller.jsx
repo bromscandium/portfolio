@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 export const SectionScroller = ({ sections, isModalOpen }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showScrollHint, setShowScrollHint] = useState(false);
   const lastScrollTime = useRef(Date.now());
+  const hintTimer = useRef(null);
 
   const scrollToSection = (index) => {
     if (!isTransitioning && !isModalOpen) {
@@ -13,6 +15,16 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
       setTimeout(() => setIsTransitioning(false), 1500);
     }
   };
+
+  useEffect(() => {
+    clearTimeout(hintTimer.current);
+    if (currentSection === 0) {
+      hintTimer.current = setTimeout(() => setShowScrollHint(true), 3000);
+    } else {
+      setShowScrollHint(false);
+    }
+    return () => clearTimeout(hintTimer.current);
+  }, [currentSection]);
 
   useEffect(() => {
     const handleWheelGlobal = (e) => {
@@ -62,7 +74,7 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
 
       <div style={{
         position: 'fixed',
-        right: '30px',
+        left: '50px',
         top: '50%',
         transform: 'translateY(-50%)',
         zIndex: 1000,
@@ -75,8 +87,8 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
             key={index}
             onClick={() => scrollToSection(index)}
             style={{
-              width: '12px',
-              height: '12px',
+              width: '18px',
+              height: '18px',
               borderRadius: '50%',
               border: '2px solid #f8ad40',
               backgroundColor: currentSection === index ? '#f8ad40' : 'transparent',
@@ -88,6 +100,29 @@ export const SectionScroller = ({ sections, isModalOpen }) => {
           />
         ))}
       </div>
+
+      {showScrollHint && (
+        <div style={{
+          position: 'fixed',
+          bottom: '40px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 1000,
+          background: 'rgba(0,0,0,0.75)',
+          border: '1px solid rgba(248,173,64,0.4)',
+          borderRadius: '8px',
+          padding: '12px 28px',
+          color: '#f8ad40',
+          fontFamily: 'Jura, sans-serif',
+          fontSize: '16px',
+          fontWeight: '500',
+          letterSpacing: '1px',
+          animation: 'fadeUp 0.5s ease-out forwards',
+          pointerEvents: 'none'
+        }}>
+          Scroll down to see more
+        </div>
+      )}
     </div>
   );
 };

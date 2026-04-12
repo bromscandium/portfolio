@@ -13,21 +13,36 @@ import strapinext from "/strapinext.webp";
 import tretiakovconsulting from "/tretiakovconsulting.webp"
 import sparrowai from "/sparrowai.webp"
 import sparrowiot from "/sparrowiot.webp"
-import intelmarket from "/intelmarket.webp"
+import vigil8 from "/intelmarket.webp"
+import walletapp from "/walletapp.webp"
 
 export const portfolio = [
+    {
+        id: 17,
+        image: walletapp,
+        title: "Wallet App",
+        description: [
+            "A streamlined, mobile-first wallet interface consisting of a main dashboard and a dedicated transaction details view, designed to demonstrate core React principles.",
+            "Focused on clean code architecture and efficient state management, ensuring a seamless user experience across a high-performance two-page navigation flow.",
+            "Prioritized precision in UI/UX implementation and comprehensive unit testing over unnecessary complexity, showcasing a production-ready approach to a focused feature set."
+        ],
+        technologies: ["React", "TypeScript", "Jest", "Tailwind CSS"],
+        live: "https://bromscandium.github.io/wallet-app/",
+        github: "https://github.com/bromscandium/wallet-app",
+        category: "pet",
+    },
   {
     id: 16,
-    image: intelmarket,
-    title: "IntelMarket",
+    image: vigil8,
+    title: "Vigil8",
     description: [
       "An advanced OSINT and Market Analysis platform developed as a collaborative Data Science project to track blockchain activity and web-based intelligence.",
       "Built custom scrapers and analytical modules to process large datasets, enabling deep-dive forensics into holder behavior and trading patterns.",
       "Features a high-performance architecture using FastAPI and Next.js 15 to generate automated investigative reports and real-time market metrics."
     ],
-    technologies: ["Next.js", "FastAPI", "Python", "BeautifulSoup", "PostgreSQL", "Tailwind CSS", "pandas"],
+    technologies: ["Next.js", "FastAPI", "Python", "Celery", "TimescaleDB", "Redis", "Tailwind CSS", "pandas"],
     live: null,
-    github: "https://github.com/bromscandium/edth-athens",
+    github: null,
     category: "hackathon",
   },
   {

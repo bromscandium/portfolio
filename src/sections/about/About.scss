@@ -1,19 +1,17 @@
 .about {
     position: relative;
-    padding: 0 10% 80px;
+    padding: 0 15% 80px;
     background: var(--color-background);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
-
     &__container {
         display: flex;
         justify-content: space-between;
         gap: 3rem;
         width: 100%;
-        max-width: 1400px;
+        margin: 0 auto;
 
         @media (max-width: 1024px) {
             flex-direction: column;
