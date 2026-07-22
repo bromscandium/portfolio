@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "homepage": "https://bromscandium.com",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
