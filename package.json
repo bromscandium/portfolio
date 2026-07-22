@@ -12,23 +12,23 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-helmet": "^6.1.0",
-    "react-icons": "^5.5.0",
-    "sass-embedded": "^1.97.3"
+    "react-icons": "^5.7.0",
+    "sass-embedded": "^1.100.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/react": "^19.0.6",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^10.0.0",
-    "eslint-plugin-react": "^7.37.3",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.18",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^10.7.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "gh-pages": "^6.3.0",
-    "globals": "^15.14.0",
-    "vite": "^7.3.1"
+    "globals": "^15.15.0",
+    "vite": "^7.3.6"
   }
 }
