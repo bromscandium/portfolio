@@ -104,20 +104,18 @@ export function Terminal() {
   }, []);
 
   useEffect(() => {
-    let typeT: ReturnType<typeof setTimeout>;
-    const tick = () => {
-      setTypedN((n) => {
-        if (n < CMD.length) {
-          typeT = setTimeout(tick, 65);
-          return n + 1;
-        }
-        return n;
-      });
-    };
-    typeT = setTimeout(tick, 65);
-    const fb = setTimeout(() => setTypedN(CMD.length), 2500);
+    let n = 0;
+    const id = setInterval(() => {
+      n += 1;
+      setTypedN(n);
+      if (n >= CMD.length) clearInterval(id);
+    }, 65);
+    const fb = setTimeout(() => {
+      clearInterval(id);
+      setTypedN(CMD.length);
+    }, 2500);
     return () => {
-      clearTimeout(typeT);
+      clearInterval(id);
       clearTimeout(fb);
     };
   }, []);
