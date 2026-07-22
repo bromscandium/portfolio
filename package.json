@@ -2,33 +2,31 @@
   "name": "portfolio",
   "homepage": "https://bromscandium.com",
   "version": "4.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build",
-    "lint": "eslint .",
-    "preview": "bunx --bun vite preview",
-    "predeploy": "bun run build",
-    "deploy": "gh-pages -d dist"
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "predeploy": "bun run build && touch out/.nojekyll && cp public/CNAME out/",
+    "deploy": "gh-pages -d out -t true"
   },
   "dependencies": {
+    "next": "^16.2.11",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-helmet": "^6.1.0",
-    "react-icons": "^5.7.0",
-    "sass-embedded": "^1.100.0"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^10.7.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.26",
+    "eslint-config-next": "^16.2.11",
     "gh-pages": "^6.3.0",
-    "globals": "^15.15.0",
-    "vite": "^7.3.6"
+    "postcss": "^8.5.22",
+    "tailwindcss": "^4.3.3",
+    "typescript": "5"
   }
 }
