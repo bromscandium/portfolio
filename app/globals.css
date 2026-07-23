@@ -68,6 +68,7 @@ body {
   background: var(--color-bg);
   color: #cccccc;
   font-family: var(--font-mono);
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

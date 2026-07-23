@@ -26,7 +26,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
       onMouseLeave={leave}
       onClick={click}
       className={`cursor-pointer overflow-hidden rounded-window border bg-panel-1 transition-colors ${
-        forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55'
+        forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55 active:border-orange/55'
       }`}
     >
       <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">

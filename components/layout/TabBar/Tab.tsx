@@ -49,7 +49,7 @@ export const Tab = ({ combo, active, label, onSelect, onClose, onMiddleClose, on
       onDragOver={dragOver}
       onDrop={preventDrop}
       onDragEnd={onDragEnd}
-      className={`mt-1 flex w-55 shrink-0 cursor-pointer items-center gap-2.5 rounded-t-card border-black px-4 text-[12px] ${active ? 'border-r' : 'border-x'}`}
+      className={`mt-1 flex w-55 min-w-16 shrink cursor-pointer items-center gap-2.5 rounded-t-card border-black px-4 text-[12px] md:shrink-0 ${active ? 'border-r' : 'border-x'}`}
       style={{
         background: active ? '#0c0c0c' : '#131313',
         color: active ? '#bbb' : '#666',

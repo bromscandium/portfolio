@@ -70,7 +70,7 @@ export const StatusBar = ({
         >
           {langValue}
         </button>
-        <span>&nbsp;· Arch · zsh · spaceship</span>
+        <span className="hidden sm:inline">&nbsp;· Arch · zsh · spaceship</span>
         {clock && <span className="ml-2 text-fg-8 tabular-nums">· {clock}</span>}
       </span>
     </div>

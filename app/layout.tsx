@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Jura, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -18,6 +18,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 const DESCRIPTION =
   'Yaroslav Yeromenko — Full-Stack Developer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 19 shipped projects.';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://bromscandium.com'),
