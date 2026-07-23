@@ -11,7 +11,8 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, setInput, height, inputRef, bodyRef, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
+  const { rows, input, setInput, height, inputRef, bodyRef, suggestion, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
+  const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
     return (
@@ -54,16 +55,24 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           <PathLine />
           <div className="flex items-center gap-2">
             <span className="text-orange">❯</span>
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              className="min-w-0 flex-1 border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
-              spellCheck={false}
-              autoComplete="off"
-              autoCapitalize="off"
-            />
+            <div className="relative min-w-0 flex-1">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={onKeyDown}
+                className="w-full border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
+                spellCheck={false}
+                autoComplete="off"
+                autoCapitalize="off"
+              />
+              {ghost && (
+                <span className="pointer-events-none absolute left-0 top-0 whitespace-pre font-mono text-[13px] text-fg-6" aria-hidden>
+                  <span className="invisible">{input}</span>
+                  {ghost}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

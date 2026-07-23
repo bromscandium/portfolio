@@ -49,7 +49,14 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'cd': {
-      if (!arg) return [ok('usage: cd <section>', 'muted')];
+      if (!arg || arg === '~' || arg === '..') {
+        ctx.goTo(0);
+        return [ok('→ intro', 'cyan')];
+      }
+      if (arg === '-') {
+        ctx.goToPrev();
+        return [ok('→ previous', 'cyan')];
+      }
       const key = arg.replace(/^~\/?/, '');
       const i = SECTIONS[key];
       if (i === undefined) return [ok(`cd: no such section: ${arg}`, 'error')];
@@ -83,15 +90,47 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     }
 
     case 'open': {
-      if (!arg) return [ok('usage: open <project>', 'muted')];
+      const live = args.includes('--live');
+      const q = args.filter((a) => !a.startsWith('-')).join(' ').toLowerCase();
+      if (!q) return [ok('usage: open [--live] <project>', 'muted')];
       const p =
-        portfolio.find((x) => slugify(x.title) === arg || x.title.toLowerCase() === arg) ??
-        portfolio.find((x) => slugify(x.title).includes(arg));
-      if (!p) return [ok(`open: project not found: ${arg}`, 'error')];
+        portfolio.find((x) => slugify(x.title) === q || x.title.toLowerCase() === q) ??
+        portfolio.find((x) => slugify(x.title).includes(q));
+      if (!p) return [ok(`open: project not found: ${q}`, 'error')];
+      if (live) {
+        if (!p.live) return [ok(`open: ${p.title} has no live URL`, 'error')];
+        ctx.openUrl(p.live);
+        return [ok(`opening ${p.title} (live)…`, 'cyan')];
+      }
       ctx.goTo(3);
       ctx.openProject(p.id);
       return [ok(`opening ${p.title}…`, 'cyan')];
     }
+
+    case 'grep': {
+      if (!arg) return [ok('usage: grep <term>', 'muted')];
+      const term = arg;
+      const hits: CmdLine[] = [];
+      portfolio.forEach((p) => {
+        if (`${p.title} ${p.technologies.join(' ')} ${p.category} ${p.description.join(' ')}`.toLowerCase().includes(term)) {
+          hits.push(ok(`~/projects/${slugify(p.title)}: ${p.technologies.slice(0, 4).join(', ')}`));
+        }
+      });
+      skillMap.forEach((r) => {
+        const m = r.items.filter((s) => s.name.toLowerCase().includes(term));
+        if (m.length) hits.push(ok(`stack/${r.region.toLowerCase()}: ${m.map((s) => s.name).join(', ')}`, 'cyan'));
+      });
+      return hits.length ? hits : [ok(`grep: no matches for "${term}"`, 'muted')];
+    }
+
+    case 'date':
+      return [ok(new Date().toString())];
+
+    case 'uname':
+      return [ok('Linux bromscandium 6.6.0-arch x86_64 GNU/Linux')];
+
+    case 'uptime':
+      return [ok('up 2+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
 
     case 'docker': {
       if (args[0] !== 'ps') return [ok('usage: docker ps', 'muted')];
@@ -149,8 +188,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'neofetch':
       return NEOFETCH.map((t) => ok(t, 'accent'));
 
-    case 'echo':
-      return [ok(args.join(' '))];
+    case 'echo': {
+      const vars: Record<string, string> = { $USER: 'yaroslav', $SHELL: '/bin/zsh', $HOME: '/home/yaroslav', $PWD: '/home/yaroslav/portfolio' };
+      return [ok(args.map((a) => vars[a] ?? a).join(' '))];
+    }
 
     case 'sudo':
       if (arg.startsWith('hire')) {

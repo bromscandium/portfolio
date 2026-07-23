@@ -15,6 +15,7 @@ export interface CmdLine {
 
 export interface CmdContext {
   goTo: (i: number) => void;
+  goToPrev: () => void;
   openProject: (id: number) => void;
   openUrl: (url: string) => void;
   openHelp: () => void;

@@ -6,6 +6,8 @@ export interface Row extends CmdLine {
   prompt?: boolean;
 }
 
+const HISTORY_KEY = 'brom_history';
+
 export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close'>) => {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
   const [input, setInput] = useState('');
@@ -18,6 +20,14 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const resizing = useRef(false);
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem(HISTORY_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (saved) setHistory(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
 
@@ -25,22 +35,38 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [rows, open]);
 
-  const append = (newRows: Row[]) => setRows((r) => [...r, ...newRows]);
   const nextId = () => idRef.current++;
+  const append = (newRows: Row[]) => setRows((r) => [...r, ...newRows]);
+
+  const suggestion = input ? [...history].reverse().find((h) => h.startsWith(input) && h !== input) : undefined;
 
   const run = (raw: string) => {
-    if (raw.trim() === 'clear') {
+    let cmd = raw.trim();
+    if (!cmd) return;
+    if (cmd === '!!') cmd = history[history.length - 1] ?? '';
+    if (!cmd) {
+      append([{ id: nextId(), text: raw, prompt: true }, { id: nextId(), text: '!!: no previous command', tone: 'error' }]);
+      return;
+    }
+
+    const echo: Row = { id: nextId(), text: cmd, prompt: true };
+    if (cmd === 'clear') {
       setRows([]);
+    } else if (cmd === 'history') {
+      append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {
-      const echo: Row = { id: nextId(), text: raw, prompt: true };
       const ctx: CmdContext = { ...actions, clear: () => setRows([]), close: onClose };
-      const output = runCommand(raw, ctx).map((l) => ({ ...l, id: nextId() }));
-      append([echo, ...output]);
+      append([echo, ...runCommand(cmd, ctx).map((l) => ({ ...l, id: nextId() }))]);
     }
-    if (raw.trim()) {
-      setHistory((h) => [...h, raw]);
-      setHistIdx(-1);
-    }
+
+    setHistory((h) => {
+      const nh = [...h, cmd];
+      try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(nh.slice(-100)));
+      } catch {}
+      return nh;
+    });
+    setHistIdx(-1);
   };
 
   const submit = () => {
@@ -49,8 +75,9 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   };
 
   const complete = () => {
-    const c = autocomplete(input);
-    if (c) setInput(c);
+    const r = autocomplete(input);
+    if (r.complete) setInput(r.complete);
+    else if (r.options) append([{ id: nextId(), text: r.options.join('   '), tone: 'muted' }]);
   };
 
   const historyPrev = () => {
@@ -88,6 +115,10 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       e.preventDefault();
       return interrupt();
     }
+    if ((e.key === 'ArrowRight' || e.key === 'End') && suggestion && e.currentTarget.selectionStart === input.length) {
+      e.preventDefault();
+      return setInput(suggestion);
+    }
     const handler = keyHandlers[e.key];
     if (!handler) return;
     e.preventDefault();
@@ -110,5 +141,5 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     window.addEventListener('pointerup', onUp);
   };
 
-  return { rows, input, setInput, height, inputRef, bodyRef, onKeyDown, startResize };
+  return { rows, input, setInput, height, inputRef, bodyRef, suggestion, onKeyDown, startResize };
 };

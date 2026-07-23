@@ -153,6 +153,7 @@ export const Terminal = () => {
           onClose={t.closeCmd}
           actions={{
             goTo: t.goTo,
+            goToPrev: t.goToPrev,
             openProject: t.openProject,
             openUrl: (url) => {
               if (url.startsWith('mailto:')) window.location.href = url;

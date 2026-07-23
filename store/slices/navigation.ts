@@ -16,19 +16,24 @@ export const activeFromViewport = (): number => {
   return act;
 };
 
+let prevSection = 0;
+
 export interface NavSlice {
   active: number;
   setActive: (i: number) => void;
   goTo: (i: number) => void;
+  goToPrev: () => void;
 }
 
-export const createNavSlice: StateCreator<TerminalState, [], [], NavSlice> = (set) => ({
+export const createNavSlice: StateCreator<TerminalState, [], [], NavSlice> = (set, get) => ({
   active: 0,
   setActive: (i) => set((st) => (st.active !== i ? { active: i } : {})),
   goTo: (i) => {
     const el = sectionEls[i];
     if (!el) return;
+    prevSection = get().active;
     const extra = window.matchMedia('(min-width: 768px)').matches ? 0 : 44;
     window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 38 - extra, behavior: 'smooth' });
   },
+  goToPrev: () => get().goTo(prevSection),
 });
