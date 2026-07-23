@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { portfolio } from '@/lib/data';
 import { useTerminal } from '@/store/terminal';
 import { Modal } from '@/components/common/Modal';
+import { LINKS, SECTION_LABELS } from '@/lib/config';
 
 interface Action {
   id: string;
@@ -10,12 +11,6 @@ interface Action {
   shortcut?: string;
   run: () => void;
 }
-
-const LINKS = {
-  email: 'mailto:kkmshbiu@protonmail.com',
-  github: 'https://github.com/bromscandium',
-  linkedin: 'https://www.linkedin.com/in/yaroslav-yeromenko/',
-};
 
 const openUrl = (url: string) => {
   if (url.startsWith('mailto:')) window.location.href = url;
@@ -34,9 +29,7 @@ const fuzzy = (q: string, text: string): boolean => {
   return false;
 };
 
-const SECTIONS = ['Intro', 'Experience', 'Skills', 'Projects', 'Contact'];
-
-const Row = ({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
+const Row =({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
   <button
     onMouseEnter={onHover}
     onMouseDown={(e) => {
@@ -65,7 +58,7 @@ const PaletteBody = ({ close }: { close: () => void }) => {
 
   const actions = useMemo<Action[]>(
     () => [
-      ...SECTIONS.map((name, i) => ({ id: `go-${i}`, label: `Go to ${name}`, hint: 'section', shortcut: `${i + 1}`, run: () => goTo(i) })),
+      ...SECTION_LABELS.map((name, i) => ({ id: `go-${i}`, label: `Go to ${name}`, hint: 'section', shortcut: `${i + 1}`, run: () => goTo(i) })),
       { id: 'view-dev', label: 'Switch view: developer', hint: 'view', run: () => setCombo('dev', lang) },
       { id: 'view-human', label: 'Switch view: human', hint: 'view', run: () => setCombo('human', lang) },
       { id: 'lang-en', label: 'Language: English', hint: 'lang', run: () => setCombo(mode, 'en') },

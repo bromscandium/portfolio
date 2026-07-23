@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Lang, Mode } from '@/lib/i18n';
+import { PICKER_COPY, type Lang, type Mode } from '@/lib/i18n';
 
 interface Props {
   lang: Lang;
@@ -11,32 +11,9 @@ const LANGS: { key: Lang; label: string }[] = [
   { key: 'uk', label: 'uk_UA.UTF-8' },
 ];
 
-const COPY: Record<Lang, { title: string; who: string; dev: string; devDesc: string; human: string; humanDesc: string; locale: string; note: string }> = {
-  en: {
-    title: 'select session profile',
-    who: 'who are you?',
-    dev: 'developer',
-    devDesc: 'full terminal UI — commands, containers, git log',
-    human: 'visitor',
-    humanDesc: 'plain language, no commands — same content',
-    locale: 'locale',
-    note: '// switch anytime with + in the tab bar',
-  },
-  uk: {
-    title: 'вибір профілю сесії',
-    who: 'хто ти?',
-    dev: 'розробник',
-    devDesc: 'повний термінал — команди, контейнери, git log',
-    human: 'відвідувач',
-    humanDesc: 'проста мова, без команд — той самий контент',
-    locale: 'локаль',
-    note: '// змінити будь-коли через + у таб-барі',
-  },
-};
-
 export const ProfilePicker = ({ lang, onPick }: Props) => {
   const [sel, setSel] = useState<Lang>(lang);
-  const c = COPY[sel];
+  const c = PICKER_COPY[sel];
 
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/[.86] p-5 backdrop-blur-[5px]">

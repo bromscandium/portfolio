@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Modal } from '@/components/common/Modal';
+import { CLOSE_COPY } from '@/lib/i18n';
 
 interface Props {
   human: boolean;
@@ -8,13 +9,8 @@ interface Props {
   onCancel: () => void;
 }
 
-const COPY = {
-  en: { title: 'close session', q: 'are you sure you want to close this tab?', desc: 'This ends the session and asks you to pick a profile again.', close: 'close', cancel: 'cancel' },
-  uk: { title: 'закрити сесію', q: 'справді закрити цю вкладку?', desc: 'Це завершить сесію і знову запропонує вибір профілю.', close: 'закрити', cancel: 'скасувати' },
-};
-
 const Body = ({ human, uk, onConfirm, cancel }: { human: boolean; uk: boolean; onConfirm: () => void; cancel: () => void }) => {
-  const c = COPY[uk ? 'uk' : 'en'];
+  const c = CLOSE_COPY[uk ? 'uk' : 'en'];
 
   useEffect(() => {
     if (human) return;

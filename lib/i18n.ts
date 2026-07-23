@@ -175,3 +175,46 @@ export const slugify = (title: string): string => {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }
+
+export const CLOSE_COPY: Record<Lang, { title: string; q: string; desc: string; close: string; cancel: string }> = {
+  en: {
+    title: 'close session',
+    q: 'are you sure you want to close this tab?',
+    desc: 'This ends the session and asks you to pick a profile again.',
+    close: 'close',
+    cancel: 'cancel',
+  },
+  uk: {
+    title: 'закрити сесію',
+    q: 'справді закрити цю вкладку?',
+    desc: 'Це завершить сесію і знову запропонує вибір профілю.',
+    close: 'закрити',
+    cancel: 'скасувати',
+  },
+};
+
+export const PICKER_COPY: Record<
+  Lang,
+  { title: string; who: string; dev: string; devDesc: string; human: string; humanDesc: string; locale: string; note: string }
+> = {
+  en: {
+    title: 'select session profile',
+    who: 'who are you?',
+    dev: 'developer',
+    devDesc: 'full terminal UI — commands, containers, git log',
+    human: 'visitor',
+    humanDesc: 'plain language, no commands — same content',
+    locale: 'locale',
+    note: '// switch anytime with + in the tab bar',
+  },
+  uk: {
+    title: 'вибір профілю сесії',
+    who: 'хто ти?',
+    dev: 'розробник',
+    devDesc: 'повний термінал — команди, контейнери, git log',
+    human: 'відвідувач',
+    humanDesc: 'проста мова, без команд — той самий контент',
+    locale: 'локаль',
+    note: '// змінити будь-коли через + у таб-барі',
+  },
+};

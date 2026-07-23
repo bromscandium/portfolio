@@ -42,7 +42,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'github', usage: 'open GitHub' },
   { name: 'linkedin', usage: 'open LinkedIn' },
   { name: 'clear', usage: 'clear the screen' },
-  { name: 'exit', usage: 'close the terminal' },
+  { name: 'exit', usage: 'log out — back to profile picker (:q closes the panel)' },
   { name: 'sudo', usage: '', hidden: true },
   { name: 'vim', usage: '', hidden: true },
   { name: 'rm', usage: '', hidden: true },

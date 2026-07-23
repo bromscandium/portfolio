@@ -1,19 +1,11 @@
-export const LINKS = {
-  email: 'mailto:kkmshbiu@protonmail.com',
-  linkedin: 'https://www.linkedin.com/in/yaroslav-yeromenko/',
-  github: 'https://github.com/bromscandium',
-};
+import { SECTION_LABELS } from '@/lib/config';
 
 export const SECTIONS: Record<string, number> = {
-  intro: 0,
+  ...Object.fromEntries(SECTION_LABELS.map((label, i) => [label.toLowerCase(), i])),
   home: 0,
-  experience: 1,
   exp: 1,
-  skills: 2,
   stack: 2,
-  projects: 3,
   work: 3,
-  contact: 4,
 };
 
 export const NEOFETCH = [
@@ -22,6 +14,6 @@ export const NEOFETCH = [
   '    /    \\        OS: Arch Linux x86_64',
   '   /      \\       Shell: zsh + spaceship',
   '  /   ..   \\      Role: Full-Stack Developer',
-  ' /   |  |   \\     Stack: React · Next.js · Python',
+  ' /   |  |   \\     Stack: Next.js · Python · Docker',
   '/_-``    ``-_\\    Uptime: 2+ years · 19 projects',
 ];

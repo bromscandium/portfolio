@@ -174,6 +174,7 @@ export const Terminal = () => {
               else window.open(url, '_blank', 'noopener,noreferrer');
             },
             openHelp: t.openHelp,
+            exitSession: t.confirmClose,
           }}
         />
       )}

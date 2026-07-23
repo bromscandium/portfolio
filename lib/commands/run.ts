@@ -1,6 +1,7 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
 import { slugify } from '../i18n';
-import { LINKS, NEOFETCH, SECTIONS } from './constants';
+import { LINKS } from '../config';
+import { NEOFETCH, SECTIONS } from './constants';
 import { CATEGORIES, COMMANDS, findCommand } from './registry';
 import type { CmdContext, CmdLine, Tone } from './types';
 
@@ -37,6 +38,12 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'exit':
+      ctx.exitSession();
+      return [ok('logout', 'muted')];
+
+    case ':q':
+    case ':q!':
+    case ':wq':
       ctx.close();
       return [];
 

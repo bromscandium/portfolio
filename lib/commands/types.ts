@@ -31,4 +31,5 @@ export interface CmdContext {
   openHelp: () => void;
   clear: () => void;
   close: () => void;
+  exitSession: () => void;
 }
