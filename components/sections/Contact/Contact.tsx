@@ -1,5 +1,6 @@
 import { contacts } from '@/lib/data';
 import { Icon } from '@/components/common/Icon';
+import { CommandHeader } from '@/components/common/CommandHeader';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 
@@ -19,14 +20,7 @@ export function Contact({ ref, isDev, strings, onCopyEmail }: Props) {
       data-screen-label="Contact"
       className="box-border flex min-h-[70vh] flex-col justify-center border-t border-line-0 px-[6vw] pb-[70px] pt-[90px]"
     >
-      {isDev ? (
-        <div className="mb-2 text-[14px]">
-          <span className="font-bold text-orange">❯ </span>
-          <span className="text-[#eee]">contact --open</span>
-        </div>
-      ) : (
-        <h2 className="mb-2 mt-0 font-display text-[30px] font-semibold tracking-[2px] text-fg">{strings.hContact}</h2>
-      )}
+      <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
       <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
       <h2 className="text-stroke-orange m-0 mb-9 font-display text-[clamp(60px,8vw,120px)] font-light leading-[.95] tracking-[5px]">
         LET&apos;S TALK

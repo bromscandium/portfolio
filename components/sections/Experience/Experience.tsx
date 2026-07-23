@@ -1,6 +1,8 @@
 import { education, experience, hackathons } from '@/lib/data';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
+import { Section } from '@/components/common/Section';
+import { CommandHeader } from '@/components/common/CommandHeader';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -10,15 +12,8 @@ interface Props {
 
 export function Experience({ ref, human, strings }: Props) {
   return (
-    <section ref={ref} data-screen-label="Experience" className="box-border border-t border-line-0 px-[6vw] py-[90px]">
-      {human ? (
-        <h2 className="mb-11 mt-0 font-display text-[30px] font-semibold tracking-[2px] text-fg">{strings.hExp}</h2>
-      ) : (
-        <div className="mb-11 text-[14px]">
-          <span className="font-bold text-orange">❯ </span>
-          <span className="text-[#eee]">git log --graph work-history</span>
-        </div>
-      )}
+    <Section ref={ref} label="Experience">
+      <CommandHeader human={human} command="git log --graph work-history" heading={strings.hExp} className="mb-11" />
       <div className="flex flex-col">
         {experience.map((j, i) => (
           <div key={j.hash} className="grid grid-cols-[26px_1fr] gap-[18px]">
@@ -54,14 +49,7 @@ export function Experience({ ref, human, strings }: Props) {
       </div>
       <div className="mt-10 grid grid-cols-1 gap-[60px] md:grid-cols-2">
         <div>
-          {human ? (
-            <div className="mb-5 text-[12px] tracking-[3px] text-fg-5">{strings.hEdu}</div>
-          ) : (
-            <div className="mb-5 text-[13px]">
-              <span className="font-bold text-orange">❯ </span>
-              <span className="text-[#eee]">cat education.txt</span>
-            </div>
-          )}
+          <CommandHeader variant="sub" human={human} command="cat education.txt" heading={strings.hEdu} className="mb-5" />
           <div className="flex flex-col gap-4 rounded-card border border-line-2 bg-panel-0 px-[22px] py-5">
             {education.map((e) => (
               <div key={e.title} className="flex items-baseline justify-between gap-4">
@@ -75,14 +63,7 @@ export function Experience({ ref, human, strings }: Props) {
           </div>
         </div>
         <div>
-          {human ? (
-            <div className="mb-5 text-[12px] tracking-[3px] text-fg-5">{strings.hHacks}</div>
-          ) : (
-            <div className="mb-5 text-[13px]">
-              <span className="font-bold text-orange">❯ </span>
-              <span className="text-[#eee]">git tag -l hackathons/*</span>
-            </div>
-          )}
+          <CommandHeader variant="sub" human={human} command="git tag -l hackathons/*" heading={strings.hHacks} className="mb-5" />
           <div className="flex flex-col gap-4 rounded-card border border-line-2 bg-panel-0 px-[22px] py-5">
             {hackathons.map((h) => (
               <div key={h.event} className="flex items-baseline justify-between gap-4">
@@ -105,6 +86,6 @@ export function Experience({ ref, human, strings }: Props) {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

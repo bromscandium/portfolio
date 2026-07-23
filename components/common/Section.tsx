@@ -1,0 +1,16 @@
+import type { ReactNode, Ref } from 'react';
+
+interface Props {
+  ref?: Ref<HTMLElement>;
+  label: string;
+  className?: string;
+  children: ReactNode;
+}
+
+export function Section({ ref, label, className = '', children }: Props) {
+  return (
+    <section ref={ref} data-screen-label={label} className={`box-border border-t border-line-0 px-[6vw] py-[90px] ${className}`}>
+      {children}
+    </section>
+  );
+}

@@ -1,6 +1,8 @@
 import { skillMap } from '@/lib/data';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
+import { Section } from '@/components/common/Section';
+import { CommandHeader } from '@/components/common/CommandHeader';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -10,16 +12,8 @@ interface Props {
 
 export function Skills({ ref, human, strings }: Props) {
   return (
-    <section ref={ref} data-screen-label="Skills" className="box-border border-t border-line-0 px-[6vw] py-[90px]">
-      {human ? (
-        <h2 className="mb-[10px] mt-0 font-display text-[30px] font-semibold tracking-[2px] text-fg">{strings.hSkills}</h2>
-      ) : (
-        <div className="mb-[10px] text-[14px]">
-          <span className="font-bold text-orange">❯ </span>
-          <span className="text-[#eee]">docker ps</span>
-          <span className="text-ghost"> --filter &quot;label=stack&quot;</span>
-        </div>
-      )}
+    <Section ref={ref} label="Skills">
+      <CommandHeader human={human} command="docker ps" args={' --filter "label=stack"'} heading={strings.hSkills} className="mb-[10px]" />
       <div className="mb-9 text-[11px] text-ghost">{strings.skillsNote}</div>
       <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-2">
         {skillMap.map((r) => {
@@ -61,6 +55,6 @@ export function Skills({ ref, human, strings }: Props) {
           );
         })}
       </div>
-    </section>
+    </Section>
   );
 }

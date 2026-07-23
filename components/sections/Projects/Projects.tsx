@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { portfolio, type Category, type Project } from '@/lib/data';
 import { slugify, type Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
+import { Section } from '@/components/common/Section';
+import { CommandHeader } from '@/components/common/CommandHeader';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -89,17 +91,9 @@ export function Projects({
   };
 
   return (
-    <section ref={ref} data-screen-label="Projects" className="box-border border-t border-line-0 px-[6vw] py-[90px]">
+    <Section ref={ref} label="Projects">
       <div className="mb-[30px] flex flex-wrap items-baseline justify-between gap-[14px]">
-        {human ? (
-          <h2 className="m-0 font-display text-[30px] font-semibold tracking-[2px] text-fg">{strings.hWork}</h2>
-        ) : (
-          <div className="text-[14px]">
-            <span className="font-bold text-orange">❯ </span>
-            <span className="text-[#eee]">l ~/projects</span>
-            <span className="text-ghost"> --group-directories-first</span>
-          </div>
-        )}
+        <CommandHeader human={human} command="l ~/projects" args=" --group-directories-first" heading={strings.hWork} />
         <span className="text-[12px] text-fg-7">{strings.projCount(filtered.length)}</span>
       </div>
       {searchOpen && (
@@ -203,6 +197,6 @@ export function Projects({
         })}
       </div>
       <div className="mt-[26px] text-center text-[12px] text-ghost">{strings.workHint}</div>
-    </section>
+    </Section>
   );
 }
