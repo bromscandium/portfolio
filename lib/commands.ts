@@ -2,9 +2,19 @@ import { about, education, portfolio, skillMap } from './data';
 import { slugify, type Lang, type Mode } from './i18n';
 
 export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
+
+export interface LsRow {
+  perms: string;
+  size: string;
+  name: string;
+  head?: boolean;
+}
+
 export interface CmdLine {
-  text: string;
+  text?: string;
   tone?: Tone;
+  row?: LsRow;
+  names?: string[];
 }
 
 export interface CmdContext {
@@ -34,6 +44,7 @@ export const COMMAND_NAMES = [
   'clear',
   'cd',
   'ls',
+  'la',
   'cat',
   'open',
   'theme',
@@ -59,6 +70,11 @@ const NEOFETCH = [
 
 function ok(text: string, tone: Tone = 'default'): CmdLine {
   return { text, tone };
+}
+
+function sizeOf(p: { description: string[]; technologies: string[] }): string {
+  const chars = p.description.join(' ').length + p.technologies.join('').length;
+  return `${(chars / 170).toFixed(1)}k`;
 }
 
 export function autocomplete(input: string): string | null {
@@ -117,14 +133,23 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [ok(`→ ${key}`, 'cyan')];
     }
 
-    case 'ls':
-    case 'l': {
+    case 'ls': {
       const list = arg ? portfolio.filter((p) => p.category === arg) : portfolio;
       if (!list.length) return [ok(`ls: no projects in "${arg}"`, 'error')];
-      return list
+      return [{ names: list.slice().sort((a, b) => b.id - a.id).map((p) => slugify(p.title)) }];
+    }
+
+    case 'l':
+    case 'la':
+    case 'll': {
+      const list = arg ? portfolio.filter((p) => p.category === arg) : portfolio;
+      if (!list.length) return [ok(`l: no projects in "${arg}"`, 'error')];
+      const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
+      list
         .slice()
         .sort((a, b) => b.id - a.id)
-        .map((p) => ({ text: `drwxr-xr-x  ${p.category.padEnd(13)} ${p.title}`, tone: 'default' as Tone }));
+        .forEach((p) => rows.push({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }));
+      return rows;
     }
 
     case 'cat': {

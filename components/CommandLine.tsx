@@ -23,6 +23,24 @@ interface Row extends CmdLine {
   prompt?: boolean;
 }
 
+function FolderIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden className="shrink-0">
+      <path d="M1.5 3.5A1.5 1.5 0 0 1 3 2h3.2c.5 0 .97.24 1.26.65l.54.76c.1.14.26.22.43.22H13a1.5 1.5 0 0 1 1.5 1.5V12A1.5 1.5 0 0 1 13 13.5H3A1.5 1.5 0 0 1 1.5 12z" />
+    </svg>
+  );
+}
+
+function PathLine() {
+  return (
+    <div className="text-[13px]">
+      <span className="font-bold text-cyan">~/portfolio</span>
+      <span className="text-fg-6"> on </span>
+      <span className="text-green">main</span>
+    </div>
+  );
+}
+
 export function CommandLine({ open, onOpen, onClose, actions }: Props) {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
   const [input, setInput] = useState('');
@@ -148,30 +166,73 @@ export function CommandLine({ open, onOpen, onClose, actions }: Props) {
         </button>
       </div>
       <div ref={bodyRef} onClick={() => inputRef.current?.focus()} className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
-        {rows.map((r) =>
-          r.prompt ? (
-            <div key={r.id} className="whitespace-pre-wrap break-words">
-              <span className="text-cyan">~/yaroslav</span> <span className="text-orange">❯</span> <span className="text-[#eee]">{r.text}</span>
-            </div>
-          ) : (
+        {rows.map((r) => {
+          if (r.prompt) {
+            return (
+              <div key={r.id} className="mt-2 first:mt-0">
+                <PathLine />
+                <div className="whitespace-pre-wrap break-words">
+                  <span className="text-orange">❯</span> <span className="text-[#eee]">{r.text}</span>
+                </div>
+              </div>
+            );
+          }
+          if (r.names) {
+            return (
+              <div key={r.id} className="flex flex-wrap gap-x-5 gap-y-1 py-[2px]">
+                {r.names.map((n) => (
+                  <span key={n} className="inline-flex items-center gap-[6px] text-cyan">
+                    <FolderIcon />
+                    {n}/
+                  </span>
+                ))}
+              </div>
+            );
+          }
+          if (r.row) {
+            const { row } = r;
+            if (row.head) {
+              return (
+                <div key={r.id} className="flex items-center gap-2 text-[11px] uppercase tracking-[1px] text-fg-6">
+                  <span className="inline-block w-[14px]" />
+                  <span className="w-[104px]">{row.perms}</span>
+                  <span className="w-[64px] pr-3 text-right">{row.size}</span>
+                  <span>{row.name}</span>
+                </div>
+              );
+            }
+            return (
+              <div key={r.id} className="flex items-center gap-2">
+                <span className="text-cyan">
+                  <FolderIcon />
+                </span>
+                <span className="w-[104px] text-fg-4">{row.perms}</span>
+                <span className="w-[64px] pr-3 text-right text-green tabular-nums">{row.size}</span>
+                <span className="text-cyan">{row.name}</span>
+              </div>
+            );
+          }
+          return (
             <div key={r.id} className="whitespace-pre-wrap break-words" style={{ color: TONE[r.tone ?? 'default'] }}>
               {r.text}
             </div>
-          ),
-        )}
-        <div className="flex items-center gap-2">
-          <span className="text-cyan">~/yaroslav</span>
-          <span className="text-orange">❯</span>
-          <input
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={onKeyDown}
-            className="min-w-0 flex-1 border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
-            spellCheck={false}
-            autoComplete="off"
-            autoCapitalize="off"
-          />
+          );
+        })}
+        <div className="mt-2">
+          <PathLine />
+          <div className="flex items-center gap-2">
+            <span className="text-orange">❯</span>
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
+              className="min-w-0 flex-1 border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
+              spellCheck={false}
+              autoComplete="off"
+              autoCapitalize="off"
+            />
+          </div>
         </div>
       </div>
     </div>
