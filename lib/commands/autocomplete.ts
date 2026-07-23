@@ -24,7 +24,7 @@ export const autocomplete = (input: string): Completion => {
   const [cmd, ...rest] = parts;
   const frag = rest.join(' ');
   let pool: CompletionOption[] = [];
-  if (cmd === 'cd') pool = asOptions(Object.keys(SECTIONS), true);
+  if (cmd === 'cd') pool = [...asOptions(Object.keys(SECTIONS), true), ...asOptions(portfolio.map((p) => `projects/${slugify(p.title)}`), true)];
   else if (cmd === 'open') pool = asOptions(portfolio.map((p) => slugify(p.title)), true);
   else if (cmd === 'cat') pool = asOptions(['about', 'education', 'skills'], false);
   else if (cmd === 'docker') pool = asOptions(['ps'], false);

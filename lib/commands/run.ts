@@ -51,15 +51,23 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'cd': {
-      if (!arg || arg === '~' || arg === '..') {
+      const key = arg.replace(/^~\/?/, '').replace(/\/+$/, '');
+      if (!key || key === '~' || key === '..') {
         ctx.goTo(0);
         return [ok('→ intro', 'cyan')];
       }
-      if (arg === '-') {
+      if (key === '-') {
         ctx.goToPrev();
         return [ok('→ previous', 'cyan')];
       }
-      const key = arg.replace(/^~\/?/, '');
+      if (key.startsWith('projects/')) {
+        const slug = key.slice('projects/'.length);
+        const p = portfolio.find((x) => slugify(x.title) === slug) ?? portfolio.find((x) => slugify(x.title).includes(slug));
+        if (!p) return [ok(`cd: no such project: ${slug}`, 'error')];
+        ctx.goTo(3);
+        ctx.openProject(p.id);
+        return [ok(`opening ${p.title}…`, 'cyan')];
+      }
       const i = SECTIONS[key];
       if (i === undefined) return [ok(`cd: no such section: ${arg}`, 'error')];
       ctx.goTo(i);
