@@ -41,6 +41,14 @@ export const Terminal = () => {
     document.title = human ? `portfolio — ${name}` : `~/${name} — zsh`;
   }, [t.active, human, s]);
 
+  const overlayActive = t.paletteOpen || t.helpOpen || t.picker || t.expandedId !== null;
+  useEffect(() => {
+    document.body.style.overflow = overlayActive ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [overlayActive]);
+
   return (
     <div className="min-h-screen bg-bg font-mono">
       <TabBar
@@ -150,12 +158,10 @@ export const Terminal = () => {
               if (url.startsWith('mailto:')) window.location.href = url;
               else window.open(url, '_blank', 'noopener,noreferrer');
             },
-            setCrt: t.setCrt,
+            openHelp: t.openHelp,
           }}
         />
       )}
-
-      {t.crtOn && <div className="crt-overlay pointer-events-none fixed inset-0 z-[400]" aria-hidden />}
     </div>
   );
 }

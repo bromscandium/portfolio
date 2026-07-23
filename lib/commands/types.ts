@@ -17,7 +17,7 @@ export interface CmdContext {
   goTo: (i: number) => void;
   openProject: (id: number) => void;
   openUrl: (url: string) => void;
-  setCrt: (on: boolean) => void;
+  openHelp: () => void;
   clear: () => void;
   close: () => void;
 }

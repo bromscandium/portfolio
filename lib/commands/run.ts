@@ -35,6 +35,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ok('  contact           jump to contact'),
         ok('  email · github · linkedin   open my links'),
         ok('  whoami · neofetch identity'),
+        ok('  man               keyboard shortcuts'),
         ok('  clear · exit      clear screen · close terminal'),
         ok('  switch view/lang from the status bar · ? for shortcuts', 'muted'),
       ];
@@ -138,6 +139,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       ctx.openUrl(LINKS.linkedin);
       return [ok('opening linkedin.com/in/yaroslav-yeromenko…', 'cyan')];
 
+    case 'man':
+      ctx.openHelp();
+      return [ok('opening keybindings…', 'cyan')];
+
     case 'whoami':
       return [ok('yaroslav yeromenko · full-stack developer · remote · EU')];
 
@@ -146,17 +151,6 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'echo':
       return [ok(args.join(' '))];
-
-    case 'crt':
-      if (arg === 'on') {
-        ctx.setCrt(true);
-        return [ok('crt: enabled — welcome to 1984', 'green')];
-      }
-      if (arg === 'off') {
-        ctx.setCrt(false);
-        return [ok('crt: disabled', 'green')];
-      }
-      return [ok('usage: crt on|off', 'muted')];
 
     case 'sudo':
       if (arg.startsWith('hire')) {

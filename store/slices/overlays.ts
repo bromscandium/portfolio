@@ -12,7 +12,6 @@ export interface OverlaySlice {
   helpOpen: boolean;
   searchOpen: boolean;
   cmdOpen: boolean;
-  crtOn: boolean;
   toast: string | null;
   paletteOpen: boolean;
 
@@ -21,13 +20,13 @@ export interface OverlaySlice {
   setLangHover: (v: boolean) => void;
   setViewHover: (v: boolean) => void;
   toggleHelp: () => void;
+  openHelp: () => void;
   closeHelp: () => void;
   openSearch: () => void;
   closeSearch: () => void;
   toggleCmd: () => void;
   openCmd: () => void;
   closeCmd: () => void;
-  setCrt: (v: boolean) => void;
   showToast: (msg: string) => void;
   openPalette: () => void;
   closePalette: () => void;
@@ -43,7 +42,6 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   helpOpen: false,
   searchOpen: false,
   cmdOpen: false,
-  crtOn: false,
   toast: null,
   paletteOpen: false,
 
@@ -52,13 +50,13 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   setLangHover: (v) => set({ langHover: v }),
   setViewHover: (v) => set({ viewHover: v }),
   toggleHelp: () => set((st) => ({ helpOpen: !st.helpOpen })),
+  openHelp: () => set({ helpOpen: true }),
   closeHelp: () => set({ helpOpen: false }),
   openSearch: () => set({ searchOpen: true }),
   closeSearch: () => set({ searchOpen: false }),
   toggleCmd: () => set((st) => ({ cmdOpen: !st.cmdOpen })),
   openCmd: () => set({ cmdOpen: true }),
   closeCmd: () => set({ cmdOpen: false }),
-  setCrt: (v) => set({ crtOn: v }),
   showToast: (msg) => {
     set({ toast: msg });
     if (toastT) clearTimeout(toastT);

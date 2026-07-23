@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
+import { ALL_COMBOS } from '@/store/constants';
+import type { Lang, Mode } from '@/lib/i18n';
 
 export const useTerminalEffects = () => {
   useEffect(() => {
@@ -41,6 +43,11 @@ export const useTerminalEffects = () => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         return st.togglePalette();
+      }
+      if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
+        e.preventDefault();
+        const [m, l] = ALL_COMBOS[Number(e.code.slice(5)) - 1].split('-') as [Mode, Lang];
+        return st.setCombo(m, l);
       }
       if (e.key === 'Escape') {
         if (st.paletteOpen) return st.closePalette();

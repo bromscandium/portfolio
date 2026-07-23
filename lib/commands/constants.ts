@@ -29,6 +29,7 @@ export const COMMAND_NAMES = [
   'contact',
   'whoami',
   'neofetch',
+  'man',
   'echo',
   'email',
   'github',

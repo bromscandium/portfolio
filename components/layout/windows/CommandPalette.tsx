@@ -34,8 +34,9 @@ const fuzzy = (q: string, text: string): boolean => {
 
 const SECTIONS = ['Intro', 'Experience', 'Skills', 'Projects', 'Contact'];
 
-const Row = ({ action, active, onRun }: { action: Action; active: boolean; onRun: (a: Action) => void }) => (
+const Row = ({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
   <button
+    onMouseEnter={onHover}
     onMouseDown={(e) => {
       e.preventDefault();
       onRun(action);
@@ -51,8 +52,7 @@ const Row = ({ action, active, onRun }: { action: Action; active: boolean; onRun
 export const CommandPalette = () => {
   const mode = useTerminal((s) => s.mode);
   const lang = useTerminal((s) => s.lang);
-  const crtOn = useTerminal((s) => s.crtOn);
-  const { goTo, openProject, setCombo, setCrt, toggleHelp, closePalette } = useTerminal.getState();
+  const { goTo, openProject, setCombo, toggleHelp, closePalette } = useTerminal.getState();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,10 +71,9 @@ export const CommandPalette = () => {
       { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(LINKS.email) },
       { id: 'github', label: 'Open GitHub', hint: 'link', run: () => openUrl(LINKS.github) },
       { id: 'linkedin', label: 'Open LinkedIn', hint: 'link', run: () => openUrl(LINKS.linkedin) },
-      { id: 'crt', label: `Toggle CRT effect (${crtOn ? 'on' : 'off'})`, hint: 'view', run: () => setCrt(!crtOn) },
       { id: 'help', label: 'Show keyboard shortcuts', hint: 'help', run: () => toggleHelp() },
     ],
-    [mode, lang, crtOn, goTo, openProject, setCombo, setCrt, toggleHelp],
+    [mode, lang, goTo, openProject, setCombo, toggleHelp],
   );
 
   const filtered = useMemo(() => actions.filter((a) => fuzzy(query, `${a.label} ${a.hint}`)), [actions, query]);
@@ -128,7 +127,7 @@ export const CommandPalette = () => {
         </div>
         <div className="flex flex-col gap-0.5 overflow-y-auto p-2">
           {filtered.length > 0 ? (
-            filtered.map((a, i) => <Row key={a.id} action={a} active={i === selClamped} onRun={exec} />)
+            filtered.map((a, i) => <Row key={a.id} action={a} active={i === selClamped} onRun={exec} onHover={() => setSel(i)} />)
           ) : (
             <div className="px-3 py-4 text-[12px] text-fg-6">no matching actions</div>
           )}

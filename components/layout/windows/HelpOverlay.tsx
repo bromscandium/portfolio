@@ -16,6 +16,7 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
     title: 'tabs',
     rows: [
       ['] / [', 'next / previous tab'],
+      ['⌥1 … ⌥4', 'open a specific tab'],
       ['t', 'open new tab'],
       ['w', 'close current tab'],
     ],
