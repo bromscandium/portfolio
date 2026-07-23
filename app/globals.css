@@ -68,13 +68,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: #cccccc;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: var(--color-orange);
+@layer base {
+  a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: var(--color-orange);
+  }
 }
 
 ::selection {
