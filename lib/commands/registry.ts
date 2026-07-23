@@ -46,7 +46,6 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'sudo', usage: '', hidden: true },
   { name: 'vim', usage: '', hidden: true },
   { name: 'rm', usage: '', hidden: true },
-  { name: 'crt', usage: '', hidden: true },
   { name: 'l', usage: '', hidden: true },
   { name: 'la', usage: '', hidden: true },
   { name: 'll', usage: '', hidden: true },
