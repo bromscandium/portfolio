@@ -21,7 +21,7 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://bromscandium.com'),
-  title: 'Portfolio | Yaroslav Yeromenko',
+  title: 'portfolio',
   description: DESCRIPTION,
   applicationName: 'bromscandium terminal',
   authors: [{ name: 'Yaroslav Yeromenko', url: 'https://bromscandium.com' }],
