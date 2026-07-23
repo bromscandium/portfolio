@@ -31,7 +31,22 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
   },
 ];
 
+const HelpGroup = ({ title, rows }: { title: string; rows: [string, string][] }) => (
+  <div>
+    <div className="mb-3 text-[11px] uppercase tracking-[3px] text-ghost">{title}</div>
+    <div className="flex flex-col gap-1.5">
+      {rows.map(([key, desc]) => (
+        <div key={key} className="flex items-baseline gap-4 text-[13px]">
+          <span className="min-w-30 font-semibold text-orange">{key}</span>
+          <span className="text-fg-2">{desc}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 export const HelpOverlay = ({ onClose }: Props) => {
+  const stop = (e: React.MouseEvent) => e.stopPropagation();
   return (
     <div
       onClick={onClose}
@@ -39,7 +54,7 @@ export const HelpOverlay = ({ onClose }: Props) => {
       style={{ animation: 'overlayIn .16s ease forwards' }}
     >
       <div
-        onClick={(e) => e.stopPropagation()}
+        onClick={stop}
         className="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
         style={{ animation: 'modalPop .2s ease-out forwards' }}
       >
@@ -52,17 +67,7 @@ export const HelpOverlay = ({ onClose }: Props) => {
         </div>
         <div className="flex flex-col gap-6 p-6.5">
           {GROUPS.map((g) => (
-            <div key={g.title}>
-              <div className="mb-3 text-[11px] uppercase tracking-[3px] text-ghost">{g.title}</div>
-              <div className="flex flex-col gap-1.5">
-                {g.rows.map(([key, desc]) => (
-                  <div key={key} className="flex items-baseline gap-4 text-[13px]">
-                    <span className="min-w-30 font-semibold text-orange">{key}</span>
-                    <span className="text-fg-2">{desc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <HelpGroup key={g.title} title={g.title} rows={g.rows} />
           ))}
           <div className="text-[10px] text-fg-7">{'// shortcuts are disabled while typing in an input'}</div>
         </div>

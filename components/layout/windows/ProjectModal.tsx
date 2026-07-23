@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { projectLinks, type Project } from '@/lib/data';
+import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
 import { slugify, type Strings } from '@/lib/i18n';
 
 interface Props {
@@ -9,9 +9,27 @@ interface Props {
   onClose: () => void;
 }
 
+const Paragraph = ({ text }: { text: string }) => <p className="m-0 text-[13.5px] leading-[1.65] text-fg-2">{text}</p>;
+
+const TechChip = ({ label }: { label: string }) => (
+  <span className="rounded-badge border border-[#262626] bg-panel-4 px-2.25 py-1 text-[11px] text-[#aaa]">{label}</span>
+);
+
+const ModalLink = ({ link }: { link: ProjectLink }) => (
+  <a
+    href={link.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="border-b border-orange/40 pb-0.75 text-[12px] tracking-[1px] text-orange hover:!text-orange-dark"
+  >
+    {link.label}
+  </a>
+);
+
 export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
   const links = projectLinks(project);
   const path = strings.modalPath(project.title, slugify(project.title));
+  const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
     <div
@@ -20,7 +38,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
       style={{ animation: closing ? 'fadeOutM .2s ease forwards' : 'overlayIn .18s ease forwards', willChange: 'opacity' }}
     >
       <div
-        onClick={(e) => e.stopPropagation()}
+        onClick={stop}
         className="max-h-[90vh] w-full max-w-245 overflow-y-auto rounded-modal border border-orange/50 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
         style={{ animation: closing ? 'none' : 'modalPop .22s ease-out forwards', willChange: 'transform, opacity' }}
       >
@@ -35,13 +53,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
         </div>
         <div className="grid grid-cols-1 gap-8.5 p-7 md:grid-cols-[minmax(240px,460px)_minmax(280px,1fr)]">
           <div className="self-start overflow-hidden rounded-card border border-line-4">
-            <Image
-              src={project.image}
-              alt={project.title}
-              width={460}
-              height={288}
-              className="block aspect-[16/10] w-full object-cover"
-            />
+            <Image src={project.image} alt={project.title} width={460} height={288} className="block aspect-[16/10] w-full object-cover" />
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-baseline gap-3.5">
@@ -50,31 +62,17 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
             </div>
             <div className="my-4 mb-5 flex flex-col gap-2.5">
               {project.description.map((par, i) => (
-                <p key={i} className="m-0 text-[13.5px] leading-[1.65] text-fg-2">
-                  {par}
-                </p>
+                <Paragraph key={i} text={par} />
               ))}
             </div>
             <div className="mb-5.5 flex flex-wrap gap-1.75">
-              {project.technologies.map((t) => (
-                <span key={t} className="rounded-badge border border-[#262626] bg-panel-4 px-2.25 py-1 text-[11px] text-[#aaa]">
-                  {t}
-                </span>
+              {project.technologies.map((tech) => (
+                <TechChip key={tech} label={tech} />
               ))}
             </div>
             <div className="flex flex-wrap gap-5.5">
               {links.length > 0 ? (
-                links.map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="border-b border-orange/40 pb-0.75 text-[12px] tracking-[1px] text-orange hover:!text-orange-dark"
-                  >
-                    {l.label}
-                  </a>
-                ))
+                links.map((l) => <ModalLink key={l.label} link={l} />)
               ) : (
                 <span className="text-[11px] text-fg-7">{strings.privateNote}</span>
               )}
@@ -84,4 +82,4 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
       </div>
     </div>
   );
-}
+};

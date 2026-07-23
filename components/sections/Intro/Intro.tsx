@@ -1,4 +1,5 @@
 import { counters, heroPrompt, heroRole } from '@/lib/data';
+import type { PromptTool } from '@/lib/types';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 
@@ -13,6 +14,22 @@ interface Props {
   onContact: () => void;
 }
 
+const PromptSegment = ({ tool }: { tool: PromptTool }) => (
+  <span>
+    <span className="text-fg-6"> via </span>
+    <span className={tool.color}>
+      {tool.icon} {tool.name} {tool.version}
+    </span>
+  </span>
+);
+
+const Counter = ({ n, label, first }: { n: string; label: string; first: boolean }) => (
+  <span>
+    {!first && <>&nbsp;&nbsp;·&nbsp;&nbsp;</>}
+    <span className="font-semibold text-orange">{n}</span> {label}
+  </span>
+);
+
 export const Intro = ({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWork, onContact }: Props) => {
   return (
     <section
@@ -24,13 +41,8 @@ export const Intro = ({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
         <div className="text-[14px] leading-[1.7]">
           <div>
             <span className="font-bold text-cyan">~/yaroslav</span>
-            {heroPrompt.map((t) => (
-              <span key={t.name}>
-                <span className="text-fg-6"> via </span>
-                <span className={t.color}>
-                  {t.icon} {t.name} {t.version}
-                </span>
-              </span>
+            {heroPrompt.map((tool) => (
+              <PromptSegment key={tool.name} tool={tool} />
             ))}
           </div>
           <div className="mt-0.5">
@@ -57,10 +69,7 @@ export const Intro = ({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
           </div>
           <div className="mt-7.5 text-[14px] tracking-[1px] text-fg-5">
             {counters.map((c, i) => (
-              <span key={c.key}>
-                {i > 0 && <>&nbsp;&nbsp;·&nbsp;&nbsp;</>}
-                <span className="font-semibold text-orange">{c.n}</span> {strings.counterLabels[c.key]}
-              </span>
+              <Counter key={c.key} n={c.n} label={strings.counterLabels[c.key]} first={i === 0} />
             ))}
           </div>
           <div className="mt-10 flex flex-wrap gap-4">

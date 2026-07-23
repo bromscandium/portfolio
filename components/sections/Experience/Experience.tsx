@@ -4,6 +4,7 @@ import type { Ref } from 'react';
 import { Section } from '@/components/common/Section';
 import { CommandHeader } from '@/components/common/CommandHeader';
 import { Panel } from './Panel';
+import { EduRow, HackRow, JobEntry } from './Entries';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -17,35 +18,7 @@ export const Experience = ({ ref, human, strings }: Props) => {
       <CommandHeader human={human} command="git log --graph work-history" heading={strings.hExp} className="mb-11" />
       <div className="flex flex-col">
         {experience.map((j, i) => (
-          <div key={j.hash} className="grid grid-cols-[26px_1fr] gap-4.5">
-            <div className="flex flex-col items-center">
-              <span
-                className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange"
-                style={{ background: i === 0 ? '#f8ad40' : '#0c0c0c' }}
-              />
-              <span className="w-px flex-1 bg-line-4" />
-            </div>
-            <div className="pb-11">
-              <div className="flex flex-wrap items-baseline gap-3 text-[13px]">
-                {!human && <span className="font-semibold text-orange">{j.hash}</span>}
-                <span className="text-yellow">{j.period}</span>
-                <span className="text-ghost">{j.loc}</span>
-                {!human && i === 0 && <span className="text-green">(HEAD -&gt; main)</span>}
-              </div>
-              <div className="mt-2.5 font-display text-[24px] font-semibold tracking-[1px] text-fg">
-                {j.role}
-                <span className="font-light text-fg-3"> — {j.org}</span>
-              </div>
-              <div className="mt-3.5 flex flex-col gap-2">
-                {j.points.map((pt, k) => (
-                  <div key={k} className="flex gap-3 text-[13.5px] leading-[1.6] text-fg-2">
-                    <span className="text-fg-9">│</span>
-                    <span>{pt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <JobEntry key={j.hash} job={j} index={i} human={human} />
         ))}
       </div>
       <div className="mt-10 grid grid-cols-1 gap-15 md:grid-cols-2">
@@ -53,13 +26,7 @@ export const Experience = ({ ref, human, strings }: Props) => {
           <CommandHeader variant="sub" human={human} command="cat education.txt" heading={strings.hEdu} className="mb-5" />
           <Panel>
             {education.map((e) => (
-              <div key={e.title} className="flex items-baseline justify-between gap-4">
-                <div>
-                  <div className="text-[14px] font-semibold text-[#eee]">{e.title}</div>
-                  <div className="mt-0.75 text-[12px] text-fg-5">{e.detail}</div>
-                </div>
-                <span className="whitespace-nowrap text-[12px] text-yellow">{e.period}</span>
-              </div>
+              <EduRow key={e.title} item={e} />
             ))}
           </Panel>
         </div>
@@ -67,26 +34,11 @@ export const Experience = ({ ref, human, strings }: Props) => {
           <CommandHeader variant="sub" human={human} command="git tag -l hackathons/*" heading={strings.hHacks} className="mb-5" />
           <Panel>
             {hackathons.map((h) => (
-              <div key={h.event} className="flex items-baseline justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-[14px] font-semibold text-[#eee]">{h.event}</span>
-                    {h.win && (
-                      <span className="rounded-badge bg-orange px-1.75 py-0.5 text-[9px] font-bold tracking-[2px] text-black">
-                        WINNER
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-0.75 text-[12px] text-fg-5">
-                    <span className="text-orange">{h.project}</span> · {h.role}
-                  </div>
-                </div>
-                <span className="whitespace-nowrap text-[12px] text-fg-6">{h.place}</span>
-              </div>
+              <HackRow key={h.event} item={h} />
             ))}
           </Panel>
         </div>
       </div>
     </Section>
   );
-}
+};

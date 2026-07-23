@@ -28,6 +28,21 @@ const catCount = (key: string): number => {
   return key === 'all' ? portfolio.length : portfolio.filter((p) => p.category === key).length;
 }
 
+const FilterChip = ({ label, count, active, onClick }: { label: string; count: number; active: boolean; onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className="cursor-pointer rounded-btn border font-mono text-[12px] transition-colors hover:border-orange hover:!text-orange"
+    style={{
+      padding: '7px 14px',
+      background: active ? '#f8ad40' : 'transparent',
+      borderColor: active ? '#f8ad40' : '#2a2a2a',
+      color: active ? '#000' : '#8a8a8a',
+    }}
+  >
+    {label} <span className="opacity-[.55]">({count})</span>
+  </button>
+);
+
 const fuzzy = (q: string, text: string): boolean => {
   if (!q) return true;
   const query = q.toLowerCase();
@@ -119,24 +134,9 @@ export const Projects = ({
         </div>
       )}
       <div className="mb-8 flex flex-wrap gap-2.5">
-        {strings.catLabels.map((c) => {
-          const isActive = cat === c.key;
-          return (
-            <button
-              key={c.key}
-              onClick={() => onCat(c.key as Category | 'all')}
-              className="cursor-pointer rounded-btn border font-mono text-[12px] transition-colors hover:border-orange hover:!text-orange"
-              style={{
-                padding: '7px 14px',
-                background: isActive ? '#f8ad40' : 'transparent',
-                borderColor: isActive ? '#f8ad40' : '#2a2a2a',
-                color: isActive ? '#000' : '#8a8a8a',
-              }}
-            >
-              {c.label} <span className="opacity-[.55]">({catCount(c.key)})</span>
-            </button>
-          );
-        })}
+        {strings.catLabels.map((c) => (
+          <FilterChip key={c.key} label={c.label} count={catCount(c.key)} active={cat === c.key} onClick={() => onCat(c.key as Category | 'all')} />
+        ))}
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((p, idx) => {
