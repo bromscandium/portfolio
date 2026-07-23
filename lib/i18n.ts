@@ -23,6 +23,7 @@ export const comboLabel = (combo: string, short: boolean): string => {
 export interface Strings {
   navRoot: string;
   navNames: string[];
+  heroName: [string, string];
   roleWord: string;
   statement: string;
   stmtColor: string;
@@ -65,6 +66,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
   return {
     navRoot: human ? (uk ? 'Портфоліо' : 'Portfolio') : TERMINAL_ROOT,
     navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
+    heroName: uk ? ['ЯРОСЛАВ', 'ЄРОМЕНКО'] : ['YAROSLAV', 'YEROMENKO'],
     roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
     statement:
       (human ? '' : '# ') +

@@ -6,4 +6,4 @@ export const heroPrompt: PromptTool[] = [
   { icon: '🐳', name: 'docker', version: '29.6', color: 'text-cyan-img' },
 ];
 
-export const heroRole = ['React', 'Next.js', 'Python'];
+export const heroRole = ['Next.js', 'Python', 'Docker'];
