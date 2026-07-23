@@ -24,6 +24,7 @@ export const COMMAND_NAMES = [
   'pwd',
   'cat',
   'open',
+  'tree',
   'grep',
   'git',
   'docker',

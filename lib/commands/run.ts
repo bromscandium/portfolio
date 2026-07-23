@@ -28,6 +28,8 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ok('  ls [category]     list projects (pet|hackathon|university|professional)'),
         ok('  cat <file>        about | education | skills'),
         ok('  open <project>    open a project window'),
+        ok('  tree              interactive site tree (↑↓ → ↵)'),
+        ok('  grep <term>       search projects & skills'),
         ok('  pwd               print working directory'),
         ok('  git log           work history as commits'),
         ok('  git tag           hackathons'),

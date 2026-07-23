@@ -14,6 +14,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const [height, setHeight] = useState(280);
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
+  const [treeOpen, setTreeOpen] = useState(false);
   const idRef = useRef(1);
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,9 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     const echo: Row = { id: nextId(), text: cmd, prompt: true };
     if (cmd === 'clear') {
       setRows([]);
+    } else if (cmd === 'tree') {
+      append([echo]);
+      setTreeOpen(true);
     } else if (cmd === 'history') {
       append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {
@@ -141,5 +145,10 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     window.addEventListener('pointerup', onUp);
   };
 
-  return { rows, input, setInput, height, inputRef, bodyRef, suggestion, onKeyDown, startResize };
+  const closeTree = () => {
+    setTreeOpen(false);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  return { rows, input, setInput, height, inputRef, bodyRef, suggestion, treeOpen, closeTree, onKeyDown, startResize };
 };

@@ -2,6 +2,7 @@ import type { CmdContext } from '@/lib/commands';
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
+import { TreeView } from './TreeView';
 
 interface Props {
   open: boolean;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, setInput, height, inputRef, bodyRef, suggestion, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
+  const { rows, input, setInput, height, inputRef, bodyRef, suggestion, treeOpen, closeTree, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -35,22 +36,27 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
       >
         <span className="text-orange">❯</span>
         <span
-          onMouseEnter={onClose}
+          onClick={onClose}
           onPointerDown={(e) => e.stopPropagation()}
           className="cursor-pointer transition-colors hover:text-orange"
-          title="hover to close"
+          title="click to close"
         >
-          zsh — ~/portfolio
+          zsh — ~/yaroslav
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button onClick={onClose} className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange" aria-label="close terminal">
           ✕
         </button>
       </div>
-      <div ref={bodyRef} onClick={() => inputRef.current?.focus()} className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
+      <div ref={bodyRef} onClick={() => !treeOpen && inputRef.current?.focus()} className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
         {rows.map((r) => (
           <CommandRow key={r.id} row={r} />
         ))}
+        {treeOpen ? (
+          <div className="mt-2">
+            <TreeView actions={actions} onExit={closeTree} />
+          </div>
+        ) : (
         <div className="mt-2">
           <PathLine />
           <div className="flex items-center gap-2">
@@ -75,6 +81,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
