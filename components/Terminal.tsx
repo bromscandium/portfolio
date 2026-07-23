@@ -39,6 +39,9 @@ export function Terminal() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [crtOn, setCrtOn] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const [flashKey, setFlashKey] = useState(0);
+  const toastT = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const ref0 = useRef<HTMLElement>(null);
   const ref1 = useRef<HTMLElement>(null);
@@ -57,11 +60,18 @@ export function Terminal() {
   const activeCombo = `${mode}-${lang}` as Combo;
   const heroDone = human || typedN >= CMD.length;
 
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    if (toastT.current) clearTimeout(toastT.current);
+    toastT.current = setTimeout(() => setToast(null), 1800);
+  }, []);
+
   const setCombo = useCallback((m: Mode, l: Lang, fromPicker = false) => {
     const combo = `${m}-${l}` as Combo;
     setMode(m);
     setLang(l);
     setPlusOpen(false);
+    setFlashKey((k) => k + 1);
     if (fromPicker) {
       setPicker(false);
       setTabsOpen([combo]);
@@ -291,6 +301,11 @@ export function Terminal() {
     return () => window.removeEventListener('keydown', onKey);
   }, [active, expandedId, helpOpen, searchOpen, cmdOpen, human, plusOpen, goTo, closeM, cycleTab, openNewTab, closeTab, activeCombo]);
 
+  useEffect(() => {
+    const name = s.navNames[active];
+    document.title = human ? `portfolio — ${name}` : `~/${name} — zsh`;
+  }, [active, human, s]);
+
   const visible = useMemo(
     () => (cat === 'all' ? portfolio : portfolio.filter((p) => p.category === cat)).slice().sort((a, b) => b.id - a.id),
     [cat],
@@ -373,8 +388,18 @@ export function Terminal() {
           searchOpen={searchOpen}
           onCloseSearch={() => setSearchOpen(false)}
         />
-        <Contact ref={ref4} isDev={!human} strings={s} />
+        <Contact ref={ref4} isDev={!human} strings={s} onCopyEmail={() => showToast('copied to clipboard')} />
       </main>
+
+      {flashKey > 0 && (
+        <div key={flashKey} className="combo-flash pointer-events-none fixed left-0 top-[38px] z-[250] h-[2px] bg-orange" aria-hidden />
+      )}
+
+      {toast && (
+        <div className="fixed bottom-[60px] left-1/2 z-[650] -translate-x-1/2 rounded-btn border border-line-5 bg-panel-6 px-4 py-2 font-mono text-[12px] text-green shadow-[0_10px_30px_rgba(0,0,0,.6)]" style={{ animation: 'fadeUp .2s ease-out' }}>
+          ✓ {toast}
+        </div>
+      )}
 
       {!human && (
         <CommandLine

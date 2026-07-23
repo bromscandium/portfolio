@@ -7,9 +7,12 @@ interface Props {
   ref?: Ref<HTMLElement>;
   isDev: boolean;
   strings: Strings;
+  onCopyEmail: (email: string) => void;
 }
 
-export function Contact({ ref, isDev, strings }: Props) {
+const EMAIL = 'kkmshbiu@protonmail.com';
+
+export function Contact({ ref, isDev, strings, onCopyEmail }: Props) {
   return (
     <section
       ref={ref}
@@ -29,10 +32,21 @@ export function Contact({ ref, isDev, strings }: Props) {
         LET&apos;S TALK
       </h2>
       <a
-        href="mailto:kkmshbiu@protonmail.com"
-        className="self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all hover:border-orange hover:!text-orange"
+        href={`mailto:${EMAIL}`}
+        onClick={(e) => {
+          if (navigator.clipboard) {
+            e.preventDefault();
+            navigator.clipboard.writeText(EMAIL).then(
+              () => onCopyEmail(EMAIL),
+              () => {
+                window.location.href = `mailto:${EMAIL}`;
+              },
+            );
+          }
+        }}
+        className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all hover:border-orange hover:!text-orange"
       >
-        kkmshbiu@protonmail.com
+        {EMAIL}
       </a>
       <div className="mt-12 flex gap-5">
         {contacts.map((c) => (

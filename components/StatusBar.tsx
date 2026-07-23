@@ -1,3 +1,18 @@
+import { useEffect, useState } from 'react';
+
+function useClock() {
+  const [t, setT] = useState('');
+  useEffect(() => {
+    const fmt = () =>
+      new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setT(fmt());
+    const id = setInterval(() => setT(fmt()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return t;
+}
+
 interface Props {
   activeIdx: number;
   activeName: string;
@@ -27,6 +42,7 @@ export function StatusBar({
   onLangLeave,
   onLangClick,
 }: Props) {
+  const clock = useClock();
   return (
     <div className="fixed inset-x-0 bottom-0 z-[200] flex h-[26px] items-center justify-between border-t border-[#1f1f1f] bg-panel-3 px-4 text-[11px] text-fg-6">
       <span>
@@ -55,6 +71,7 @@ export function StatusBar({
           {langValue}
         </button>
         <span>&nbsp;· Arch · zsh · spaceship</span>
+        {clock && <span className="ml-2 text-fg-8 tabular-nums">· {clock}</span>}
       </span>
     </div>
   );
