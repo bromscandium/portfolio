@@ -69,6 +69,7 @@ export const Contact = ({ ref, isDev, strings, onCopyEmail }: Props) => {
           </>
         )}
         <span>© 2026 Yaroslav Yeromenko</span>
+        <span>&nbsp;&nbsp;·&nbsp;&nbsp;{strings.lastUpdated(process.env.NEXT_PUBLIC_BUILD_TIME ?? '')}</span>
       </div>
     </section>
   );

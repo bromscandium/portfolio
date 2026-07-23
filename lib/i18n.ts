@@ -49,6 +49,7 @@ export interface Strings {
   modalPath: (title: string, slug: string) => string;
   langValue: (hovering: boolean) => string;
   viewValue: (hovering: boolean) => string;
+  lastUpdated: (iso: string) => string;
 }
 
 const regionUk: Record<string, string> = {
@@ -66,7 +67,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
   return {
     navRoot: human ? (uk ? 'Портфоліо' : 'Portfolio') : TERMINAL_ROOT,
     navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
-    heroName: uk ? ['ЯРОСЛАВ', 'ЄРОМЕНКО'] : ['YAROSLAV', 'YEROMENKO'],
+    heroName: uk ? ['ЯРОСЛАВ', 'ЄРЬОМЕНКО'] : ['YAROSLAV', 'YEROMENKO'],
     roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
     statement:
       (human ? '' : '# ') +
@@ -143,6 +144,12 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => (hovering ? (uk ? 'en_US.UTF-8' : 'uk_UA.UTF-8') : uk ? 'uk_UA.UTF-8' : 'en_US.UTF-8'),
+    lastUpdated: (iso: string) => {
+      const d = iso ? new Date(iso) : new Date(0);
+      if (!human) return `updated ${Math.floor(d.getTime() / 1000)}`;
+      const date = d.toLocaleDateString(uk ? 'uk-UA' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+      return `${uk ? 'оновлено' : 'updated'} ${date}`;
+    },
     viewValue: (hovering: boolean) =>
       hovering
         ? human
