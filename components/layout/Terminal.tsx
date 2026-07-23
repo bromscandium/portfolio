@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo } from 'react';
 import { portfolio } from '@/lib/data';
-import { comboLabel, getStrings, type Combo, type Lang, type Mode } from '@/lib/i18n';
+import { byCategory, openUrl } from '@/lib/helpers';
+import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
+import { splitCombo } from '@/lib/modes';
 import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
 import { useTerminalEffects } from '@/hooks/useTerminalEffects';
 import { TabBar } from './TabBar';
@@ -22,8 +24,6 @@ import { Skills } from '@/components/sections/Skills/Skills';
 import { Projects } from '@/components/sections/Projects/Projects';
 import { Contact } from '@/components/sections/Contact/Contact';
 
-const split = (c: Combo) => c.split('-') as [Mode, Lang];
-
 export const Terminal = () => {
   useTerminalEffects();
   const t = useTerminal();
@@ -34,7 +34,7 @@ export const Terminal = () => {
   const heroDone = human || t.typedN >= CMD.length;
 
   const visible = useMemo(
-    () => (t.cat === 'all' ? portfolio : portfolio.filter((p) => p.category === t.cat)).slice().sort((a, b) => b.id - a.id),
+    () => byCategory(t.cat).slice().sort((a, b) => b.id - a.id),
     [t.cat],
   );
   const modalP = t.expandedId !== null ? portfolio.find((p) => p.id === t.expandedId) ?? null : null;
@@ -66,7 +66,7 @@ export const Terminal = () => {
       <TabBar
         tabsOpen={t.tabsOpen}
         activeCombo={activeCombo}
-        onSelect={(c) => t.setCombo(...split(c))}
+        onSelect={(c) => t.setCombo(...splitCombo(c))}
         onClose={t.closeTab}
         onMiddleClose={t.closeTab}
         onDragStart={t.startDrag}
@@ -75,9 +75,9 @@ export const Terminal = () => {
         plusOpen={t.plusOpen}
         setPlusOpen={t.setPlusOpen}
         plusItems={t.unopenedCombos()}
-        onOpenCombo={(c) => t.setCombo(...split(c))}
+        onOpenCombo={(c) => t.setCombo(...splitCombo(c))}
         labelFor={(c) => comboLabel(c, false)}
-        shortLabelFor={(c) => comboLabel(c, false)}
+        shortLabelFor={(c) => comboLabel(c, true)}
         onOpenPalette={t.openPalette}
       />
 
@@ -169,10 +169,7 @@ export const Terminal = () => {
             goTo: t.goTo,
             goToPrev: t.goToPrev,
             openProject: t.openProject,
-            openUrl: (url) => {
-              if (url.startsWith('mailto:')) window.location.href = url;
-              else window.open(url, '_blank', 'noopener,noreferrer');
-            },
+            openUrl,
             openHelp: t.openHelp,
             exitSession: t.confirmClose,
           }}
