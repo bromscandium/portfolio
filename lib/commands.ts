@@ -1,4 +1,4 @@
-import { about, education, portfolio, skillMap } from './data';
+import { about, education, experience, hackathons, portfolio, skillMap } from './data';
 import { slugify, type Lang, type Mode } from './i18n';
 
 export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
@@ -47,9 +47,11 @@ export const COMMAND_NAMES = [
   'la',
   'cat',
   'open',
-  'theme',
   'view',
   'lang',
+  'docker',
+  'git',
+  'contact',
   'whoami',
   'neofetch',
   'echo',
@@ -89,8 +91,10 @@ export function autocomplete(input: string): string | null {
   if (cmd === 'cd') pool = Object.keys(SECTIONS);
   else if (cmd === 'open') pool = portfolio.map((p) => slugify(p.title));
   else if (cmd === 'cat') pool = ['about', 'education', 'skills'];
-  else if (cmd === 'theme' || cmd === 'view') pool = ['dev', 'human'];
+  else if (cmd === 'view') pool = ['dev', 'human'];
   else if (cmd === 'lang') pool = ['en', 'uk'];
+  else if (cmd === 'docker') pool = ['ps'];
+  else if (cmd === 'git') pool = ['log', 'tag', 'status', 'blame'];
   const m = pool.filter((c) => c.startsWith(frag));
   return m.length === 1 ? `${cmd} ${m[0]}` : null;
 }
@@ -106,10 +110,14 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [
         ok('available commands:', 'muted'),
         ok('  cd <section>      jump to intro/experience/skills/projects/contact'),
-        ok('  ls [category]     list projects (pet|hackathon|university|professional)'),
+        ok('  ls · l [cat]      list projects (pet|hackathon|university|professional)'),
         ok('  cat <file>        about | education | skills'),
         ok('  open <project>    open a project window'),
-        ok('  theme dev|human   switch view mode'),
+        ok('  git log           work history as commits'),
+        ok('  git tag           hackathons'),
+        ok('  docker ps         skill stack as running containers'),
+        ok('  contact           jump to contact'),
+        ok('  view dev|human    switch view mode'),
         ok('  lang en|uk        switch language'),
         ok('  whoami · neofetch identity'),
         ok('  clear · exit      clear screen · close terminal'),
@@ -169,13 +177,28 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [ok(`opening ${p.title}…`, 'cyan')];
     }
 
-    case 'theme':
     case 'view':
       if (arg === 'dev' || arg === 'human') {
         ctx.setMode(arg);
         return [ok(`view → ${arg}`, 'green')];
       }
-      return [ok('usage: theme dev|human', 'muted')];
+      return [ok('usage: view dev|human', 'muted')];
+
+    case 'docker': {
+      if (args[0] !== 'ps') return [ok("usage: docker ps", 'muted')];
+      ctx.goTo(2);
+      const out: CmdLine[] = [ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted')];
+      skillMap.forEach((r) => {
+        const maxY = Math.max(...r.items.map((s) => s.y));
+        const image = `stack/${r.region.toLowerCase()}:latest`;
+        out.push(ok(`${r.cid}   ${image.padEnd(30)} ${`Up ${maxY} years`.padEnd(15)} ${r.region.toLowerCase()}_1`));
+      });
+      return out;
+    }
+
+    case 'contact':
+      ctx.goTo(4);
+      return [ok('Connection established. Available for full-time · remote.', 'green')];
 
     case 'lang':
       if (arg === 'en' || arg === 'uk') {
@@ -222,6 +245,19 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [ok('rm: missing operand', 'error')];
 
     case 'git':
+      if (args[0] === 'log') {
+        ctx.goTo(1);
+        const out: CmdLine[] = [];
+        experience.forEach((j, i) => {
+          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${j.role} — ${j.org}`, i === 0 ? 'accent' : 'default'));
+          out.push(ok(`|   ${j.period} · ${j.loc}`, 'muted'));
+        });
+        return out;
+      }
+      if (args[0] === 'tag') {
+        ctx.goTo(1);
+        return hackathons.map((h) => ok(`hackathons/${slugify(h.event)}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default'));
+      }
       if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
       if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
       return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];

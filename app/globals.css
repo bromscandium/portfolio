@@ -82,9 +82,18 @@ a:hover {
   color: #000;
 }
 
-:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 1px solid var(--color-orange);
   outline-offset: 2px;
+}
+
+input {
+  caret-color: var(--color-orange);
+}
+input:focus,
+input:focus-visible {
+  outline: none;
 }
 
 ::-webkit-scrollbar {
