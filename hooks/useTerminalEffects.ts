@@ -53,6 +53,18 @@ export const useTerminalEffects = () => {
       }
       // Modal-based overlays own their own keys (Esc/close animate themselves)
       if (st.closeConfirm || st.helpOpen || st.paletteOpen || st.picker) return;
+      if (e.key === '`' && st.mode !== 'human') {
+        e.preventDefault();
+        return st.toggleCmd();
+      }
+      // command line (input + tree) owns the keyboard while open
+      if (st.cmdOpen) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          return st.closeCmd();
+        }
+        return;
+      }
 
       if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
         e.preventDefault();
@@ -62,13 +74,8 @@ export const useTerminalEffects = () => {
       if (e.key === 'Escape') {
         if (st.searchOpen) return st.closeSearch();
         if (st.expandedId !== null) return st.closeModal();
-        if (st.cmdOpen) return st.closeCmd();
         if (st.plusOpen) return st.setPlusOpen(false);
         return;
-      }
-      if (e.key === '`' && st.mode !== 'human') {
-        e.preventDefault();
-        return st.toggleCmd();
       }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
 
