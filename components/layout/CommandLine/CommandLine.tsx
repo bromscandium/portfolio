@@ -33,7 +33,14 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
         className="flex h-6 shrink-0 cursor-ns-resize items-center gap-2 border-b border-line-2 bg-panel-5 px-3 text-[11px] text-fg-6"
       >
         <span className="text-orange">❯</span>
-        <span>zsh — ~/portfolio</span>
+        <span
+          onMouseEnter={onClose}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="cursor-pointer transition-colors hover:text-orange"
+          title="hover to close"
+        >
+          zsh — ~/portfolio
+        </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button onClick={onClose} className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange" aria-label="close terminal">
           ✕
