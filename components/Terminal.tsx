@@ -7,6 +7,7 @@ import { TabBar } from './TabBar';
 import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
 import { ProfilePicker } from './ProfilePicker';
+import { HelpOverlay } from './HelpOverlay';
 import { ProjectModal } from './ProjectModal';
 import { Intro } from './sections/Intro';
 import { Experience } from './sections/Experience';
@@ -33,6 +34,8 @@ export function Terminal() {
   const [langHover, setLangHover] = useState(false);
   const [viewHover, setViewHover] = useState(false);
   const [typedN, setTypedN] = useState(0);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const ref0 = useRef<HTMLElement>(null);
   const ref1 = useRef<HTMLElement>(null);
@@ -135,14 +138,6 @@ export function Terminal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && expandedId !== null) closeM();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [expandedId, closeM]);
-
   const onCardEnter = useCallback(
     (id: number) => {
       if (expandedId === id) return;
@@ -203,6 +198,90 @@ export function Terminal() {
     [],
   );
 
+  const cycleTab = useCallback(
+    (dir: number) => {
+      const i = tabsOpen.indexOf(activeCombo);
+      const ni = (i + dir + tabsOpen.length) % tabsOpen.length;
+      const [m, l] = tabsOpen[ni].split('-') as [Mode, Lang];
+      setCombo(m, l);
+    },
+    [tabsOpen, activeCombo, setCombo],
+  );
+
+  const openNewTab = useCallback(() => {
+    const un = ALL_COMBOS.filter((c) => !tabsOpen.includes(c));
+    if (un.length) {
+      const [m, l] = un[0].split('-') as [Mode, Lang];
+      setCombo(m, l);
+    }
+  }, [tabsOpen, setCombo]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = document.activeElement as HTMLElement | null;
+      const typing = !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+
+      if (e.key === 'Escape') {
+        if (helpOpen) return setHelpOpen(false);
+        if (searchOpen) return setSearchOpen(false);
+        if (expandedId !== null) return closeM();
+        if (plusOpen) return setPlusOpen(false);
+        return;
+      }
+      if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+
+      switch (e.key) {
+        case 'j':
+        case 'ArrowDown':
+          e.preventDefault();
+          goTo(Math.min(active + 1, 4));
+          break;
+        case 'k':
+        case 'ArrowUp':
+          e.preventDefault();
+          goTo(Math.max(active - 1, 0));
+          break;
+        case 'g':
+          goTo(0);
+          break;
+        case 'G':
+          goTo(4);
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+          goTo(Number(e.key) - 1);
+          break;
+        case ']':
+          cycleTab(1);
+          break;
+        case '[':
+          cycleTab(-1);
+          break;
+        case 't':
+          openNewTab();
+          break;
+        case 'w':
+          closeTab(activeCombo);
+          break;
+        case '/':
+          e.preventDefault();
+          goTo(3);
+          setSearchOpen(true);
+          break;
+        case '?':
+          setHelpOpen((v) => !v);
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [active, expandedId, helpOpen, searchOpen, plusOpen, goTo, closeM, cycleTab, openNewTab, closeTab, activeCombo]);
+
   const visible = useMemo(
     () => (cat === 'all' ? portfolio : portfolio.filter((p) => p.category === cat)).slice().sort((a, b) => b.id - a.id),
     [cat],
@@ -231,6 +310,8 @@ export function Terminal() {
       <Sidebar navRoot={s.navRoot} names={s.navNames} active={active} onNav={goTo} />
 
       {picker && <ProfilePicker onPickDev={() => setCombo('dev', lang, true)} onPickHuman={() => setCombo('human', lang, true)} />}
+
+      {helpOpen && <HelpOverlay onClose={() => setHelpOpen(false)} />}
 
       {modalP && <ProjectModal project={modalP} closing={closingM} strings={s} onClose={closeM} />}
 
@@ -280,6 +361,8 @@ export function Terminal() {
           onLeave={onCardLeave}
           onClick={onCardClick}
           dashSec={`${EXPAND_DELAY}s`}
+          searchOpen={searchOpen}
+          onCloseSearch={() => setSearchOpen(false)}
         />
         <Contact ref={ref4} isDev={!human} strings={s} />
       </main>
