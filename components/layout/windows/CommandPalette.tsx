@@ -6,6 +6,7 @@ interface Action {
   id: string;
   label: string;
   hint: string;
+  shortcut?: string;
   run: () => void;
 }
 
@@ -45,7 +46,11 @@ const Row = ({ action, active, onRun, onHover }: { action: Action; active: boole
     style={{ background: active ? '#161616' : 'transparent', color: active ? '#f8ad40' : '#b5b5b5' }}
   >
     <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{action.label}</span>
-    <span className="shrink-0 text-[10px] uppercase tracking-[2px] text-fg-6">{action.hint}</span>
+    {action.shortcut ? (
+      <span className="shrink-0 rounded-badge border border-line-4 px-1.5 py-0.5 text-[10px] text-fg-4">{action.shortcut}</span>
+    ) : (
+      <span className="shrink-0 text-[10px] uppercase tracking-[2px] text-fg-6">{action.hint}</span>
+    )}
   </button>
 );
 
@@ -59,7 +64,7 @@ export const CommandPalette = () => {
 
   const actions = useMemo<Action[]>(
     () => [
-      ...SECTIONS.map((name, i) => ({ id: `go-${i}`, label: `Go to ${name}`, hint: 'section', run: () => goTo(i) })),
+      ...SECTIONS.map((name, i) => ({ id: `go-${i}`, label: `Go to ${name}`, hint: 'section', shortcut: `${i + 1}`, run: () => goTo(i) })),
       { id: 'view-dev', label: 'Switch view: developer', hint: 'view', run: () => setCombo('dev', lang) },
       { id: 'view-human', label: 'Switch view: human', hint: 'view', run: () => setCombo('human', lang) },
       { id: 'lang-en', label: 'Language: English', hint: 'lang', run: () => setCombo(mode, 'en') },
@@ -71,7 +76,7 @@ export const CommandPalette = () => {
       { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(LINKS.email) },
       { id: 'github', label: 'Open GitHub', hint: 'link', run: () => openUrl(LINKS.github) },
       { id: 'linkedin', label: 'Open LinkedIn', hint: 'link', run: () => openUrl(LINKS.linkedin) },
-      { id: 'help', label: 'Show keyboard shortcuts', hint: 'help', run: () => toggleHelp() },
+      { id: 'help', label: 'Show keyboard shortcuts', hint: 'help', shortcut: '?', run: () => toggleHelp() },
     ],
     [mode, lang, goTo, openProject, setCombo, toggleHelp],
   );
