@@ -16,10 +16,31 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
+const DESCRIPTION =
+  'Yaroslav Yeromenko — Full-Stack Developer (React · Next.js · Python). Portfolio styled as an authentic developer terminal: experience, skill stack, and 19 shipped projects.';
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bromscandium.com'),
   title: 'Portfolio | Yaroslav Yeromenko',
+  description: DESCRIPTION,
+  applicationName: 'bromscandium terminal',
+  authors: [{ name: 'Yaroslav Yeromenko', url: 'https://bromscandium.com' }],
+  creator: 'Yaroslav Yeromenko',
+  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Developer', 'React', 'Next.js', 'Python', 'FastAPI', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
   icons: { icon: '/favicon.png' },
+  openGraph: {
+    type: 'website',
+    url: 'https://bromscandium.com',
+    siteName: 'bromscandium',
+    title: 'Yaroslav Yeromenko — Full-Stack Developer',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Yaroslav Yeromenko — Full-Stack Developer',
+    description: DESCRIPTION,
+  },
 };
 
 const RootLayout = ({
