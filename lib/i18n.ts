@@ -63,7 +63,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
   const uk = lang === 'uk';
 
   return {
-    navRoot: human ? (uk ? 'Ярослав' : 'Yaroslav') : TERMINAL_ROOT,
+    navRoot: human ? (uk ? 'Портфоліо' : 'Portfolio') : TERMINAL_ROOT,
     navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
     roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
     statement:
