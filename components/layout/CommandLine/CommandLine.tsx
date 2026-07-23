@@ -10,7 +10,7 @@ interface Props {
   actions: Omit<CmdContext, 'clear' | 'close'>;
 }
 
-export function CommandLine({ open, onOpen, onClose, actions }: Props) {
+export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
   const { rows, input, setInput, height, inputRef, bodyRef, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
 
   if (!open) {

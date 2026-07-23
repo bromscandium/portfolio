@@ -1,4 +1,5 @@
 import type { Combo } from '@/lib/i18n';
+import { Tab } from './Tab';
 
 interface Props {
   tabsOpen: Combo[];
@@ -17,7 +18,7 @@ interface Props {
   shortLabelFor: (c: Combo) => string;
 }
 
-export function TabBar({
+export const TabBar = ({
   tabsOpen,
   activeCombo,
   onSelect,
@@ -32,61 +33,32 @@ export function TabBar({
   onOpenCombo,
   labelFor,
   shortLabelFor,
-}: Props) {
+}: Props) => {
+  const togglePlus = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPlusOpen(!plusOpen);
+  };
+
   return (
     <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-black bg-panel-5">
-      {tabsOpen.map((t) => {
-        const isActive = t === activeCombo;
-        return (
-          <div
-            key={t}
-            onClick={() => onSelect(t)}
-            onMouseDown={(e) => {
-              if (e.button === 1) {
-                e.preventDefault();
-                e.stopPropagation();
-                onMiddleClose(t);
-              }
-            }}
-            draggable
-            onDragStart={(e) => {
-              onDragStart(t);
-              e.dataTransfer.effectAllowed = 'move';
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              onDragOver(t);
-            }}
-            onDrop={(e) => e.preventDefault()}
-            onDragEnd={onDragEnd}
-            className="mt-1 flex max-w-80 cursor-pointer items-center gap-2.5 rounded-t-card border-r border-black px-4 text-[12px]"
-            style={{
-              background: isActive ? '#0c0c0c' : '#131313',
-              color: isActive ? '#bbb' : '#666',
-              boxShadow: isActive ? 'inset 0 2px 0 rgba(248,173,64,.5)' : 'none',
-            }}
-          >
-            <span className="text-orange">{t.startsWith('dev') ? '❯' : '✦'}</span>
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap">{labelFor(t)}</span>
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-                onClose(t);
-              }}
-              className="ml-2 cursor-pointer text-fg-6 transition-colors hover:text-fg"
-            >
-              ✕
-            </span>
-          </div>
-        );
-      })}
+      {tabsOpen.map((t) => (
+        <Tab
+          key={t}
+          combo={t}
+          active={t === activeCombo}
+          label={labelFor(t)}
+          onSelect={onSelect}
+          onClose={onClose}
+          onMiddleClose={onMiddleClose}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDragEnd={onDragEnd}
+        />
+      ))}
       <div className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
         {plusItems.length > 0 && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setPlusOpen(!plusOpen);
-            }}
+            onClick={togglePlus}
             title="open new tab"
             className="cursor-pointer border-none bg-transparent p-0 font-mono text-[15px] text-fg-6 transition-colors hover:text-orange"
           >
@@ -109,4 +81,4 @@ export function TabBar({
       </div>
     </div>
   );
-}
+};

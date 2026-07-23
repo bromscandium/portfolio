@@ -2,7 +2,7 @@ import { portfolio } from '../data';
 import { slugify } from '../i18n';
 import { COMMAND_NAMES, SECTIONS } from './constants';
 
-export function autocomplete(input: string): string | null {
+export const autocomplete = (input: string): string | null => {
   const parts = input.split(' ');
   if (parts.length === 1) {
     const m = COMMAND_NAMES.filter((c) => c.startsWith(parts[0]));

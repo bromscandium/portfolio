@@ -20,7 +20,7 @@ import { Contact } from '@/components/sections/Contact/Contact';
 
 const split = (c: Combo) => c.split('-') as [Mode, Lang];
 
-export function Terminal() {
+export const Terminal = () => {
   useTerminalEffects();
   const t = useTerminal();
 

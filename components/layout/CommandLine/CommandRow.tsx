@@ -13,7 +13,7 @@ const TONE: Record<Tone, string> = {
   yellow: '#e5c07b',
 };
 
-export function CommandRow({ row }: { row: Row }) {
+export const CommandRow = ({ row }: { row: Row }) => {
   if (row.prompt) {
     return (
       <div className="mt-2 first:mt-0">

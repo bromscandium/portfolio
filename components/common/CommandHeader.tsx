@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-export function CommandHeader({ human, command, args, heading, variant = 'main', className = '' }: Props) {
+export const CommandHeader = ({ human, command, args, heading, variant = 'main', className = '' }: Props) => {
   if (human) {
     if (variant === 'sub') {
       return <div className={`text-[12px] uppercase tracking-[3px] text-fg-5 ${className}`}>{heading}</div>;

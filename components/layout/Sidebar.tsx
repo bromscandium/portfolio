@@ -13,7 +13,7 @@ const ARCH_LOGO = `      /\\
  /   |  |   \\
 /_-\`\`    \`\`-_\\`;
 
-export function Sidebar({ navRoot, names, active, onNav }: Props) {
+export const Sidebar = ({ navRoot, names, active, onNav }: Props) => {
   return (
     <nav className="fixed bottom-6.5 left-0 top-9.5 z-[100] hidden w-55 overflow-hidden border-r border-line-1 bg-bg px-5.5 py-7 md:block">
       <div className="mb-3.5 text-[13px] font-bold text-cyan">{navRoot}</div>

@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { portfolio, type Category, type Project } from '@/lib/data';
-import { slugify, type Strings } from '@/lib/i18n';
+import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 import { Section } from '@/components/common/Section';
 import { CommandHeader } from '@/components/common/CommandHeader';
+import { ProjectCard } from './ProjectCard';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -24,11 +24,11 @@ interface Props {
   onCloseSearch: () => void;
 }
 
-function catCount(key: string): number {
+const catCount = (key: string): number => {
   return key === 'all' ? portfolio.length : portfolio.filter((p) => p.category === key).length;
 }
 
-function fuzzy(q: string, text: string): boolean {
+const fuzzy = (q: string, text: string): boolean => {
   if (!q) return true;
   const query = q.toLowerCase();
   const hay = text.toLowerCase();
@@ -40,7 +40,7 @@ function fuzzy(q: string, text: string): boolean {
   return false;
 }
 
-export function Projects({
+export const Projects = ({
   ref,
   human,
   strings,
@@ -55,7 +55,7 @@ export function Projects({
   dashSec,
   searchOpen,
   onCloseSearch,
-}: Props) {
+}: Props) => {
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -141,59 +141,20 @@ export function Projects({
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((p, idx) => {
           const expanded = expandedId === p.id;
-          const hovering = hoverId === p.id && !expanded;
           const selected = searchOpen && !!query && idx === selClamped;
-          const forceOrange = expanded || selected;
           return (
-            <div
+            <ProjectCard
               key={p.id}
-              onMouseEnter={() => onEnter(p.id)}
-              onMouseLeave={() => onLeave(p.id)}
-              onClick={() => onClick(p.id)}
-              className={`fade-up cursor-pointer overflow-hidden rounded-window border bg-panel-1 transition-colors ${
-                forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55'
-              }`}
-            >
-              <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">
-                <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">
-                  {human ? p.title : `~/projects/${slugify(p.title)}`}
-                </span>
-                <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{strings.catBadge[p.category]}</span>
-              </div>
-              <div className="relative">
-                <Image
-                  src={p.image}
-                  alt={p.title}
-                  width={400}
-                  height={250}
-                  className="block aspect-[16/10] w-full object-cover"
-                />
-                {hovering && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/[.65]">
-                    <svg width="44" height="44" viewBox="0 0 36 36" style={{ transform: 'rotate(-90deg)' }}>
-                      <circle cx="18" cy="18" r="15" fill="none" stroke="#333" strokeWidth="2" />
-                      <circle
-                        cx="18"
-                        cy="18"
-                        r="15"
-                        fill="none"
-                        stroke="#f8ad40"
-                        strokeWidth="2"
-                        strokeDasharray="94.25"
-                        strokeDashoffset="94.25"
-                        style={{ animation: `dashFill ${dashSec} linear forwards` }}
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-baseline justify-between gap-2.5 px-4 py-3.5">
-                <span className="font-display text-[17px] font-semibold tracking-[.5px] text-fg">{p.title}</span>
-                <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] text-ghost">
-                  {p.technologies.slice(0, 2).join(' · ')}
-                </span>
-              </div>
-            </div>
+              project={p}
+              human={human}
+              catBadge={strings.catBadge[p.category]}
+              hovering={hoverId === p.id && !expanded}
+              forceOrange={expanded || selected}
+              dashSec={dashSec}
+              onEnter={onEnter}
+              onLeave={onLeave}
+              onClick={onClick}
+            />
           );
         })}
       </div>

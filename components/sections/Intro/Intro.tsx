@@ -13,7 +13,7 @@ interface Props {
   onContact: () => void;
 }
 
-export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWork, onContact }: Props) {
+export const Intro = ({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWork, onContact }: Props) => {
   return (
     <section
       ref={ref}

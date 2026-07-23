@@ -6,7 +6,7 @@ export interface Row extends CmdLine {
   prompt?: boolean;
 }
 
-export function useCommandLine(open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close'>) {
+export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close'>) => {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
   const [input, setInput] = useState('');
   const [height, setHeight] = useState(280);

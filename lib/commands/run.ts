@@ -5,16 +5,16 @@ import type { CmdContext, CmdLine, Tone } from './types';
 
 const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
 
-function ok(text: string, tone: Tone = 'default'): CmdLine {
+const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
 }
 
-function sizeOf(p: { description: string[]; technologies: string[] }): string {
+const sizeOf = (p: { description: string[]; technologies: string[] }): string => {
   const chars = p.description.join(' ').length + p.technologies.join('').length;
   return `${(chars / 170).toFixed(1)}k`;
 }
 
-export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
+export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
   const input = raw.trim();
   if (!input) return [];
   const [cmd, ...args] = input.split(/\s+/);

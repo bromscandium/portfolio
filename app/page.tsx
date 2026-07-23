@@ -1,5 +1,7 @@
 import { Terminal } from '@/components/layout/Terminal';
 
-export default function Page() {
+const Page = () => {
   return <Terminal />;
 }
+
+export default Page;

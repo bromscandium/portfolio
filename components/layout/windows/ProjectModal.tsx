@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function ProjectModal({ project, closing, strings, onClose }: Props) {
+export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
   const links = projectLinks(project);
   const path = strings.modalPath(project.title, slugify(project.title));
 

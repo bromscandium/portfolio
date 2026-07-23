@@ -3,7 +3,7 @@ interface Props {
   onPickHuman: () => void;
 }
 
-export function ProfilePicker({ onPickDev, onPickHuman }: Props) {
+export const ProfilePicker = ({ onPickDev, onPickHuman }: Props) => {
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/[.86] p-5 backdrop-blur-[5px]">
       <div className="w-[min(500px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]">

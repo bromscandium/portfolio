@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
 
-export function useTerminalEffects() {
+export const useTerminalEffects = () => {
   useEffect(() => {
     useTerminal.getState().restore();
   }, []);

@@ -10,7 +10,7 @@ interface Props {
   strings: Strings;
 }
 
-export function Skills({ ref, human, strings }: Props) {
+export const Skills = ({ ref, human, strings }: Props) => {
   return (
     <Section ref={ref} label="Skills">
       <CommandHeader human={human} command="docker ps" args={' --filter "label=stack"'} heading={strings.hSkills} className="mb-2.5" />

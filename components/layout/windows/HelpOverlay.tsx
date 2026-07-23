@@ -31,7 +31,7 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
   },
 ];
 
-export function HelpOverlay({ onClose }: Props) {
+export const HelpOverlay = ({ onClose }: Props) => {
   return (
     <div
       onClick={onClose}

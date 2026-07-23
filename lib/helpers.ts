@@ -1,6 +1,6 @@
 import type { Project, ProjectLink } from './types';
 
-export function projectLinks(p: Project): ProjectLink[] {
+export const projectLinks = (p: Project): ProjectLink[] => {
   const links: ProjectLink[] = [];
   if (p.live) links.push({ label: 'live', href: p.live });
   if (p.links) links.push(...p.links);

@@ -2,7 +2,7 @@ export type Mode = 'dev' | 'human';
 export type Lang = 'en' | 'uk';
 export type Combo = `${Mode}-${Lang}`;
 
-export function comboLabel(combo: string, short: boolean): string {
+export const comboLabel = (combo: string, short: boolean): string => {
   const map: Record<string, string> = short
     ? {
         'dev-en': 'zsh · english',
@@ -57,7 +57,7 @@ const regionUk: Record<string, string> = {
   Testing: 'Тестування',
 };
 
-export function getStrings(mode: Mode, lang: Lang): Strings {
+export const getStrings = (mode: Mode, lang: Lang): Strings => {
   const human = mode === 'human';
   const uk = lang === 'uk';
 
@@ -159,7 +159,7 @@ export function getStrings(mode: Mode, lang: Lang): Strings {
   };
 }
 
-export function slugify(title: string): string {
+export const slugify = (title: string): string => {
   return title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')

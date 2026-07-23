@@ -1,4 +1,4 @@
-export function PathLine() {
+export const PathLine = () => {
   return (
     <div className="text-[13px]">
       <span className="font-bold text-cyan">~/portfolio</span>

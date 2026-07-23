@@ -11,7 +11,7 @@ interface Props {
   strings: Strings;
 }
 
-export function Experience({ ref, human, strings }: Props) {
+export const Experience = ({ ref, human, strings }: Props) => {
   return (
     <Section ref={ref} label="Experience">
       <CommandHeader human={human} command="git log --graph work-history" heading={strings.hExp} className="mb-11" />

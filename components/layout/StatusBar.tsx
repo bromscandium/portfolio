@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useClock() {
+const useClock = () => {
   const [t, setT] = useState('');
   useEffect(() => {
     const fmt = () =>
@@ -28,7 +28,7 @@ interface Props {
   onLangClick: () => void;
 }
 
-export function StatusBar({
+export const StatusBar = ({
   activeIdx,
   activeName,
   viewValue,
@@ -41,7 +41,7 @@ export function StatusBar({
   onLangEnter,
   onLangLeave,
   onLangClick,
-}: Props) {
+}: Props) => {
   const clock = useClock();
   return (
     <div className="fixed inset-x-0 bottom-0 z-[200] flex h-6.5 items-center justify-between border-t border-[#1f1f1f] bg-panel-3 px-4 text-[11px] text-fg-6">
