@@ -20,7 +20,7 @@ const ContactButton = ({ link }: { link: ContactLink }) => (
     target="_blank"
     rel="noopener noreferrer"
     title={link.label}
-    className="flex h-12.5 w-12.5 items-center justify-center rounded-card border border-[#262626] text-fg-3 transition-all hover:border-orange hover:!text-orange"
+    className="flex h-12.5 w-12.5 items-center justify-center rounded-card border border-[#262626] text-fg-3 transition-all duration-300 hover:border-orange hover:!text-orange"
   >
     <Icon name={link.icon} size={20} />
   </a>
@@ -52,7 +52,7 @@ export const Contact = ({ ref, isDev, strings, onCopyEmail }: Props) => {
       <a
         href={`mailto:${EMAIL}`}
         onClick={copyEmail}
-        className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all hover:border-orange hover:!text-orange"
+        className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all duration-300 hover:border-orange hover:!text-orange"
       >
         {EMAIL}
       </a>

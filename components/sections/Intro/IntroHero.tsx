@@ -36,13 +36,13 @@ export const IntroHero = ({ strings, onWork, onContact }: Props) => (
     <div className="mt-10 flex flex-wrap gap-4">
       <button
         onClick={onWork}
-        className="cursor-pointer rounded-btn border-none bg-orange px-6.5 py-3.5 font-mono text-[13px] font-semibold tracking-[1px] text-black transition-all hover:-translate-y-[2px] hover:bg-orange-dark"
+        className="cursor-pointer rounded-btn border-none bg-orange px-6.5 py-3.5 font-mono text-[13px] font-semibold tracking-[1px] text-black transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-dark"
       >
         {strings.btnWork}
       </button>
       <button
         onClick={onContact}
-        className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-6.5 py-3.5 font-mono text-[13px] tracking-[1px] text-[#ccc] transition-all hover:border-orange hover:!text-orange"
+        className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-6.5 py-3.5 font-mono text-[13px] tracking-[1px] text-[#ccc] transition-all duration-300 hover:border-orange hover:!text-orange"
       >
         {strings.btnContact}
       </button>

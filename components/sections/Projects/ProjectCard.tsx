@@ -24,7 +24,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
       onMouseEnter={enter}
       onMouseLeave={leave}
       onClick={click}
-      className={`fade-up cursor-pointer overflow-hidden rounded-window border bg-panel-1 transition-colors ${
+      className={`cursor-pointer overflow-hidden rounded-window border bg-panel-1 transition-colors ${
         forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55'
       }`}
     >
