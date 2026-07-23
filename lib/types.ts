@@ -64,3 +64,10 @@ export interface ContactLink {
 }
 
 export type IconName = 'envelope' | 'linkedin' | 'github' | 'folder';
+
+export interface PromptTool {
+  icon: string;
+  name: string;
+  version: string;
+  color: string;
+}

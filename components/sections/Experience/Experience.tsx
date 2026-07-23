@@ -3,6 +3,7 @@ import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 import { Section } from '@/components/common/Section';
 import { CommandHeader } from '@/components/common/CommandHeader';
+import { Panel } from './Panel';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -50,7 +51,7 @@ export function Experience({ ref, human, strings }: Props) {
       <div className="mt-10 grid grid-cols-1 gap-[60px] md:grid-cols-2">
         <div>
           <CommandHeader variant="sub" human={human} command="cat education.txt" heading={strings.hEdu} className="mb-5" />
-          <div className="flex flex-col gap-4 rounded-card border border-line-2 bg-panel-0 px-[22px] py-5">
+          <Panel>
             {education.map((e) => (
               <div key={e.title} className="flex items-baseline justify-between gap-4">
                 <div>
@@ -60,11 +61,11 @@ export function Experience({ ref, human, strings }: Props) {
                 <span className="whitespace-nowrap text-[12px] text-yellow">{e.period}</span>
               </div>
             ))}
-          </div>
+          </Panel>
         </div>
         <div>
           <CommandHeader variant="sub" human={human} command="git tag -l hackathons/*" heading={strings.hHacks} className="mb-5" />
-          <div className="flex flex-col gap-4 rounded-card border border-line-2 bg-panel-0 px-[22px] py-5">
+          <Panel>
             {hackathons.map((h) => (
               <div key={h.event} className="flex items-baseline justify-between gap-4">
                 <div>
@@ -83,7 +84,7 @@ export function Experience({ ref, human, strings }: Props) {
                 <span className="whitespace-nowrap text-[12px] text-fg-6">{h.place}</span>
               </div>
             ))}
-          </div>
+          </Panel>
         </div>
       </div>
     </Section>

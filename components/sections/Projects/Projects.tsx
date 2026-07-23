@@ -93,7 +93,7 @@ export function Projects({
   return (
     <Section ref={ref} label="Projects">
       <div className="mb-[30px] flex flex-wrap items-baseline justify-between gap-[14px]">
-        <CommandHeader human={human} command="l ~/projects" args=" --group-directories-first" heading={strings.hWork} />
+        <CommandHeader human={human} command="ls ~/projects" args=" --group-directories-first" heading={strings.hWork} />
         <span className="text-[12px] text-fg-7">{strings.projCount(filtered.length)}</span>
       </div>
       {searchOpen && (
@@ -143,15 +143,16 @@ export function Projects({
           const expanded = expandedId === p.id;
           const hovering = hoverId === p.id && !expanded;
           const selected = searchOpen && !!query && idx === selClamped;
-          const border = expanded || hovering || selected ? 'rgba(248,173,64,.55)' : '#242424';
+          const forceOrange = expanded || selected;
           return (
             <div
               key={p.id}
               onMouseEnter={() => onEnter(p.id)}
               onMouseLeave={() => onLeave(p.id)}
               onClick={() => onClick(p.id)}
-              className="fade-up cursor-pointer overflow-hidden rounded-window bg-panel-1 transition-colors"
-              style={{ border: `1px solid ${border}` }}
+              className={`fade-up cursor-pointer overflow-hidden rounded-window border bg-panel-1 transition-colors ${
+                forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55'
+              }`}
             >
               <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-[14px] py-[10px]">
                 <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">

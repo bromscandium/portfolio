@@ -1,5 +1,6 @@
 export * from '../types';
 export { projectLinks } from '../helpers';
+export * from './hero';
 export * from './about';
 export * from './contacts';
 export * from './portfolio';

@@ -1,4 +1,4 @@
-import { counters } from '@/lib/data';
+import { counters, heroPrompt, heroRole } from '@/lib/data';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 
@@ -24,12 +24,14 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
         <div className="text-[14px] leading-[1.7]">
           <div>
             <span className="font-bold text-cyan">~/yaroslav</span>
-            <span className="text-fg-6"> via </span>
-            <span className="text-fg">▲ next 16.2</span>
-            <span className="text-fg-6"> via </span>
-            <span className="text-yellow">λ py 3.14.6</span>
-            <span className="text-fg-6"> via </span>
-            <span className="text-cyan-img">◆ docker 29.6</span>
+            {heroPrompt.map((t) => (
+              <span key={t.name}>
+                <span className="text-fg-6"> via </span>
+                <span className={t.color}>
+                  {t.icon} {t.name} {t.version}
+                </span>
+              </span>
+            ))}
           </div>
           <div className="mt-[2px]">
             <span className="font-bold text-orange">❯ </span>
@@ -48,7 +50,7 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
           </h1>
           <div className="my-[26px] mb-[14px] text-[15px] tracking-[2px]">
             <span className="text-orange">{strings.roleWord}</span>
-            <span className="text-fg-4"> — React · Next.js · Python</span>
+            <span className="text-fg-4"> — {heroRole.join(' · ')}</span>
           </div>
           <div className="max-w-[620px] text-[14px] leading-[1.7]" style={{ color: strings.stmtColor }}>
             {strings.statement}

@@ -34,10 +34,10 @@ export function Sidebar({ navRoot, names, active, onNav }: Props) {
           );
         })}
       </div>
-      <pre className="pointer-events-none absolute bottom-[52px] left-[22px] m-0 select-none font-mono text-[10px] leading-[1.25] text-fg-11">
+      <pre className="pointer-events-none absolute bottom-[88px] left-[22px] m-0 select-none font-mono text-[10px] leading-[1.25] text-fg-11">
         {ARCH_LOGO}
       </pre>
-      <div className="absolute bottom-5 left-[22px] text-[10px] tracking-[1px] text-fg-8">© 2026 · bromscandium</div>
+      <div className="absolute bottom-[56px] left-[22px] text-[10px] tracking-[1px] text-fg-8">© 2026 · bromscandium</div>
     </nav>
   );
 }

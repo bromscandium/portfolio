@@ -1,76 +1,9 @@
-import { about, education, experience, hackathons, portfolio, skillMap } from './data';
-import { slugify } from './i18n';
+import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
+import { slugify } from '../i18n';
+import { LINKS, NEOFETCH, SECTIONS } from './constants';
+import type { CmdContext, CmdLine, Tone } from './types';
 
-export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
-
-export interface LsRow {
-  perms: string;
-  size: string;
-  name: string;
-  head?: boolean;
-}
-
-export interface CmdLine {
-  text?: string;
-  tone?: Tone;
-  row?: LsRow;
-}
-
-export interface CmdContext {
-  goTo: (i: number) => void;
-  openProject: (id: number) => void;
-  openUrl: (url: string) => void;
-  setCrt: (on: boolean) => void;
-  clear: () => void;
-  close: () => void;
-}
-
-const LINKS = {
-  email: 'mailto:kkmshbiu@protonmail.com',
-  linkedin: 'https://www.linkedin.com/in/yaroslav-yeromenko/',
-  github: 'https://github.com/bromscandium',
-};
-
-const SECTIONS: Record<string, number> = {
-  intro: 0,
-  home: 0,
-  experience: 1,
-  exp: 1,
-  skills: 2,
-  stack: 2,
-  projects: 3,
-  work: 3,
-  contact: 4,
-};
-
-export const COMMAND_NAMES = [
-  'help',
-  'clear',
-  'cd',
-  'ls',
-  'pwd',
-  'cat',
-  'open',
-  'git',
-  'docker',
-  'whoami',
-  'neofetch',
-  'echo',
-  'email',
-  'github',
-  'linkedin',
-  'exit',
-];
-
-const NEOFETCH = [
-  '      /\\          yaroslav@bromscandium',
-  '     /  \\         ----------------------',
-  '    /    \\        OS: Arch Linux x86_64',
-  '   /      \\       Shell: zsh + spaceship',
-  '  /   ..   \\      Role: Full-Stack Developer',
-  ' /   |  |   \\     Stack: React · Next.js · Python',
-  '/_-``    ``-_\\    Uptime: 2+ years · 19 projects',
-];
+const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
 
 function ok(text: string, tone: Tone = 'default'): CmdLine {
   return { text, tone };
@@ -79,24 +12,6 @@ function ok(text: string, tone: Tone = 'default'): CmdLine {
 function sizeOf(p: { description: string[]; technologies: string[] }): string {
   const chars = p.description.join(' ').length + p.technologies.join('').length;
   return `${(chars / 170).toFixed(1)}k`;
-}
-
-export function autocomplete(input: string): string | null {
-  const parts = input.split(' ');
-  if (parts.length === 1) {
-    const m = COMMAND_NAMES.filter((c) => c.startsWith(parts[0]));
-    return m.length === 1 ? m[0] + ' ' : null;
-  }
-  const [cmd, ...rest] = parts;
-  const frag = rest.join(' ');
-  let pool: string[] = [];
-  if (cmd === 'cd') pool = Object.keys(SECTIONS);
-  else if (cmd === 'open') pool = portfolio.map((p) => slugify(p.title));
-  else if (cmd === 'cat') pool = ['about', 'education', 'skills'];
-  else if (cmd === 'docker') pool = ['ps'];
-  else if (cmd === 'git') pool = ['log', 'tag', 'status', 'blame'];
-  const m = pool.filter((c) => c.startsWith(frag));
-  return m.length === 1 ? `${cmd} ${m[0]}` : null;
 }
 
 export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
@@ -110,13 +25,14 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [
         ok('available commands:', 'muted'),
         ok('  cd <section>      jump to intro/experience/skills/projects/contact'),
-        ok('  ls · l [cat]      list projects (pet|hackathon|university|professional)'),
+        ok('  ls [category]     list projects (pet|hackathon|university|professional)'),
         ok('  cat <file>        about | education | skills'),
         ok('  open <project>    open a project window'),
         ok('  pwd               print working directory'),
         ok('  git log           work history as commits'),
         ok('  git tag           hackathons'),
         ok('  docker ps         skill stack as running containers'),
+        ok('  contact           jump to contact'),
         ok('  email · github · linkedin   open my links'),
         ok('  whoami · neofetch identity'),
         ok('  clear · exit      clear screen · close terminal'),
@@ -144,9 +60,8 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
     case 'l':
     case 'la':
     case 'll': {
-      const catArg = args.find((a) => !a.startsWith('-'))?.toLowerCase();
+      const catArg = args.map((a) => a.toLowerCase()).find((a) => CATEGORIES.includes(a));
       const list = catArg ? portfolio.filter((p) => p.category === catArg) : portfolio;
-      if (!list.length) return [ok(`ls: cannot access '${catArg}': No such category`, 'error')];
       const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
       list
         .slice()
@@ -168,7 +83,9 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
 
     case 'open': {
       if (!arg) return [ok('usage: open <project>', 'muted')];
-      const p = portfolio.find((x) => slugify(x.title) === arg || x.title.toLowerCase() === arg) ?? portfolio.find((x) => slugify(x.title).includes(arg));
+      const p =
+        portfolio.find((x) => slugify(x.title) === arg || x.title.toLowerCase() === arg) ??
+        portfolio.find((x) => slugify(x.title).includes(arg));
       if (!p) return [ok(`open: project not found: ${arg}`, 'error')];
       ctx.goTo(3);
       ctx.openProject(p.id);
@@ -176,7 +93,7 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
     }
 
     case 'docker': {
-      if (args[0] !== 'ps') return [ok("usage: docker ps", 'muted')];
+      if (args[0] !== 'ps') return [ok('usage: docker ps', 'muted')];
       ctx.goTo(2);
       const out: CmdLine[] = [ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted')];
       skillMap.forEach((r) => {
@@ -186,6 +103,28 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       });
       return out;
     }
+
+    case 'git':
+      if (args[0] === 'log') {
+        ctx.goTo(1);
+        const out: CmdLine[] = [];
+        experience.forEach((j, i) => {
+          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${j.role} — ${j.org}`, i === 0 ? 'accent' : 'default'));
+          out.push(ok(`|   ${j.period} · ${j.loc}`, 'muted'));
+        });
+        return out;
+      }
+      if (args[0] === 'tag') {
+        ctx.goTo(1);
+        return hackathons.map((h) => ok(`hackathons/${slugify(h.event)}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default'));
+      }
+      if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
+      if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
+      return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];
+
+    case 'contact':
+      ctx.goTo(4);
+      return [ok('Connection established. Available for full-time · remote.', 'green')];
 
     case 'email':
       ctx.openUrl(LINKS.email);
@@ -219,14 +158,10 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       }
       return [ok('usage: crt on|off', 'muted')];
 
-    // easter eggs
     case 'sudo':
-      if (arg.startsWith('hire-me') || arg.startsWith('hire')) {
+      if (arg.startsWith('hire')) {
         ctx.openUrl(`${LINKS.email}?subject=${encodeURIComponent("Let's work together")}&body=${encodeURIComponent('Hi Yaroslav,\n\n')}`);
-        return [
-          ok('[sudo] password for recruiter: ********', 'muted'),
-          ok('✓ access granted. opening mail draft…', 'green'),
-        ];
+        return [ok('[sudo] password for recruiter: ********', 'muted'), ok('✓ access granted. opening mail draft…', 'green')];
       }
       return [ok(`${args[0] ?? ''}: Permission denied (nice try 😏)`, 'error')];
 
@@ -236,24 +171,6 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
     case 'rm':
       if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. 🙂', 'yellow')];
       return [ok('rm: missing operand', 'error')];
-
-    case 'git':
-      if (args[0] === 'log') {
-        ctx.goTo(1);
-        const out: CmdLine[] = [];
-        experience.forEach((j, i) => {
-          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${j.role} — ${j.org}`, i === 0 ? 'accent' : 'default'));
-          out.push(ok(`|   ${j.period} · ${j.loc}`, 'muted'));
-        });
-        return out;
-      }
-      if (args[0] === 'tag') {
-        ctx.goTo(1);
-        return hackathons.map((h) => ok(`hackathons/${slugify(h.event)}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default'));
-      }
-      if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
-      if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
-      return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];
 
     default:
       return [ok(`zsh: command not found: ${cmd}`, 'error')];
