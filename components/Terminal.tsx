@@ -8,6 +8,7 @@ import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
 import { ProfilePicker } from './ProfilePicker';
 import { HelpOverlay } from './HelpOverlay';
+import { CommandLine } from './CommandLine';
 import { ProjectModal } from './ProjectModal';
 import { Intro } from './sections/Intro';
 import { Experience } from './sections/Experience';
@@ -36,6 +37,8 @@ export function Terminal() {
   const [typedN, setTypedN] = useState(0);
   const [helpOpen, setHelpOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [crtOn, setCrtOn] = useState(false);
 
   const ref0 = useRef<HTMLElement>(null);
   const ref1 = useRef<HTMLElement>(null);
@@ -225,7 +228,13 @@ export function Terminal() {
         if (helpOpen) return setHelpOpen(false);
         if (searchOpen) return setSearchOpen(false);
         if (expandedId !== null) return closeM();
+        if (cmdOpen) return setCmdOpen(false);
         if (plusOpen) return setPlusOpen(false);
+        return;
+      }
+      if (e.key === '`' && !human) {
+        e.preventDefault();
+        setCmdOpen((v) => !v);
         return;
       }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -280,7 +289,7 @@ export function Terminal() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, expandedId, helpOpen, searchOpen, plusOpen, goTo, closeM, cycleTab, openNewTab, closeTab, activeCombo]);
+  }, [active, expandedId, helpOpen, searchOpen, cmdOpen, human, plusOpen, goTo, closeM, cycleTab, openNewTab, closeTab, activeCombo]);
 
   const visible = useMemo(
     () => (cat === 'all' ? portfolio : portfolio.filter((p) => p.category === cat)).slice().sort((a, b) => b.id - a.id),
@@ -330,7 +339,7 @@ export function Terminal() {
         onLangClick={() => setCombo(mode, lang === 'uk' ? 'en' : 'uk')}
       />
 
-      <main className="mt-[38px] mb-[26px] ml-0 md:ml-[220px]">
+      <main className="mt-[38px] ml-0 md:ml-[220px]" style={{ marginBottom: human ? 26 : 52 }}>
         <Intro
           ref={ref0}
           isDev={!human}
@@ -366,6 +375,23 @@ export function Terminal() {
         />
         <Contact ref={ref4} isDev={!human} strings={s} />
       </main>
+
+      {!human && (
+        <CommandLine
+          open={cmdOpen}
+          onOpen={() => setCmdOpen(true)}
+          onClose={() => setCmdOpen(false)}
+          actions={{
+            goTo,
+            openProject: (id) => setExpandedId(id),
+            setMode: (m) => setCombo(m, lang),
+            setLang: (l) => setCombo(mode, l),
+            setCrt: setCrtOn,
+          }}
+        />
+      )}
+
+      {crtOn && <div className="crt-overlay pointer-events-none fixed inset-0 z-[400]" aria-hidden />}
     </div>
   );
 }
