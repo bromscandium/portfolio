@@ -86,7 +86,9 @@ export function Terminal() {
 
   const goTo = useCallback((i: number) => {
     const el = refs[i].current;
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 38, behavior: 'smooth' });
+    if (!el) return;
+    const extra = window.matchMedia('(min-width: 768px)').matches ? 0 : 44;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 38 - extra, behavior: 'smooth' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -333,6 +335,19 @@ export function Terminal() {
 
       <Sidebar navRoot={s.navRoot} names={s.navNames} active={active} onNav={goTo} />
 
+      <div className="fixed inset-x-0 top-[38px] z-[90] flex gap-1 overflow-x-auto border-b border-line-1 bg-bg px-3 py-[6px] md:hidden">
+        {s.navNames.map((n, i) => (
+          <button
+            key={n}
+            onClick={() => goTo(i)}
+            className="shrink-0 cursor-pointer whitespace-nowrap rounded-btn border-none bg-transparent px-2 py-1 font-mono text-[12px]"
+            style={{ color: active === i ? '#f8ad40' : '#8a8a8a' }}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+
       {picker && <ProfilePicker onPickDev={() => setCombo('dev', lang, true)} onPickHuman={() => setCombo('human', lang, true)} />}
 
       {helpOpen && <HelpOverlay onClose={() => setHelpOpen(false)} />}
@@ -354,7 +369,7 @@ export function Terminal() {
         onLangClick={() => setCombo(mode, lang === 'uk' ? 'en' : 'uk')}
       />
 
-      <main className="mt-[38px] ml-0 md:ml-[220px]" style={{ marginBottom: human ? 26 : 52 }}>
+      <main className="mt-[76px] ml-0 md:mt-[38px] md:ml-[220px]" style={{ marginBottom: human ? 26 : 52 }}>
         <Intro
           ref={ref0}
           isDev={!human}
