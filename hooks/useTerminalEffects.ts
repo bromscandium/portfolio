@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
 import { ALL_COMBOS } from '@/store/constants';
+import { arrowDirection } from '@/lib/keys';
 import type { Lang, Mode } from '@/lib/i18n';
 
 export const useTerminalEffects = () => {
@@ -71,15 +72,16 @@ export const useTerminalEffects = () => {
       }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
 
+      const dir = arrowDirection(e.key);
+      if (dir) {
+        e.preventDefault();
+        if (dir === 'down') return st.goTo(Math.min(st.active + 1, 4));
+        if (dir === 'up') return st.goTo(Math.max(st.active - 1, 0));
+        if (dir === 'right') return st.cycleTab(1);
+        return st.cycleTab(-1);
+      }
+
       switch (e.key) {
-        case 'j':
-        case 'ArrowDown':
-          e.preventDefault();
-          return st.goTo(Math.min(st.active + 1, 4));
-        case 'k':
-        case 'ArrowUp':
-          e.preventDefault();
-          return st.goTo(Math.max(st.active - 1, 0));
         case 'g':
           return st.goTo(0);
         case 'G':

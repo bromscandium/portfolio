@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { portfolio, type Project } from '@/lib/data';
 import { slugify } from '@/lib/i18n';
 import { TERMINAL_ROOT } from '@/lib/config';
+import { arrowDirection } from '@/lib/keys';
 import type { CmdContext } from '@/lib/commands';
 
 interface TreeNode {
@@ -101,17 +102,18 @@ export const TreeView = ({ actions, onExit }: Props) => {
   const onKeyDown = (e: React.KeyboardEvent) => {
     e.stopPropagation();
     const f = flat[selClamped];
-    if (e.key === 'ArrowDown') {
+    const dir = arrowDirection(e.key);
+    if (dir === 'down') {
       e.preventDefault();
       setSel(Math.min(selClamped + 1, flat.length - 1));
-    } else if (e.key === 'ArrowUp') {
+    } else if (dir === 'up') {
       e.preventDefault();
       setSel(Math.max(selClamped - 1, 0));
-    } else if (e.key === 'ArrowRight') {
+    } else if (dir === 'right') {
       e.preventDefault();
       if (f.expandable && !f.expanded) toggle(f.node.key);
       else activate(f);
-    } else if (e.key === 'ArrowLeft') {
+    } else if (dir === 'left') {
       e.preventDefault();
       if (f.expandable && f.expanded) toggle(f.node.key);
     } else if (e.key === 'Enter') {
@@ -149,7 +151,7 @@ export const TreeView = ({ actions, onExit }: Props) => {
           </div>
         );
       })}
-      <div className="mt-1 text-[11px] text-fg-6">↑↓ move · → expand · ↵ open · esc quit</div>
+      <div className="mt-1 text-[11px] text-fg-6">hjkl / ←↓↑→ · ↵ open · esc quit</div>
     </div>
   );
 };

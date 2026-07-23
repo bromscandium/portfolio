@@ -8,8 +8,7 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
   {
     title: 'navigation',
     rows: [
-      ['j / ↓', 'next section'],
-      ['k / ↑', 'previous section'],
+      ['j / k · ↓ / ↑', 'next / previous section'],
       ['g / G', 'first / last section'],
       ['1 … 5', 'jump to section'],
     ],
@@ -17,7 +16,7 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
   {
     title: 'tabs',
     rows: [
-      ['] / [', 'next / previous tab'],
+      ['h / l · ← / → · [ / ]', 'previous / next tab'],
       ['⌥1 … ⌥4', 'open a specific tab'],
       ['t', 'open new tab'],
       ['w', 'close current tab'],
