@@ -14,7 +14,6 @@ export interface CmdLine {
   text?: string;
   tone?: Tone;
   row?: LsRow;
-  names?: string[];
 }
 
 export interface CmdContext {
@@ -44,19 +43,14 @@ export const COMMAND_NAMES = [
   'clear',
   'cd',
   'ls',
-  'la',
+  'pwd',
   'cat',
   'open',
-  'view',
-  'lang',
-  'docker',
   'git',
-  'contact',
+  'docker',
   'whoami',
   'neofetch',
   'echo',
-  'sudo',
-  'vim',
   'exit',
 ];
 
@@ -91,8 +85,6 @@ export function autocomplete(input: string): string | null {
   if (cmd === 'cd') pool = Object.keys(SECTIONS);
   else if (cmd === 'open') pool = portfolio.map((p) => slugify(p.title));
   else if (cmd === 'cat') pool = ['about', 'education', 'skills'];
-  else if (cmd === 'view') pool = ['dev', 'human'];
-  else if (cmd === 'lang') pool = ['en', 'uk'];
   else if (cmd === 'docker') pool = ['ps'];
   else if (cmd === 'git') pool = ['log', 'tag', 'status', 'blame'];
   const m = pool.filter((c) => c.startsWith(frag));
@@ -113,15 +105,13 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
         ok('  ls · l [cat]      list projects (pet|hackathon|university|professional)'),
         ok('  cat <file>        about | education | skills'),
         ok('  open <project>    open a project window'),
+        ok('  pwd               print working directory'),
         ok('  git log           work history as commits'),
         ok('  git tag           hackathons'),
         ok('  docker ps         skill stack as running containers'),
-        ok('  contact           jump to contact'),
-        ok('  view dev|human    switch view mode'),
-        ok('  lang en|uk        switch language'),
         ok('  whoami · neofetch identity'),
         ok('  clear · exit      clear screen · close terminal'),
-        ok('  type ? anywhere for keyboard shortcuts', 'muted'),
+        ok('  switch view/lang from the status bar · ? for shortcuts', 'muted'),
       ];
 
     case 'clear':
@@ -141,17 +131,13 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [ok(`→ ${key}`, 'cyan')];
     }
 
-    case 'ls': {
-      const list = arg ? portfolio.filter((p) => p.category === arg) : portfolio;
-      if (!list.length) return [ok(`ls: no projects in "${arg}"`, 'error')];
-      return [{ names: list.slice().sort((a, b) => b.id - a.id).map((p) => slugify(p.title)) }];
-    }
-
+    case 'ls':
     case 'l':
     case 'la':
     case 'll': {
-      const list = arg ? portfolio.filter((p) => p.category === arg) : portfolio;
-      if (!list.length) return [ok(`l: no projects in "${arg}"`, 'error')];
+      const catArg = args.find((a) => !a.startsWith('-'))?.toLowerCase();
+      const list = catArg ? portfolio.filter((p) => p.category === catArg) : portfolio;
+      if (!list.length) return [ok(`ls: cannot access '${catArg}': No such category`, 'error')];
       const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
       list
         .slice()
@@ -159,6 +145,9 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
         .forEach((p) => rows.push({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }));
       return rows;
     }
+
+    case 'pwd':
+      return [ok('/home/yaroslav/portfolio')];
 
     case 'cat': {
       const f = arg.replace(/\.txt$/, '');
@@ -177,13 +166,6 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return [ok(`opening ${p.title}…`, 'cyan')];
     }
 
-    case 'view':
-      if (arg === 'dev' || arg === 'human') {
-        ctx.setMode(arg);
-        return [ok(`view → ${arg}`, 'green')];
-      }
-      return [ok('usage: view dev|human', 'muted')];
-
     case 'docker': {
       if (args[0] !== 'ps') return [ok("usage: docker ps", 'muted')];
       ctx.goTo(2);
@@ -195,17 +177,6 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       });
       return out;
     }
-
-    case 'contact':
-      ctx.goTo(4);
-      return [ok('Connection established. Available for full-time · remote.', 'green')];
-
-    case 'lang':
-      if (arg === 'en' || arg === 'uk') {
-        ctx.setLang(arg);
-        return [ok(`lang → ${arg}`, 'green')];
-      }
-      return [ok('usage: lang en|uk', 'muted')];
 
     case 'whoami':
       return [ok('yaroslav yeromenko · full-stack developer · remote · EU')];

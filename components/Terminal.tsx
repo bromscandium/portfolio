@@ -40,7 +40,6 @@ export function Terminal() {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [crtOn, setCrtOn] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [flashKey, setFlashKey] = useState(0);
   const toastT = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const ref0 = useRef<HTMLElement>(null);
@@ -71,7 +70,6 @@ export function Terminal() {
     setMode(m);
     setLang(l);
     setPlusOpen(false);
-    setFlashKey((k) => k + 1);
     if (fromPicker) {
       setPicker(false);
       setTabsOpen([combo]);
@@ -405,10 +403,6 @@ export function Terminal() {
         />
         <Contact ref={ref4} isDev={!human} strings={s} onCopyEmail={() => showToast('copied to clipboard')} />
       </main>
-
-      {flashKey > 0 && (
-        <div key={flashKey} className="combo-flash pointer-events-none fixed left-0 top-[38px] z-[250] h-[2px] bg-orange" aria-hidden />
-      )}
 
       {toast && (
         <div className="fixed bottom-[60px] left-1/2 z-[650] -translate-x-1/2 rounded-btn border border-line-5 bg-panel-6 px-4 py-2 font-mono text-[12px] text-green shadow-[0_10px_30px_rgba(0,0,0,.6)]" style={{ animation: 'fadeUp .2s ease-out' }}>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { autocomplete, runCommand, type CmdContext, type CmdLine, type Tone } from '@/lib/commands';
+import { Icon } from './Icon';
 
 interface Props {
   open: boolean;
@@ -21,14 +22,6 @@ const TONE: Record<Tone, string> = {
 interface Row extends CmdLine {
   id: number;
   prompt?: boolean;
-}
-
-function FolderIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden className="shrink-0">
-      <path d="M1.5 3.5A1.5 1.5 0 0 1 3 2h3.2c.5 0 .97.24 1.26.65l.54.76c.1.14.26.22.43.22H13a1.5 1.5 0 0 1 1.5 1.5V12A1.5 1.5 0 0 1 13 13.5H3A1.5 1.5 0 0 1 1.5 12z" />
-    </svg>
-  );
 }
 
 function PathLine() {
@@ -177,18 +170,6 @@ export function CommandLine({ open, onOpen, onClose, actions }: Props) {
               </div>
             );
           }
-          if (r.names) {
-            return (
-              <div key={r.id} className="flex flex-wrap gap-x-5 gap-y-1 py-[2px]">
-                {r.names.map((n) => (
-                  <span key={n} className="inline-flex items-center gap-[6px] text-cyan">
-                    <FolderIcon />
-                    {n}/
-                  </span>
-                ))}
-              </div>
-            );
-          }
           if (r.row) {
             const { row } = r;
             if (row.head) {
@@ -203,9 +184,7 @@ export function CommandLine({ open, onOpen, onClose, actions }: Props) {
             }
             return (
               <div key={r.id} className="flex items-center gap-2">
-                <span className="text-cyan">
-                  <FolderIcon />
-                </span>
+                <Icon name="folder" size={14} className="text-cyan" />
                 <span className="w-[104px] text-fg-4">{row.perms}</span>
                 <span className="w-[64px] pr-3 text-right text-green tabular-nums">{row.size}</span>
                 <span className="text-cyan">{row.name}</span>
