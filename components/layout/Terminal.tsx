@@ -65,7 +65,7 @@ export const Terminal = () => {
         plusItems={t.unopenedCombos()}
         onOpenCombo={(c) => t.setCombo(...split(c))}
         labelFor={(c) => comboLabel(c, false)}
-        shortLabelFor={(c) => comboLabel(c, false).replace('zsh', 'dev')}
+        shortLabelFor={(c) => comboLabel(c, false)}
         onOpenPalette={t.openPalette}
       />
 
