@@ -6,15 +6,15 @@ import { comboLabel, getStrings, type Combo, type Lang, type Mode } from '@/lib/
 import { TabBar } from './TabBar';
 import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
-import { ProfilePicker } from './ProfilePicker';
-import { HelpOverlay } from './HelpOverlay';
 import { CommandLine } from './CommandLine';
-import { ProjectModal } from './ProjectModal';
-import { Intro } from './sections/Intro';
-import { Experience } from './sections/Experience';
-import { Skills } from './sections/Skills';
-import { Work } from './sections/Work';
-import { Contact } from './sections/Contact';
+import { ProfilePicker } from './windows/ProfilePicker';
+import { HelpOverlay } from './windows/HelpOverlay';
+import { ProjectModal } from './windows/ProjectModal';
+import { Intro } from '@/components/sections/Intro/Intro';
+import { Experience } from '@/components/sections/Experience/Experience';
+import { Skills } from '@/components/sections/Skills/Skills';
+import { Projects } from '@/components/sections/Projects/Projects';
+import { Contact } from '@/components/sections/Contact/Contact';
 
 const CMD = 'whoami --verbose';
 const ALL_COMBOS: Combo[] = ['dev-en', 'dev-uk', 'human-en', 'human-uk'];
@@ -380,7 +380,7 @@ export function Terminal() {
         />
         <Experience ref={ref1} human={human} strings={s} />
         <Skills ref={ref2} human={human} strings={s} />
-        <Work
+        <Projects
           ref={ref3}
           human={human}
           strings={s}

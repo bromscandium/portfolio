@@ -1,5 +1,5 @@
 import { contacts } from '@/lib/data';
-import { Icon } from '../Icon';
+import { Icon } from '@/components/common/Icon';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 

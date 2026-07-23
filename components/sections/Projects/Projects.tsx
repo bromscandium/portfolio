@@ -38,7 +38,7 @@ function fuzzy(q: string, text: string): boolean {
   return false;
 }
 
-export function Work({
+export function Projects({
   ref,
   human,
   strings,

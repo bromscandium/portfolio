@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { autocomplete, runCommand, type CmdContext, type CmdLine, type Tone } from '@/lib/commands';
-import { Icon } from './Icon';
+import { Icon } from '@/components/common/Icon';
 
 interface Props {
   open: boolean;
