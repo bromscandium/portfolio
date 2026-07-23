@@ -16,7 +16,6 @@ export interface SessionSlice {
   lang: Lang;
   tabsOpen: Combo[];
   closeConfirm: boolean;
-  ready: boolean;
   restore: () => void;
   setCombo: (m: Mode, l: Lang, fromPicker?: boolean) => void;
   startDrag: (t: Combo) => void;
@@ -35,7 +34,6 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
   lang: 'en',
   tabsOpen: ['dev-en'],
   closeConfirm: false,
-  ready: false,
 
   restore: () => {
     try {
@@ -52,7 +50,6 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
         set({ lang: savedLang, picker: true });
       }
     } catch {}
-    set({ ready: true });
   },
 
   setCombo: (m, l, fromPicker = false) => {
@@ -60,7 +57,15 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     set((st) => {
       const tabsOpen = fromPicker ? [combo] : st.tabsOpen.includes(combo) ? st.tabsOpen : [...st.tabsOpen, combo];
       persistTabs(tabsOpen);
-      return { mode: m, lang: l, plusOpen: false, picker: fromPicker ? false : st.picker, tabsOpen };
+      const reboot = fromPicker && st.rebootNext;
+      return {
+        mode: m,
+        lang: l,
+        plusOpen: false,
+        picker: fromPicker ? false : st.picker,
+        tabsOpen,
+        ...(reboot ? { phase: 'boot' as const, rebootNext: false, session: st.session + 1 } : {}),
+      };
     });
     try {
       localStorage.setItem('brom_mode', m);
@@ -120,7 +125,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       localStorage.removeItem('brom_lang');
       localStorage.removeItem('brom_tabs');
     } catch {}
-    set((st) => ({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: true, typedN: 0, session: st.session + 1 }));
+    set({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: false, typedN: 0, phase: 'unload' });
   },
   cancelClose: () => set({ closeConfirm: false }),
 });

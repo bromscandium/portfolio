@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, setInput, height, inputRef, bodyRef, suggestion, treeOpen, closeTree, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -66,14 +66,14 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                 <input
                   ref={inputRef}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => onInputChange(e.target.value)}
                   onKeyDown={onKeyDown}
                   className="w-full border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
                   spellCheck={false}
                   autoComplete="off"
                   autoCapitalize="off"
                 />
-                {ghost && (
+                {ghost && !menu && (
                   <span className="pointer-events-none absolute left-0 top-0 whitespace-pre font-mono text-[13px] text-fg-6" aria-hidden>
                     <span className="invisible">{input}</span>
                     {ghost}
@@ -81,6 +81,20 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                 )}
               </div>
             </div>
+            {menu && (
+              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 pl-4">
+                {menu.options.map((o, i) => (
+                  <span
+                    key={o.value}
+                    className="whitespace-pre"
+                    style={{ background: i === menu.index ? '#161616' : 'transparent', color: i === menu.index ? '#f8ad40' : '#8a8a8a' }}
+                  >
+                    {o.value}
+                    {o.dir && <span className="text-fg-8">/</span>}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

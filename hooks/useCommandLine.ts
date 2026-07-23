@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { autocomplete, runCommand, type CmdContext, type CmdLine } from '@/lib/commands';
+import { autocomplete, runCommand, type CmdContext, type CmdLine, type CompletionOption } from '@/lib/commands';
+
+interface Menu {
+  base: string;
+  options: CompletionOption[];
+  index: number;
+}
 
 export interface Row extends CmdLine {
   id: number;
@@ -15,6 +21,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [treeOpen, setTreeOpen] = useState(false);
+  const [menu, setMenu] = useState<Menu | null>(null);
   const idRef = useRef(1);
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -74,14 +81,32 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   };
 
   const submit = () => {
+    setMenu(null);
     run(input);
     setInput('');
   };
 
+  const onInputChange = (v: string) => {
+    setMenu(null);
+    setInput(v);
+  };
+
   const complete = () => {
-    const r = autocomplete(input);
-    if (r.complete) setInput(r.complete);
-    else if (r.options) append([{ id: nextId(), text: r.options.join('   '), tone: 'muted' }]);
+    if (menu) {
+      const index = (menu.index + 1) % menu.options.length;
+      setMenu({ ...menu, index });
+      setInput(menu.base + menu.options[index].value);
+      return;
+    }
+    const { base, options } = autocomplete(input);
+    if (options.length === 0) return;
+    if (options.length === 1) {
+      const o = options[0];
+      setInput(base + o.value + (o.dir ? '/' : ' '));
+      return;
+    }
+    setMenu({ base, options, index: 0 });
+    setInput(base + options[0].value);
   };
 
   const historyPrev = () => {
@@ -150,5 +175,5 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  return { rows, input, setInput, height, inputRef, bodyRef, suggestion, treeOpen, closeTree, onKeyDown, startResize };
+  return { rows, input, setInput, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize };
 };

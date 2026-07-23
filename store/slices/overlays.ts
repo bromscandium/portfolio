@@ -10,6 +10,8 @@ export interface OverlaySlice {
   viewHover: boolean;
   typedN: number;
   session: number;
+  phase: 'boot' | 'unload' | 'run';
+  rebootNext: boolean;
   helpOpen: boolean;
   searchOpen: boolean;
   cmdOpen: boolean;
@@ -32,6 +34,8 @@ export interface OverlaySlice {
   openPalette: () => void;
   closePalette: () => void;
   togglePalette: () => void;
+  bootDone: () => void;
+  unloadDone: () => void;
 }
 
 export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlice> = (set) => ({
@@ -41,6 +45,8 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   viewHover: false,
   typedN: 0,
   session: 0,
+  phase: 'boot',
+  rebootNext: false,
   helpOpen: false,
   searchOpen: false,
   cmdOpen: false,
@@ -67,4 +73,6 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   openPalette: () => set({ paletteOpen: true, plusOpen: false }),
   closePalette: () => set({ paletteOpen: false }),
   togglePalette: () => set((st) => ({ paletteOpen: !st.paletteOpen })),
+  bootDone: () => set({ phase: 'run' }),
+  unloadDone: () => set({ phase: 'run', picker: true, rebootNext: true }),
 });

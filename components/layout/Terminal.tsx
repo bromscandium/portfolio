@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { portfolio } from '@/lib/data';
 import { comboLabel, getStrings, type Combo, type Lang, type Mode } from '@/lib/i18n';
 import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
@@ -15,6 +15,7 @@ import { ProjectModal } from './windows/ProjectModal';
 import { CommandPalette } from './windows/CommandPalette';
 import { CloseConfirm } from './windows/CloseConfirm';
 import { BootLoader } from './BootLoader';
+import { BootUnloader } from './BootUnloader';
 import { Intro } from '@/components/sections/Intro/Intro';
 import { Experience } from '@/components/sections/Experience/Experience';
 import { Skills } from '@/components/sections/Skills/Skills';
@@ -26,12 +27,6 @@ const split = (c: Combo) => c.split('-') as [Mode, Lang];
 export const Terminal = () => {
   useTerminalEffects();
   const t = useTerminal();
-
-  const [minElapsed, setMinElapsed] = useState(false);
-  useEffect(() => {
-    const id = setTimeout(() => setMinElapsed(true), 1500);
-    return () => clearTimeout(id);
-  }, []);
 
   const human = t.mode === 'human';
   const s = useMemo(() => getStrings(t.mode, t.lang), [t.mode, t.lang]);
@@ -57,7 +52,8 @@ export const Terminal = () => {
     };
   }, [overlayActive]);
 
-  if (!t.ready || !minElapsed) return <BootLoader />;
+  if (t.phase === 'unload') return <BootUnloader onDone={t.unloadDone} />;
+  if (t.phase === 'boot') return <BootLoader onDone={t.bootDone} />;
 
   return (
     <div className="min-h-screen bg-bg font-mono">
