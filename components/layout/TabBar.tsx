@@ -34,7 +34,7 @@ export function TabBar({
   shortLabelFor,
 }: Props) {
   return (
-    <div className="fixed inset-x-0 top-0 z-[200] flex h-[38px] items-stretch border-b border-black bg-panel-5">
+    <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-black bg-panel-5">
       {tabsOpen.map((t) => {
         const isActive = t === activeCombo;
         return (
@@ -59,7 +59,7 @@ export function TabBar({
             }}
             onDrop={(e) => e.preventDefault()}
             onDragEnd={onDragEnd}
-            className="mt-1 flex max-w-[320px] cursor-pointer items-center gap-[10px] rounded-t-card border-r border-black px-4 text-[12px]"
+            className="mt-1 flex max-w-80 cursor-pointer items-center gap-2.5 rounded-t-card border-r border-black px-4 text-[12px]"
             style={{
               background: isActive ? '#0c0c0c' : '#131313',
               color: isActive ? '#bbb' : '#666',
@@ -80,7 +80,7 @@ export function TabBar({
           </div>
         );
       })}
-      <div className="relative flex items-center gap-[14px] px-[14px] text-[13px] text-fg-6">
+      <div className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
         {plusItems.length > 0 && (
           <button
             onClick={(e) => {
@@ -94,12 +94,12 @@ export function TabBar({
           </button>
         )}
         {plusOpen && plusItems.length > 0 && (
-          <div className="absolute left-0 top-9 z-[700] flex min-w-[190px] flex-col rounded-card border border-line-5 bg-panel-6 p-[6px] shadow-[0_14px_40px_rgba(0,0,0,.6)]">
+          <div className="absolute left-0 top-9 z-[700] flex min-w-47.5 flex-col rounded-card border border-line-5 bg-panel-6 p-1.5 shadow-[0_14px_40px_rgba(0,0,0,.6)]">
             {plusItems.map((c) => (
               <button
                 key={c}
                 onClick={() => onOpenCombo(c)}
-                className="cursor-pointer rounded-btn border-none bg-transparent px-3 py-[9px] text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-[#222] hover:text-orange"
+                className="cursor-pointer rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-[#222] hover:text-orange"
               >
                 + {shortLabelFor(c)}
               </button>

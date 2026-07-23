@@ -18,7 +18,7 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
     <section
       ref={ref}
       data-screen-label="Intro"
-      className="box-border flex min-h-[calc(100vh-64px)] flex-col justify-center px-[6vw] pb-20 pt-[60px]"
+      className="box-border flex min-h-[calc(100vh-64px)] flex-col justify-center px-[6vw] pb-20 pt-15"
     >
       {isDev && (
         <div className="text-[14px] leading-[1.7]">
@@ -33,7 +33,7 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
               </span>
             ))}
           </div>
-          <div className="mt-[2px]">
+          <div className="mt-0.5">
             <span className="font-bold text-orange">❯ </span>
             <span className="text-[#eee]">{typedCmd}</span>
             <span className="text-ghost">{ghostCmd}</span>
@@ -48,14 +48,14 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
             <br />
             YEROMENKO
           </h1>
-          <div className="my-[26px] mb-[14px] text-[15px] tracking-[2px]">
+          <div className="my-6.5 mb-3.5 text-[15px] tracking-[2px]">
             <span className="text-orange">{strings.roleWord}</span>
             <span className="text-fg-4"> — {heroRole.join(' · ')}</span>
           </div>
-          <div className="max-w-[620px] text-[14px] leading-[1.7]" style={{ color: strings.stmtColor }}>
+          <div className="max-w-155 text-[14px] leading-[1.7]" style={{ color: strings.stmtColor }}>
             {strings.statement}
           </div>
-          <div className="mt-[30px] text-[14px] tracking-[1px] text-fg-5">
+          <div className="mt-7.5 text-[14px] tracking-[1px] text-fg-5">
             {counters.map((c, i) => (
               <span key={c.key}>
                 {i > 0 && <>&nbsp;&nbsp;·&nbsp;&nbsp;</>}
@@ -66,13 +66,13 @@ export function Intro({ ref, isDev, typedCmd, ghostCmd, heroDone, strings, onWor
           <div className="mt-10 flex flex-wrap gap-4">
             <button
               onClick={onWork}
-              className="cursor-pointer rounded-btn border-none bg-orange px-[26px] py-[14px] font-mono text-[13px] font-semibold tracking-[1px] text-black transition-all hover:-translate-y-[2px] hover:bg-orange-dark"
+              className="cursor-pointer rounded-btn border-none bg-orange px-6.5 py-3.5 font-mono text-[13px] font-semibold tracking-[1px] text-black transition-all hover:-translate-y-[2px] hover:bg-orange-dark"
             >
               {strings.btnWork}
             </button>
             <button
               onClick={onContact}
-              className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-[26px] py-[14px] font-mono text-[13px] tracking-[1px] text-[#ccc] transition-all hover:border-orange hover:!text-orange"
+              className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-6.5 py-3.5 font-mono text-[13px] tracking-[1px] text-[#ccc] transition-all hover:border-orange hover:!text-orange"
             >
               {strings.btnContact}
             </button>

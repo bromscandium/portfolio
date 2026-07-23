@@ -43,21 +43,21 @@ export function HelpOverlay({ onClose }: Props) {
         className="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
         style={{ animation: 'modalPop .2s ease-out forwards' }}
       >
-        <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-[18px] py-3 text-[12px] text-fg-3">
+        <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4.5 py-3 text-[12px] text-fg-3">
           <span className="font-bold text-orange">❯ </span>
           <span className="text-[#eee]">man keybindings</span>
           <button onClick={onClose} className="ml-auto cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange">
             ✕
           </button>
         </div>
-        <div className="flex flex-col gap-6 p-[26px]">
+        <div className="flex flex-col gap-6 p-6.5">
           {GROUPS.map((g) => (
             <div key={g.title}>
               <div className="mb-3 text-[11px] uppercase tracking-[3px] text-ghost">{g.title}</div>
-              <div className="flex flex-col gap-[6px]">
+              <div className="flex flex-col gap-1.5">
                 {g.rows.map(([key, desc]) => (
                   <div key={key} className="flex items-baseline gap-4 text-[13px]">
-                    <span className="min-w-[120px] font-semibold text-orange">{key}</span>
+                    <span className="min-w-30 font-semibold text-orange">{key}</span>
                     <span className="text-fg-2">{desc}</span>
                   </div>
                 ))}

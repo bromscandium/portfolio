@@ -44,11 +44,11 @@ export function StatusBar({
 }: Props) {
   const clock = useClock();
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[200] flex h-[26px] items-center justify-between border-t border-[#1f1f1f] bg-panel-3 px-4 text-[11px] text-fg-6">
+    <div className="fixed inset-x-0 bottom-0 z-[200] flex h-6.5 items-center justify-between border-t border-[#1f1f1f] bg-panel-3 px-4 text-[11px] text-fg-6">
       <span>
         <span className="text-orange">[{activeIdx}]</span> {activeName}
       </span>
-      <span className="flex items-center gap-[6px]">
+      <span className="flex items-center gap-1.5">
         <button
           onClick={onViewClick}
           onMouseEnter={onViewEnter}

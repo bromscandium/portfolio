@@ -21,7 +21,7 @@ export function ProjectModal({ project, closing, strings, onClose }: Props) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-[980px] overflow-y-auto rounded-modal border border-orange/50 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
+        className="max-h-[90vh] w-full max-w-245 overflow-y-auto rounded-modal border border-orange/50 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
         style={{ animation: closing ? 'none' : 'modalPop .22s ease-out forwards', willChange: 'transform, opacity' }}
       >
         <div className="sticky top-0 flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4 py-3">
@@ -33,7 +33,7 @@ export function ProjectModal({ project, closing, strings, onClose }: Props) {
             ✕
           </button>
         </div>
-        <div className="grid grid-cols-1 gap-[34px] p-7 md:grid-cols-[minmax(240px,460px)_minmax(280px,1fr)]">
+        <div className="grid grid-cols-1 gap-8.5 p-7 md:grid-cols-[minmax(240px,460px)_minmax(280px,1fr)]">
           <div className="self-start overflow-hidden rounded-card border border-line-4">
             <Image
               src={project.image}
@@ -44,25 +44,25 @@ export function ProjectModal({ project, closing, strings, onClose }: Props) {
             />
           </div>
           <div className="min-w-0">
-            <div className="flex flex-wrap items-baseline gap-[14px]">
+            <div className="flex flex-wrap items-baseline gap-3.5">
               <span className="font-display text-[28px] font-semibold tracking-[1px] text-fg">{project.title}</span>
               <span className="text-[10px] uppercase tracking-[2px] text-orange/80">{strings.catBadge[project.category]}</span>
             </div>
-            <div className="my-4 mb-5 flex flex-col gap-[10px]">
+            <div className="my-4 mb-5 flex flex-col gap-2.5">
               {project.description.map((par, i) => (
                 <p key={i} className="m-0 text-[13.5px] leading-[1.65] text-fg-2">
                   {par}
                 </p>
               ))}
             </div>
-            <div className="mb-[22px] flex flex-wrap gap-[7px]">
+            <div className="mb-5.5 flex flex-wrap gap-1.75">
               {project.technologies.map((t) => (
-                <span key={t} className="rounded-badge border border-[#262626] bg-panel-4 px-[9px] py-1 text-[11px] text-[#aaa]">
+                <span key={t} className="rounded-badge border border-[#262626] bg-panel-4 px-2.25 py-1 text-[11px] text-[#aaa]">
                   {t}
                 </span>
               ))}
             </div>
-            <div className="flex flex-wrap gap-[22px]">
+            <div className="flex flex-wrap gap-5.5">
               {links.length > 0 ? (
                 links.map((l) => (
                   <a
@@ -70,7 +70,7 @@ export function ProjectModal({ project, closing, strings, onClose }: Props) {
                     href={l.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-orange/40 pb-[3px] text-[12px] tracking-[1px] text-orange hover:!text-orange-dark"
+                    className="border-b border-orange/40 pb-0.75 text-[12px] tracking-[1px] text-orange hover:!text-orange-dark"
                   >
                     {l.label}
                   </a>

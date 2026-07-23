@@ -92,12 +92,12 @@ export function Projects({
 
   return (
     <Section ref={ref} label="Projects">
-      <div className="mb-[30px] flex flex-wrap items-baseline justify-between gap-[14px]">
+      <div className="mb-7.5 flex flex-wrap items-baseline justify-between gap-3.5">
         <CommandHeader human={human} command="ls ~/projects" args=" --group-directories-first" heading={strings.hWork} />
         <span className="text-[12px] text-fg-7">{strings.projCount(filtered.length)}</span>
       </div>
       {searchOpen && (
-        <div className="mb-6 flex items-center gap-2 rounded-btn border border-orange/40 bg-panel-0 px-[14px] py-[10px]">
+        <div className="mb-6 flex items-center gap-2 rounded-btn border border-orange/40 bg-panel-0 px-3.5 py-2.5">
           <span className="text-[13px] text-orange">/</span>
           <input
             ref={inputRef}
@@ -118,7 +118,7 @@ export function Projects({
           </button>
         </div>
       )}
-      <div className="mb-8 flex flex-wrap gap-[10px]">
+      <div className="mb-8 flex flex-wrap gap-2.5">
         {strings.catLabels.map((c) => {
           const isActive = cat === c.key;
           return (
@@ -154,7 +154,7 @@ export function Projects({
                 forceOrange ? 'border-orange/55' : 'border-line-4 hover:border-orange/55'
               }`}
             >
-              <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-[14px] py-[10px]">
+              <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">
                 <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">
                   {human ? p.title : `~/projects/${slugify(p.title)}`}
                 </span>
@@ -187,7 +187,7 @@ export function Projects({
                   </div>
                 )}
               </div>
-              <div className="flex items-baseline justify-between gap-[10px] px-4 py-[14px]">
+              <div className="flex items-baseline justify-between gap-2.5 px-4 py-3.5">
                 <span className="font-display text-[17px] font-semibold tracking-[.5px] text-fg">{p.title}</span>
                 <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] text-ghost">
                   {p.technologies.slice(0, 2).join(' · ')}
@@ -197,7 +197,7 @@ export function Projects({
           );
         })}
       </div>
-      <div className="mt-[26px] text-center text-[12px] text-ghost">{strings.workHint}</div>
+      <div className="mt-6.5 text-center text-[12px] text-ghost">{strings.workHint}</div>
     </Section>
   );
 }

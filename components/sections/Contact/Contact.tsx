@@ -18,7 +18,7 @@ export function Contact({ ref, isDev, strings, onCopyEmail }: Props) {
     <section
       ref={ref}
       data-screen-label="Contact"
-      className="box-border flex min-h-[70vh] flex-col justify-center border-t border-line-0 px-[6vw] pb-[70px] pt-[90px]"
+      className="box-border flex min-h-[70vh] flex-col justify-center border-t border-line-0 px-[6vw] pb-17.5 pt-22.5"
     >
       <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
       <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
@@ -50,13 +50,13 @@ export function Contact({ ref, isDev, strings, onCopyEmail }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             title={c.label}
-            className="flex h-[50px] w-[50px] items-center justify-center rounded-card border border-[#262626] text-fg-3 transition-all hover:border-orange hover:!text-orange"
+            className="flex h-12.5 w-12.5 items-center justify-center rounded-card border border-[#262626] text-fg-3 transition-all hover:border-orange hover:!text-orange"
           >
             <Icon name={c.icon} size={20} />
           </a>
         ))}
       </div>
-      <div className="mt-[70px] text-[12px] text-fg-8">
+      <div className="mt-17.5 text-[12px] text-fg-8">
         {isDev && (
           <>
             <span className="text-orange">❯ </span>
