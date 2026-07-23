@@ -30,9 +30,6 @@ export const SkillCard = ({ region, human, strings }: { region: SkillRegion; hum
             <span>
               NAMES: <span className="text-fg-5">{slug}_1</span>
             </span>
-            <span className="ml-auto">
-              RESTARTS: <span className="text-fg-5">0</span>
-            </span>
           </div>
         )}
       </div>
