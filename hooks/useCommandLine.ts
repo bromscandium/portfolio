@@ -26,15 +26,16 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   }, [rows, open]);
 
   const append = (newRows: Row[]) => setRows((r) => [...r, ...newRows]);
+  const nextId = () => idRef.current++;
 
   const run = (raw: string) => {
     if (raw.trim() === 'clear') {
       setRows([]);
     } else {
-      const next: Row[] = [{ id: idRef.current++, text: raw, prompt: true }];
+      const echo: Row = { id: nextId(), text: raw, prompt: true };
       const ctx: CmdContext = { ...actions, clear: () => setRows([]), close: onClose };
-      runCommand(raw, ctx).forEach((l) => next.push({ ...l, id: idRef.current++ }));
-      append(next);
+      const output = runCommand(raw, ctx).map((l) => ({ ...l, id: nextId() }));
+      append([echo, ...output]);
     }
     if (raw.trim()) {
       setHistory((h) => [...h, raw]);
@@ -42,40 +43,55 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     }
   };
 
+  const submit = () => {
+    run(input);
+    setInput('');
+  };
+
+  const complete = () => {
+    const c = autocomplete(input);
+    if (c) setInput(c);
+  };
+
+  const historyPrev = () => {
+    if (!history.length) return;
+    const idx = histIdx === -1 ? history.length - 1 : Math.max(0, histIdx - 1);
+    setHistIdx(idx);
+    setInput(history[idx]);
+  };
+
+  const historyNext = () => {
+    if (histIdx === -1) return;
+    const idx = histIdx + 1;
+    const atEnd = idx >= history.length;
+    setHistIdx(atEnd ? -1 : idx);
+    setInput(atEnd ? '' : history[idx]);
+  };
+
+  const interrupt = () => {
+    append([
+      { id: nextId(), text: input, prompt: true },
+      { id: nextId(), text: '^C', tone: 'muted' },
+    ]);
+    setInput('');
+  };
+
+  const keyHandlers: Record<string, () => void> = {
+    Enter: submit,
+    Tab: complete,
+    ArrowUp: historyPrev,
+    ArrowDown: historyNext,
+  };
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'c' && e.ctrlKey) {
       e.preventDefault();
-      run(input);
-      setInput('');
-    } else if (e.key === 'Tab') {
-      e.preventDefault();
-      const c = autocomplete(input);
-      if (c) setInput(c);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (!history.length) return;
-      const idx = histIdx === -1 ? history.length - 1 : Math.max(0, histIdx - 1);
-      setHistIdx(idx);
-      setInput(history[idx]);
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (histIdx === -1) return;
-      const idx = histIdx + 1;
-      if (idx >= history.length) {
-        setHistIdx(-1);
-        setInput('');
-      } else {
-        setHistIdx(idx);
-        setInput(history[idx]);
-      }
-    } else if (e.key === 'c' && e.ctrlKey) {
-      e.preventDefault();
-      append([
-        { id: idRef.current++, text: input, prompt: true },
-        { id: idRef.current++, text: '^C', tone: 'muted' },
-      ]);
-      setInput('');
+      return interrupt();
     }
+    const handler = keyHandlers[e.key];
+    if (!handler) return;
+    e.preventDefault();
+    handler();
   };
 
   const startResize = (e: React.PointerEvent) => {
@@ -95,4 +111,4 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   };
 
   return { rows, input, setInput, height, inputRef, bodyRef, onKeyDown, startResize };
-}
+};
