@@ -49,7 +49,10 @@ const Row = ({ action, active, onRun }: { action: Action; active: boolean; onRun
 );
 
 export const CommandPalette = () => {
-  const { mode, lang, crtOn, goTo, openProject, setCombo, setCrt, toggleHelp, closePalette } = useTerminal();
+  const mode = useTerminal((s) => s.mode);
+  const lang = useTerminal((s) => s.lang);
+  const crtOn = useTerminal((s) => s.crtOn);
+  const { goTo, openProject, setCombo, setCrt, toggleHelp, closePalette } = useTerminal.getState();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
