@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { Combo } from '@/lib/i18n';
 import { ALL_COMBOS } from '@/store/constants';
 import { Tab } from './Tab';
@@ -37,10 +38,21 @@ export const TabBar = ({
   shortLabelFor,
   onOpenPalette,
 }: Props) => {
+  const plusRef = useRef<HTMLDivElement>(null);
+
   const togglePlus = (e: React.MouseEvent) => {
     e.stopPropagation();
     setPlusOpen(!plusOpen);
   };
+
+  useEffect(() => {
+    if (!plusOpen) return;
+    const onOutside = (e: PointerEvent) => {
+      if (!plusRef.current?.contains(e.target as Node)) setPlusOpen(false);
+    };
+    window.addEventListener('pointerdown', onOutside);
+    return () => window.removeEventListener('pointerdown', onOutside);
+  }, [plusOpen, setPlusOpen]);
 
   return (
     <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-black bg-panel-5">
@@ -59,7 +71,7 @@ export const TabBar = ({
         />
       ))}
       {plusItems.length > 0 && (
-        <div className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
+        <div ref={plusRef} className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
           <button
             onClick={togglePlus}
             title="open new tab / command palette"
