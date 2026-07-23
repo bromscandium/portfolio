@@ -9,6 +9,7 @@ export interface SessionSlice {
   mode: Mode;
   lang: Lang;
   tabsOpen: Combo[];
+  closeConfirm: boolean;
   restore: () => void;
   setCombo: (m: Mode, l: Lang, fromPicker?: boolean) => void;
   startDrag: (t: Combo) => void;
@@ -18,12 +19,15 @@ export interface SessionSlice {
   cycleTab: (dir: number) => void;
   openNewTab: () => void;
   unopenedCombos: () => Combo[];
+  confirmClose: () => void;
+  cancelClose: () => void;
 }
 
 export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlice> = (set, get) => ({
   mode: 'dev',
   lang: 'en',
   tabsOpen: ['dev-en'],
+  closeConfirm: false,
 
   restore: () => {
     try {
@@ -68,7 +72,10 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
 
   closeTab: (t) => {
     const { tabsOpen, mode, lang, setCombo } = get();
-    if (tabsOpen.length < 2) return;
+    if (tabsOpen.length < 2) {
+      set({ closeConfirm: true });
+      return;
+    }
     const left = tabsOpen.filter((x) => x !== t);
     set({ tabsOpen: left });
     if (`${mode}-${lang}` === t) {
@@ -90,4 +97,13 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     }
   },
   unopenedCombos: () => ALL_COMBOS.filter((c) => !get().tabsOpen.includes(c)),
+
+  confirmClose: () => {
+    try {
+      localStorage.removeItem('brom_mode');
+      localStorage.removeItem('brom_lang');
+    } catch {}
+    set({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: true });
+  },
+  cancelClose: () => set({ closeConfirm: false }),
 });

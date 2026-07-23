@@ -49,6 +49,17 @@ export const useTerminalEffects = () => {
         const [m, l] = ALL_COMBOS[Number(e.code.slice(5)) - 1].split('-') as [Mode, Lang];
         return st.setCombo(m, l);
       }
+      if (st.closeConfirm) {
+        if (e.key === 'Escape' || e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          return st.cancelClose();
+        }
+        if (e.key.toLowerCase() === 'y') {
+          e.preventDefault();
+          return st.confirmClose();
+        }
+        return;
+      }
       if (e.key === 'Escape') {
         if (st.paletteOpen) return st.closePalette();
         if (st.helpOpen) return st.closeHelp();

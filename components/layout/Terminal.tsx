@@ -13,6 +13,7 @@ import { ProfilePicker } from './windows/ProfilePicker';
 import { HelpOverlay } from './windows/HelpOverlay';
 import { ProjectModal } from './windows/ProjectModal';
 import { CommandPalette } from './windows/CommandPalette';
+import { CloseConfirm } from './windows/CloseConfirm';
 import { Intro } from '@/components/sections/Intro/Intro';
 import { Experience } from '@/components/sections/Experience/Experience';
 import { Skills } from '@/components/sections/Skills/Skills';
@@ -41,7 +42,7 @@ export const Terminal = () => {
     document.title = human ? `portfolio — ${name}` : `~/${name} — zsh`;
   }, [t.active, human, s]);
 
-  const overlayActive = t.paletteOpen || t.helpOpen || t.picker || t.expandedId !== null;
+  const overlayActive = t.paletteOpen || t.helpOpen || t.picker || t.closeConfirm || t.expandedId !== null;
   useEffect(() => {
     document.body.style.overflow = overlayActive ? 'hidden' : '';
     return () => {
@@ -89,6 +90,8 @@ export const Terminal = () => {
       {t.helpOpen && <HelpOverlay onClose={t.closeHelp} />}
 
       {t.paletteOpen && <CommandPalette />}
+
+      {t.closeConfirm && <CloseConfirm onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
 
       {modalP && <ProjectModal project={modalP} closing={t.closingM} strings={s} onClose={t.closeModal} />}
 
