@@ -27,7 +27,7 @@ export const autocomplete = (input: string): Completion => {
   if (cmd === 'cd') pool = [...asOptions(Object.keys(SECTIONS), true), ...asOptions(portfolio.map((p) => `projects/${slugify(p.title)}`), true)];
   else if (cmd === 'open') pool = asOptions(portfolio.map((p) => slugify(p.title)), true);
   else if (cmd === 'cat') pool = asOptions(['about', 'education', 'skills'], false);
-  else if (cmd === 'docker') pool = asOptions(['ps'], false);
+  else if (cmd === 'docker') pool = asOptions(['ps', 'images'], false);
   else if (cmd === 'git') pool = asOptions(['log', 'tag', 'status', 'blame'], false);
 
   return { base: `${cmd} `, options: pool.filter((o) => o.value.startsWith(frag)) };

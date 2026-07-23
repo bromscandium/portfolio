@@ -143,15 +143,38 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok('up 2+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
 
     case 'docker': {
-      if (args[0] !== 'ps') return [ok('usage: docker ps', 'muted')];
-      ctx.goTo(2);
-      const out: CmdLine[] = [ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted')];
-      skillMap.forEach((r) => {
-        const maxY = Math.max(...r.items.map((s) => s.y));
-        const image = `stack/${r.region.toLowerCase()}:latest`;
-        out.push(ok(`${r.cid}   ${image.padEnd(30)} ${`Up ${maxY} years`.padEnd(15)} ${r.region.toLowerCase()}_1`));
-      });
-      return out;
+      const sub = args[0];
+      if (!sub) return [ok('usage: docker <ps|images> [--filter label=<region>]', 'muted')];
+
+      if (sub === 'ps') {
+        const fi = args.findIndex((a) => a === '--filter');
+        const raw = fi >= 0 ? (args[fi + 1] ?? '') : '';
+        const label = raw.replace(/^['"]?label=/, '').replace(/['"]$/, '').toLowerCase();
+        let regions = skillMap;
+        if (label && label !== 'stack') regions = skillMap.filter((r) => r.region.toLowerCase() === label);
+        if (!regions.length) {
+          return [ok(`docker: no containers matching label "${label}" (try: ${skillMap.map((r) => r.region.toLowerCase()).join(', ')})`, 'error')];
+        }
+        ctx.goTo(2);
+        const out: CmdLine[] = [ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted')];
+        regions.forEach((r) => {
+          const maxY = Math.max(...r.items.map((s) => s.y));
+          const image = `stack/${r.region.toLowerCase()}:latest`;
+          out.push(ok(`${r.cid}   ${image.padEnd(30)} ${`Up ${maxY} years`.padEnd(15)} ${r.region.toLowerCase()}_1`));
+        });
+        return out;
+      }
+
+      if (sub === 'images') {
+        ctx.goTo(2);
+        const out: CmdLine[] = [ok('REPOSITORY            TAG       IMAGE ID       SIZE', 'muted')];
+        skillMap.forEach((r) => {
+          out.push(ok(`${`stack/${r.region.toLowerCase()}`.padEnd(21)} ${'latest'.padEnd(9)} ${r.cid.slice(0, 12)}   ${r.items.length * 37}MB`));
+        });
+        return out;
+      }
+
+      return [ok(`docker: '${sub}' is not a docker command`, 'error')];
     }
 
     case 'git':
