@@ -3,6 +3,9 @@ import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
 import { ALL_COMBOS } from '@/store/constants';
 import { arrowDirection } from '@/lib/keys';
 import { splitCombo } from '@/lib/modes';
+import { SECTION_LABELS } from '@/lib/config';
+
+const LAST_SECTION = SECTION_LABELS.length - 1;
 
 export const useTerminalEffects = () => {
   const session = useTerminal((s) => s.session);
@@ -82,23 +85,26 @@ export const useTerminalEffects = () => {
       const dir = arrowDirection(e.key);
       if (dir) {
         e.preventDefault();
-        if (dir === 'down') return st.goTo(Math.min(st.active + 1, 4));
+        if (dir === 'down') return st.goTo(Math.min(st.active + 1, LAST_SECTION));
         if (dir === 'up') return st.goTo(Math.max(st.active - 1, 0));
         if (dir === 'right') return st.cycleTab(1);
         return st.cycleTab(-1);
+      }
+
+      if (/^[1-9]$/.test(e.key)) {
+        const n = Number(e.key);
+        if (n <= SECTION_LABELS.length) {
+          e.preventDefault();
+          return st.goTo(n - 1);
+        }
+        return;
       }
 
       switch (e.key) {
         case 'g':
           return st.goTo(0);
         case 'G':
-          return st.goTo(4);
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-          return st.goTo(Number(e.key) - 1);
+          return st.goTo(LAST_SECTION);
         case ']':
           return st.cycleTab(1);
         case '[':

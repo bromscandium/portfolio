@@ -1,7 +1,8 @@
 import type { StateCreator } from 'zustand';
+import { SECTION_LABELS } from '@/lib/config';
 import type { TerminalState } from '../terminal';
 
-const sectionEls: (HTMLElement | null)[] = [null, null, null, null, null];
+const sectionEls: (HTMLElement | null)[] = SECTION_LABELS.map(() => null);
 
 export const setSectionEl = (i: number, el: HTMLElement | null) => {
   sectionEls[i] = el;
