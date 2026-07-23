@@ -87,7 +87,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                   <span
                     key={o.value}
                     className="whitespace-pre"
-                    style={{ background: i === menu.index ? '#161616' : 'transparent', color: i === menu.index ? '#f8ad40' : '#8a8a8a' }}
+                    style={{ background: i === menu.index ? '#161616' : 'transparent', color: i === menu.index ? 'var(--color-orange)' : '#8a8a8a' }}
                   >
                     {o.value}
                     {o.dir && <span className="text-fg-8">/</span>}

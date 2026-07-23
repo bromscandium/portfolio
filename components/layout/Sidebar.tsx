@@ -11,7 +11,7 @@ const NavItem = ({ label, branch, active, onClick }: { label: string; branch: st
   <button
     onClick={onClick}
     className="flex cursor-pointer items-center gap-2 border-none bg-transparent py-1.25 text-left font-mono text-[13px] transition-colors hover:!text-orange"
-    style={{ color: active ? '#f8ad40' : '#8a8a8a' }}
+    style={{ color: active ? 'var(--color-orange)' : '#8a8a8a' }}
   >
     <span className="text-fg-10">{branch}</span>
     <span>{label}</span>

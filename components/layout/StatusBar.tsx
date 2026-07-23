@@ -55,7 +55,7 @@ export const StatusBar = ({
           onMouseLeave={onViewLeave}
           title="switch view"
           className="cursor-pointer border-none bg-transparent p-0 font-mono text-[11px] transition-colors"
-          style={{ color: viewHover ? '#f8ad40' : '#666' }}
+          style={{ color: viewHover ? 'var(--color-orange)' : '#666' }}
         >
           {viewValue}
         </button>
@@ -66,7 +66,7 @@ export const StatusBar = ({
           onMouseLeave={onLangLeave}
           title="switch language"
           className="cursor-pointer border-none bg-transparent p-0 font-mono text-[11px] transition-colors"
-          style={{ color: langHover ? '#f8ad40' : '#666' }}
+          style={{ color: langHover ? 'var(--color-orange)' : '#666' }}
         >
           {langValue}
         </button>

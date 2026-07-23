@@ -51,8 +51,8 @@ export const ProfilePicker = ({ lang, onPick }: Props) => {
                   className="cursor-pointer rounded-btn border font-mono text-[11px] transition-colors duration-300"
                   style={{
                     padding: '4px 10px',
-                    background: sel === l.key ? '#f8ad40' : 'transparent',
-                    borderColor: sel === l.key ? '#f8ad40' : '#2a2a2a',
+                    background: sel === l.key ? 'var(--color-orange)' : 'transparent',
+                    borderColor: sel === l.key ? 'var(--color-orange)' : '#2a2a2a',
                     color: sel === l.key ? '#000' : '#8a8a8a',
                   }}
                 >

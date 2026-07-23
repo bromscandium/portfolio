@@ -11,7 +11,7 @@ const Point = ({ text }: { text: string }) => (
 export const JobEntry = ({ job, index, human }: { job: Job; index: number; human: boolean }) => (
   <div className="grid grid-cols-[26px_1fr] gap-4.5">
     <div className="flex flex-col items-center">
-      <span className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange" style={{ background: index === 0 ? '#f8ad40' : '#0c0c0c' }} />
+      <span className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange" style={{ background: index === 0 ? 'var(--color-orange)' : '#0c0c0c' }} />
       <span className="w-px flex-1 bg-line-4" />
     </div>
     <div className="pb-11">

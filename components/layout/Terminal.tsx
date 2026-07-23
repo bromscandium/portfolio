@@ -89,7 +89,7 @@ export const Terminal = () => {
             key={n}
             onClick={() => t.goTo(i)}
             className="shrink-0 cursor-pointer whitespace-nowrap rounded-btn border-none bg-transparent px-2 py-1 font-mono text-[12px]"
-            style={{ color: t.active === i ? '#f8ad40' : '#8a8a8a' }}
+            style={{ color: t.active === i ? 'var(--color-orange)' : '#8a8a8a' }}
           >
             {n}
           </button>

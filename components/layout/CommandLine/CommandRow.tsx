@@ -7,7 +7,7 @@ const TONE: Record<Tone, string> = {
   default: '#b5b5b5',
   muted: '#565f89',
   error: '#e06c75',
-  accent: '#f8ad40',
+  accent: 'var(--color-orange)',
   green: '#98c379',
   cyan: '#56b6c2',
   yellow: '#e5c07b',

@@ -21,7 +21,7 @@ const Row =({ action, active, onRun, onHover }: { action: Action; active: boolea
       onRun(action);
     }}
     className="flex w-full items-baseline gap-3 rounded-btn border-none px-3 py-2 text-left font-mono text-[13px] transition-colors"
-    style={{ background: active ? '#161616' : 'transparent', color: active ? '#f8ad40' : '#b5b5b5' }}
+    style={{ background: active ? '#161616' : 'transparent', color: active ? 'var(--color-orange)' : '#b5b5b5' }}
   >
     <span className="min-w-0 flex-1 truncate">{action.label}</span>
     {action.shortcut ? (

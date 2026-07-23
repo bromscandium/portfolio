@@ -33,8 +33,8 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
     className="cursor-pointer rounded-btn border font-mono text-[12px] transition-colors hover:border-orange hover:!text-orange"
     style={{
       padding: '7px 14px',
-      background: active ? '#f8ad40' : 'transparent',
-      borderColor: active ? '#f8ad40' : '#2a2a2a',
+      background: active ? 'var(--color-orange)' : 'transparent',
+      borderColor: active ? 'var(--color-orange)' : '#2a2a2a',
       color: active ? '#000' : '#8a8a8a',
     }}
   >

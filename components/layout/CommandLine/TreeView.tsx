@@ -145,7 +145,7 @@ export const TreeView = ({ actions, onExit }: Props) => {
             style={{ background: active ? '#161616' : 'transparent' }}
           >
             <span className="text-fg-9">{f.prefix}</span>
-            <span style={{ color: active ? '#f8ad40' : isProject ? '#56b6c2' : '#ddd' }}>
+            <span style={{ color: active ? 'var(--color-orange)' : isProject ? '#56b6c2' : '#ddd' }}>
               {marker}
               {f.node.label}
             </span>
