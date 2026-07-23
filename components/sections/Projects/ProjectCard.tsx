@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { Project } from '@/lib/data';
 import { slugify } from '@/lib/i18n';
+import { Heading } from '@/components/common/Typography';
 
 interface Props {
   project: Project;
@@ -56,7 +57,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
         )}
       </div>
       <div className="flex items-baseline justify-between gap-2.5 px-4 py-3.5">
-        <span className="font-display text-[17px] font-semibold tracking-[.5px] text-fg">{project.title}</span>
+        <Heading variant="card">{project.title}</Heading>
         <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] text-ghost">
           {project.technologies.slice(0, 2).join(' · ')}
         </span>

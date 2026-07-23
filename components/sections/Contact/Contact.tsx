@@ -2,6 +2,7 @@ import { contacts } from '@/lib/data';
 import type { ContactLink } from '@/lib/types';
 import { Icon } from '@/components/common/Icon';
 import { CommandHeader } from '@/components/common/CommandHeader';
+import { Heading } from '@/components/common/Typography';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 
@@ -46,9 +47,9 @@ export const Contact = ({ ref, isDev, strings, onCopyEmail }: Props) => {
     >
       <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
       <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
-      <h2 className="text-stroke-orange m-0 mb-9 font-display text-[clamp(60px,8vw,120px)] font-light leading-[.95] tracking-[5px]">
+      <Heading variant="stroke" className="m-0 mb-9">
         LET&apos;S TALK
-      </h2>
+      </Heading>
       <a
         href={`mailto:${EMAIL}`}
         onClick={copyEmail}

@@ -1,4 +1,5 @@
 import type { Education, Hackathon, Job } from '@/lib/types';
+import { Heading } from '@/components/common/Typography';
 
 const Point = ({ text }: { text: string }) => (
   <div className="flex gap-3 text-[13.5px] leading-[1.6] text-fg-2">
@@ -20,10 +21,10 @@ export const JobEntry = ({ job, index, human }: { job: Job; index: number; human
         <span className="text-ghost">{job.loc}</span>
         {!human && index === 0 && <span className="text-green">(HEAD -&gt; main)</span>}
       </div>
-      <div className="mt-2.5 font-display text-[24px] font-semibold tracking-[1px] text-fg">
+      <Heading variant="role" as="div" className="mt-2.5">
         {job.role}
         <span className="font-light text-fg-3"> — {job.org}</span>
-      </div>
+      </Heading>
       <div className="mt-3.5 flex flex-col gap-2">
         {job.points.map((pt, k) => (
           <Point key={k} text={pt} />

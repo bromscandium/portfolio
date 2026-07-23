@@ -1,3 +1,5 @@
+import { Heading } from './Typography';
+
 interface Props {
   human: boolean;
   command: string;
@@ -12,7 +14,11 @@ export const CommandHeader = ({ human, command, args, heading, variant = 'main',
     if (variant === 'sub') {
       return <div className={`text-[12px] uppercase tracking-[3px] text-fg-5 ${className}`}>{heading}</div>;
     }
-    return <h2 className={`m-0 font-display text-[30px] font-semibold tracking-[2px] text-fg ${className}`}>{heading}</h2>;
+    return (
+      <Heading variant="section" className={`m-0 ${className}`}>
+        {heading}
+      </Heading>
+    );
   }
   return (
     <div className={`${variant === 'sub' ? 'text-[13px]' : 'text-[14px]'} ${className}`}>

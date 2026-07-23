@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
 import { slugify, type Strings } from '@/lib/i18n';
+import { Heading } from '@/components/common/Typography';
 
 interface Props {
   project: Project;
@@ -57,7 +58,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-baseline gap-3.5">
-              <span className="font-display text-[28px] font-semibold tracking-[1px] text-fg">{project.title}</span>
+              <Heading variant="modal">{project.title}</Heading>
               <span className="text-[10px] uppercase tracking-[2px] text-orange/80">{strings.catBadge[project.category]}</span>
             </div>
             <div className="my-4 mb-5 flex flex-col gap-2.5">

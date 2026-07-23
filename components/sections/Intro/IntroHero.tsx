@@ -1,4 +1,5 @@
 import { counters, heroRole } from '@/lib/data';
+import { Heading } from '@/components/common/Typography';
 import type { Strings } from '@/lib/i18n';
 
 const Counter = ({ n, label, first }: { n: string; label: string; first: boolean }) => (
@@ -16,11 +17,11 @@ interface Props {
 
 export const IntroHero = ({ strings, onWork, onContact }: Props) => (
   <div className="fade-up mt-9">
-    <h1 className="m-0 font-display text-[clamp(56px,7.5vw,108px)] font-light leading-none tracking-[5px] text-fg">
+    <Heading variant="display" className="m-0">
       {strings.heroName[0]}
       <br />
       {strings.heroName[1]}
-    </h1>
+    </Heading>
     <div className="my-6.5 mb-3.5 text-[15px] tracking-[2px]">
       <span className="text-orange">{strings.roleWord}</span>
       <span className="text-fg-4"> — {heroRole.join(' · ')}</span>
