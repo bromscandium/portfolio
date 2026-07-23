@@ -11,6 +11,7 @@ export const Icon = ({ name, size = 20, className }: { name: IconName; size?: nu
         width: size,
         height: size,
         backgroundColor: 'currentColor',
+        transition: 'background-color 0.3s ease',
         WebkitMaskImage: `url(${url})`,
         maskImage: `url(${url})`,
         WebkitMaskRepeat: 'no-repeat',
