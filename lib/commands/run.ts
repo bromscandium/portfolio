@@ -147,7 +147,23 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'docker': {
       const sub = args[0];
-      if (!sub) return [ok('usage: docker <ps|images> [--filter label=<region>]', 'muted')];
+      if (!sub) return [ok('usage: docker <ps|images|inspect> [--filter label=<region>]', 'muted')];
+
+      if (sub === 'inspect') {
+        const target = (args[1] ?? '').replace(/^stack\//, '').replace(/:latest$/, '').toLowerCase();
+        const r = skillMap.find((x) => x.region.toLowerCase() === target);
+        if (!r) return [ok(`docker inspect: no such container (try: ${skillMap.map((x) => x.region.toLowerCase()).join(', ')})`, 'error')];
+        ctx.goTo(2);
+        const maxY = Math.max(...r.items.map((s) => s.y));
+        return [
+          ok(`stack/${r.region.toLowerCase()}:latest`, 'cyan'),
+          ok(`  Id:      ${r.cid}`, 'muted'),
+          ok(`  Status:  Up ${maxY} years`, 'muted'),
+          ok(`  Names:   ${r.region.toLowerCase()}_1`, 'muted'),
+          ok('  Layers:'),
+          ...r.items.map((s, i) => ok(`  ${i === r.items.length - 1 ? '└─' : '├─'} ${s.name.padEnd(28)} ${s.y.toFixed(1)}y`)),
+        ];
+      }
 
       if (sub === 'ps') {
         const fi = args.findIndex((a) => a === '--filter');

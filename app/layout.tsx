@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://bromscandium.com',
     siteName: 'bromscandium',
-    title: 'Yaroslav Yeromenko — Full-Stack Developer',
+    title: 'Yaroslav Yeromenko | Full-Stack Developer',
     description: DESCRIPTION,
   },
   twitter: {
     card: 'summary',
-    title: 'Yaroslav Yeromenko — Full-Stack Developer',
+    title: 'Yaroslav Yeromenko | Full-Stack Developer',
     description: DESCRIPTION,
   },
 };
