@@ -1,4 +1,5 @@
 import { heroPrompt } from '@/lib/data';
+import { TERMINAL_ROOT } from '@/lib/config';
 import type { PromptTool } from '@/lib/types';
 
 const PromptSegment = ({ tool }: { tool: PromptTool }) => (
@@ -13,7 +14,7 @@ const PromptSegment = ({ tool }: { tool: PromptTool }) => (
 export const IntroPrompt = ({ typedCmd, ghostCmd }: { typedCmd: string; ghostCmd: string }) => (
   <div className="text-[14px] leading-[1.7]">
     <div>
-      <span className="font-bold text-cyan">~/yaroslav</span>
+      <span className="font-bold text-cyan">{TERMINAL_ROOT}</span>
       {heroPrompt.map((tool) => (
         <PromptSegment key={tool.name} tool={tool} />
       ))}

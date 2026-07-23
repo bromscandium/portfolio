@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { portfolio, type Project } from '@/lib/data';
 import { slugify } from '@/lib/i18n';
+import { TERMINAL_ROOT } from '@/lib/config';
 import type { CmdContext } from '@/lib/commands';
 
 interface TreeNode {
@@ -72,6 +73,10 @@ export const TreeView = ({ actions, onExit }: Props) => {
   const flat = useMemo(() => flatten(TREE, expanded), [expanded]);
   const selClamped = Math.min(sel, flat.length - 1);
 
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
+
   const toggle = (key: string) =>
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -119,8 +124,8 @@ export const TreeView = ({ actions, onExit }: Props) => {
   };
 
   return (
-    <div ref={ref} tabIndex={0} autoFocus onKeyDown={onKeyDown} onBlur={onExit} className="outline-none">
-      <div className="font-bold text-cyan">~/yaroslav</div>
+    <div ref={ref} tabIndex={0} onKeyDown={onKeyDown} className="min-h-full outline-none">
+      <div className="font-bold text-cyan">{TERMINAL_ROOT}</div>
       {flat.map((f, i) => {
         const active = i === selClamped;
         const marker = f.expandable ? (f.expanded ? '▾ ' : '▸ ') : '';

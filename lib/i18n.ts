@@ -1,3 +1,5 @@
+import { TERMINAL_ROOT } from './config';
+
 export type Mode = 'dev' | 'human';
 export type Lang = 'en' | 'uk';
 export type Combo = `${Mode}-${Lang}`;
@@ -11,8 +13,8 @@ export const comboLabel = (combo: string, short: boolean): string => {
         'human-uk': 'простою українською',
       }
     : {
-        'dev-en': '~/portfolio — zsh',
-        'dev-uk': '~/портфоліо — zsh',
+        'dev-en': `${TERMINAL_ROOT} — zsh`,
+        'dev-uk': `${TERMINAL_ROOT} — zsh`,
         'human-en': 'portfolio',
         'human-uk': 'портфоліо',
       };
@@ -62,7 +64,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
   const uk = lang === 'uk';
 
   return {
-    navRoot: human ? (uk ? 'Ярослав' : 'Yaroslav') : '~/yaroslav',
+    navRoot: human ? (uk ? 'Ярослав' : 'Yaroslav') : TERMINAL_ROOT,
     navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
     roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
     statement:

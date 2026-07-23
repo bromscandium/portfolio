@@ -1,4 +1,5 @@
 import type { CmdContext } from '@/lib/commands';
+import { TERMINAL_ROOT } from '@/lib/config';
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
@@ -41,48 +42,48 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           className="cursor-pointer transition-colors hover:text-orange"
           title="click to close"
         >
-          zsh — ~/yaroslav
+          zsh — {TERMINAL_ROOT}
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button onClick={onClose} className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange" aria-label="close terminal">
           ✕
         </button>
       </div>
-      <div ref={bodyRef} onClick={() => !treeOpen && inputRef.current?.focus()} className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
-        {rows.map((r) => (
-          <CommandRow key={r.id} row={r} />
-        ))}
-        {treeOpen ? (
+      {treeOpen ? (
+        <div className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
+          <TreeView actions={actions} onExit={closeTree} />
+        </div>
+      ) : (
+        <div ref={bodyRef} onClick={() => inputRef.current?.focus()} className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
+          {rows.map((r) => (
+            <CommandRow key={r.id} row={r} />
+          ))}
           <div className="mt-2">
-            <TreeView actions={actions} onExit={closeTree} />
-          </div>
-        ) : (
-        <div className="mt-2">
-          <PathLine />
-          <div className="flex items-center gap-2">
-            <span className="text-orange">❯</span>
-            <div className="relative min-w-0 flex-1">
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={onKeyDown}
-                className="w-full border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
-                spellCheck={false}
-                autoComplete="off"
-                autoCapitalize="off"
-              />
-              {ghost && (
-                <span className="pointer-events-none absolute left-0 top-0 whitespace-pre font-mono text-[13px] text-fg-6" aria-hidden>
-                  <span className="invisible">{input}</span>
-                  {ghost}
-                </span>
-              )}
+            <PathLine />
+            <div className="flex items-center gap-2">
+              <span className="text-orange">❯</span>
+              <div className="relative min-w-0 flex-1">
+                <input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  className="w-full border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
+                  spellCheck={false}
+                  autoComplete="off"
+                  autoCapitalize="off"
+                />
+                {ghost && (
+                  <span className="pointer-events-none absolute left-0 top-0 whitespace-pre font-mono text-[13px] text-fg-6" aria-hidden>
+                    <span className="invisible">{input}</span>
+                    {ghost}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
