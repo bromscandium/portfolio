@@ -55,11 +55,11 @@ export const Tab = ({ combo, active, label, onSelect, onClose, onMiddleClose, on
         boxShadow: active ? 'inset 0 2px 0 rgba(248,173,64,.5)' : 'none',
       }}
     >
-      <span className="text-orange">{combo.startsWith('dev') ? '❯' : '✦'}</span>
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>
-      <span onClick={close} className="ml-2 cursor-pointer text-fg-6 transition-colors hover:text-fg">
+      <span onClick={close} className="cursor-pointer text-fg-6 transition-colors hover:text-fg">
         ✕
       </span>
+      <span className="text-orange">{combo.startsWith('dev') ? '❯' : '✦'}</span>
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>
     </div>
   );
 };
