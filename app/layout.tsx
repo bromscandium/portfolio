@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   creator: 'Yaroslav Yeromenko',
   keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Developer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
-  icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.png' }] },
+  icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }] },
   openGraph: {
     type: 'website',
     url: 'https://bromscandium.com',
