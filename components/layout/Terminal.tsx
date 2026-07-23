@@ -41,8 +41,14 @@ export const Terminal = () => {
 
   useEffect(() => {
     const name = s.navNames[t.active];
-    document.title = human ? `portfolio | ${name}` : `~/${name} | zsh`;
-  }, [t.active, human, s]);
+    const uk = t.lang === 'uk';
+    let title: string;
+    if (t.phase === 'boot') title = uk ? 'завантаження… | portfolio' : 'booting… | portfolio';
+    else if (t.phase === 'unload') title = uk ? 'закриття сесії… | portfolio' : 'closing session… | portfolio';
+    else if (t.picker) title = uk ? 'вибір профілю | portfolio' : 'select profile | portfolio';
+    else title = human ? `portfolio | ${name}` : `~/${name} | zsh`;
+    document.title = title;
+  }, [t.phase, t.picker, t.active, t.lang, human, s]);
 
   const overlayActive = t.paletteOpen || t.helpOpen || t.picker || t.closeConfirm || t.expandedId !== null;
   useEffect(() => {
