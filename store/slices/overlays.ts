@@ -9,6 +9,7 @@ export interface OverlaySlice {
   langHover: boolean;
   viewHover: boolean;
   typedN: number;
+  session: number;
   helpOpen: boolean;
   searchOpen: boolean;
   cmdOpen: boolean;
@@ -39,6 +40,7 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   langHover: false,
   viewHover: false,
   typedN: 0,
+  session: 0,
   helpOpen: false,
   searchOpen: false,
   cmdOpen: false,

@@ -85,7 +85,7 @@ export const Terminal = () => {
         ))}
       </div>
 
-      {t.picker && <ProfilePicker onPickDev={() => t.setCombo('dev', t.lang, true)} onPickHuman={() => t.setCombo('human', t.lang, true)} />}
+      {t.picker && <ProfilePicker lang={t.lang} onPick={(m, l) => t.setCombo(m, l, true)} />}
 
       {t.helpOpen && <HelpOverlay onClose={t.closeHelp} />}
 

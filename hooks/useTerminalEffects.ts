@@ -4,12 +4,15 @@ import { ALL_COMBOS } from '@/store/constants';
 import type { Lang, Mode } from '@/lib/i18n';
 
 export const useTerminalEffects = () => {
+  const session = useTerminal((s) => s.session);
+
   useEffect(() => {
     useTerminal.getState().restore();
   }, []);
 
   useEffect(() => {
     const { setTyped } = useTerminal.getState();
+    setTyped(0);
     let n = 0;
     const id = setInterval(() => {
       n += 1;
@@ -24,7 +27,7 @@ export const useTerminalEffects = () => {
       clearInterval(id);
       clearTimeout(fb);
     };
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     const { setActive } = useTerminal.getState();

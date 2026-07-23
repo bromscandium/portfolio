@@ -103,7 +103,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       localStorage.removeItem('brom_mode');
       localStorage.removeItem('brom_lang');
     } catch {}
-    set({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: true });
+    set((st) => ({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: true, typedN: 0, session: st.session + 1 }));
   },
   cancelClose: () => set({ closeConfirm: false }),
 });
