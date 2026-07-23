@@ -1,8 +1,7 @@
 import { TERMINAL_ROOT } from './config';
+import type { Lang, Mode } from './modes';
 
-export type Mode = 'dev' | 'human';
-export type Lang = 'en' | 'uk';
-export type Combo = `${Mode}-${Lang}`;
+export type { Mode, Lang, Combo } from './modes';
 
 export const comboLabel = (combo: string, short: boolean): string => {
   const map: Record<string, string> = short

@@ -1,4 +1,5 @@
 import type { Combo } from '@/lib/i18n';
+import { MODE_META, splitCombo } from '@/lib/modes';
 
 interface Props {
   combo: Combo;
@@ -55,7 +56,7 @@ export const Tab = ({ combo, active, label, onSelect, onClose, onMiddleClose, on
         boxShadow: active ? 'inset 0 2px 0 rgba(248,173,64,.5)' : 'none',
       }}
     >
-      <span className="text-orange">{combo.startsWith('dev') ? '❯' : '✦'}</span>
+      <span className="text-orange">{MODE_META[splitCombo(combo)[0]].icon}</span>
       <span className="overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>
       <span onClick={close} className="ml-auto cursor-pointer text-fg-6 transition-colors hover:text-fg">
         ✕

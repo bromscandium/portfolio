@@ -5,11 +5,18 @@ import { ALL_COMBOS } from '../constants';
 
 let dragFrom: Combo | null = null;
 
+const persistTabs = (tabs: Combo[]) => {
+  try {
+    localStorage.setItem('brom_tabs', JSON.stringify(tabs));
+  } catch {}
+};
+
 export interface SessionSlice {
   mode: Mode;
   lang: Lang;
   tabsOpen: Combo[];
   closeConfirm: boolean;
+  ready: boolean;
   restore: () => void;
   setCombo: (m: Mode, l: Lang, fromPicker?: boolean) => void;
   startDrag: (t: Combo) => void;
@@ -28,26 +35,33 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
   lang: 'en',
   tabsOpen: ['dev-en'],
   closeConfirm: false,
+  ready: false,
 
   restore: () => {
     try {
       const m = localStorage.getItem('brom_mode');
       const l = localStorage.getItem('brom_lang');
       const savedLang: Lang = l === 'uk' || l === 'en' ? l : 'en';
-      if (m === 'dev' || m === 'human') set({ mode: m, lang: savedLang, tabsOpen: [`${m}-${savedLang}` as Combo] });
-      else set({ lang: savedLang, picker: true });
+      if (m === 'dev' || m === 'human') {
+        const combo = `${m}-${savedLang}` as Combo;
+        const saved = JSON.parse(localStorage.getItem('brom_tabs') || 'null');
+        const tabs: Combo[] =
+          Array.isArray(saved) && saved.length && saved.every((c) => ALL_COMBOS.includes(c)) && saved.includes(combo) ? saved : [combo];
+        set({ mode: m, lang: savedLang, tabsOpen: tabs });
+      } else {
+        set({ lang: savedLang, picker: true });
+      }
     } catch {}
+    set({ ready: true });
   },
 
   setCombo: (m, l, fromPicker = false) => {
     const combo = `${m}-${l}` as Combo;
-    set((st) => ({
-      mode: m,
-      lang: l,
-      plusOpen: false,
-      picker: fromPicker ? false : st.picker,
-      tabsOpen: fromPicker ? [combo] : st.tabsOpen.includes(combo) ? st.tabsOpen : [...st.tabsOpen, combo],
-    }));
+    set((st) => {
+      const tabsOpen = fromPicker ? [combo] : st.tabsOpen.includes(combo) ? st.tabsOpen : [...st.tabsOpen, combo];
+      persistTabs(tabsOpen);
+      return { mode: m, lang: l, plusOpen: false, picker: fromPicker ? false : st.picker, tabsOpen };
+    });
     try {
       localStorage.setItem('brom_mode', m);
       localStorage.setItem('brom_lang', l);
@@ -63,6 +77,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     set((st) => {
       const arr = st.tabsOpen.filter((x) => x !== from);
       arr.splice(arr.indexOf(t) + (st.tabsOpen.indexOf(from) < st.tabsOpen.indexOf(t) ? 1 : 0), 0, from);
+      persistTabs(arr);
       return { tabsOpen: arr };
     });
   },
@@ -78,6 +93,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     }
     const left = tabsOpen.filter((x) => x !== t);
     set({ tabsOpen: left });
+    persistTabs(left);
     if (`${mode}-${lang}` === t) {
       const [m, l] = left[0].split('-') as [Mode, Lang];
       setCombo(m, l);
@@ -102,6 +118,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     try {
       localStorage.removeItem('brom_mode');
       localStorage.removeItem('brom_lang');
+      localStorage.removeItem('brom_tabs');
     } catch {}
     set((st) => ({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: true, typedN: 0, session: st.session + 1 }));
   },

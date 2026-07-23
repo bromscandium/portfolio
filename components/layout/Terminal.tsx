@@ -50,6 +50,8 @@ export const Terminal = () => {
     };
   }, [overlayActive]);
 
+  if (!t.ready) return <div className="min-h-screen bg-bg" />;
+
   return (
     <div className="min-h-screen bg-bg font-mono">
       <TabBar
