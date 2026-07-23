@@ -23,6 +23,7 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
   {
     title: 'commands',
     rows: [
+      ['⌃K / ⌘K', 'command palette'],
       ['` (backtick)', 'toggle command line'],
       ['/', 'search projects'],
       ['? ', 'toggle this help'],

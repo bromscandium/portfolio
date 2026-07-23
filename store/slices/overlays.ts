@@ -14,6 +14,7 @@ export interface OverlaySlice {
   cmdOpen: boolean;
   crtOn: boolean;
   toast: string | null;
+  paletteOpen: boolean;
 
   setTyped: (n: number) => void;
   setPlusOpen: (v: boolean) => void;
@@ -28,6 +29,9 @@ export interface OverlaySlice {
   closeCmd: () => void;
   setCrt: (v: boolean) => void;
   showToast: (msg: string) => void;
+  openPalette: () => void;
+  closePalette: () => void;
+  togglePalette: () => void;
 }
 
 export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlice> = (set) => ({
@@ -41,6 +45,7 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   cmdOpen: false,
   crtOn: false,
   toast: null,
+  paletteOpen: false,
 
   setTyped: (n) => set({ typedN: n }),
   setPlusOpen: (v) => set({ plusOpen: v }),
@@ -59,4 +64,7 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
     if (toastT) clearTimeout(toastT);
     toastT = setTimeout(() => set({ toast: null }), 1800);
   },
+  openPalette: () => set({ paletteOpen: true, plusOpen: false }),
+  closePalette: () => set({ paletteOpen: false }),
+  togglePalette: () => set((st) => ({ paletteOpen: !st.paletteOpen })),
 });

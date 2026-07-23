@@ -38,7 +38,12 @@ export const useTerminalEffects = () => {
       const el = document.activeElement as HTMLElement | null;
       const typing = !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
 
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        return st.togglePalette();
+      }
       if (e.key === 'Escape') {
+        if (st.paletteOpen) return st.closePalette();
         if (st.helpOpen) return st.closeHelp();
         if (st.searchOpen) return st.closeSearch();
         if (st.expandedId !== null) return st.closeModal();

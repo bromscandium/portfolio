@@ -12,6 +12,7 @@ import { CommandLine } from './CommandLine';
 import { ProfilePicker } from './windows/ProfilePicker';
 import { HelpOverlay } from './windows/HelpOverlay';
 import { ProjectModal } from './windows/ProjectModal';
+import { CommandPalette } from './windows/CommandPalette';
 import { Intro } from '@/components/sections/Intro/Intro';
 import { Experience } from '@/components/sections/Experience/Experience';
 import { Skills } from '@/components/sections/Skills/Skills';
@@ -57,6 +58,7 @@ export const Terminal = () => {
         onOpenCombo={(c) => t.setCombo(...split(c))}
         labelFor={(c) => comboLabel(c, false)}
         shortLabelFor={(c) => comboLabel(c, false).replace('zsh', 'dev')}
+        onOpenPalette={t.openPalette}
       />
 
       <Sidebar navRoot={s.navRoot} names={s.navNames} active={t.active} onNav={t.goTo} />
@@ -77,6 +79,8 @@ export const Terminal = () => {
       {t.picker && <ProfilePicker onPickDev={() => t.setCombo('dev', t.lang, true)} onPickHuman={() => t.setCombo('human', t.lang, true)} />}
 
       {t.helpOpen && <HelpOverlay onClose={t.closeHelp} />}
+
+      {t.paletteOpen && <CommandPalette />}
 
       {modalP && <ProjectModal project={modalP} closing={t.closingM} strings={s} onClose={t.closeModal} />}
 
