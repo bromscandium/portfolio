@@ -44,7 +44,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
         style={{ animation: closing ? 'none' : 'modalPop .22s ease-out forwards', willChange: 'transform, opacity' }}
       >
         <div className="sticky top-0 flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4 py-3">
-          <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[12px] text-fg-3">{path}</span>
+          <span className="min-w-0 truncate text-[12px] text-fg-3">{path}</span>
           <button
             onClick={onClose}
             className="ml-auto shrink-0 cursor-pointer border-none bg-transparent font-mono text-[16px] text-fg-6 transition-colors hover:text-orange"

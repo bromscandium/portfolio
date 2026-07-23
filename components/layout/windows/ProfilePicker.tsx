@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { PICKER_COPY, type Lang, type Mode } from '@/lib/i18n';
+import type { Option } from '@/lib/types';
 
 interface Props {
   lang: Lang;
   onPick: (mode: Mode, lang: Lang) => void;
 }
 
-const LANGS: { key: Lang; label: string }[] = [
+const LOCALES: Option<Lang>[] = [
   { key: 'en', label: 'en_US.UTF-8' },
   { key: 'uk', label: 'uk_UA.UTF-8' },
 ];
@@ -43,7 +44,7 @@ export const ProfilePicker = ({ lang, onPick }: Props) => {
           <div className="flex items-center gap-3 pt-1">
             <span className="text-[11px] text-fg-6">{c.locale}</span>
             <div className="flex gap-1">
-              {LANGS.map((l) => (
+              {LOCALES.map((l) => (
                 <button
                   key={l.key}
                   onClick={() => setSel(l.key)}

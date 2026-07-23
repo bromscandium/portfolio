@@ -1,5 +1,7 @@
 export type Category = 'pet' | 'hackathon' | 'university' | 'professional';
 
+export type Option<T = string> = { key: T; label: string };
+
 export interface ProjectLink {
   label: string;
   href: string;

@@ -1,5 +1,6 @@
 import { TERMINAL_ROOT } from './config';
 import type { Lang, Mode } from './modes';
+import type { Option } from './types';
 
 export type { Mode, Lang, Combo } from './modes';
 
@@ -40,7 +41,7 @@ export interface Strings {
   contactNote: string;
   privateNote: string;
   workHint: string;
-  catLabels: { key: string; label: string }[];
+  catLabels: Option[];
   catBadge: Record<string, string>;
   regionName: (region: string) => string;
   yLabel: (y: number) => string;

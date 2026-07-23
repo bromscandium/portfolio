@@ -57,7 +57,7 @@ export const Tab = ({ combo, active, label, onSelect, onClose, onMiddleClose, on
       }}
     >
       <span className="text-orange">{MODE_META[splitCombo(combo)[0]].icon}</span>
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>
+      <span className="truncate">{label}</span>
       <span onClick={close} className="ml-auto cursor-pointer text-fg-6 transition-colors hover:text-fg">
         ✕
       </span>

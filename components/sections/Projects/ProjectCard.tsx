@@ -30,7 +30,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
       }`}
     >
       <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">
-        <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">
+        <span className="min-w-0 truncate text-[11px] text-fg-3">
           {human ? project.title : projectPath(project.title)}
         </span>
         <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{catBadge}</span>
@@ -58,7 +58,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
       </div>
       <div className="flex items-baseline justify-between gap-2.5 px-4 py-3.5">
         <Heading variant="card">{project.title}</Heading>
-        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] text-ghost">
+        <span className="truncate text-[10px] text-ghost">
           {project.technologies.slice(0, 2).join(' · ')}
         </span>
       </div>
