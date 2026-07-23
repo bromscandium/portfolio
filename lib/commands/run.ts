@@ -185,7 +185,15 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok('opening keybindings…', 'cyan')];
 
     case 'whoami':
-      return [ok('yaroslav yeromenko · full-stack developer · remote · EU')];
+      if (args.includes('--verbose') || args.includes('-v')) {
+        return [
+          ok('yaroslav yeromenko · full-stack developer'),
+          ok('remote · EU · open to full-time', 'muted'),
+          ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
+          ok('2+ yrs · 19 projects · 6 hackathons · 1 win', 'muted'),
+        ];
+      }
+      return [ok('yaroslav')];
 
     case 'neofetch':
       return NEOFETCH.map((t) => ok(t, 'accent'));

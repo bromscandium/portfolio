@@ -5,6 +5,7 @@ import type { Lang, Mode } from '@/lib/i18n';
 
 export const useTerminalEffects = () => {
   const session = useTerminal((s) => s.session);
+  const ready = useTerminal((s) => s.ready);
 
   useEffect(() => {
     useTerminal.getState().restore();
@@ -30,12 +31,13 @@ export const useTerminalEffects = () => {
   }, [session]);
 
   useEffect(() => {
+    if (!ready) return;
     const { setActive } = useTerminal.getState();
     const onScroll = () => setActive(activeFromViewport());
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [ready]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

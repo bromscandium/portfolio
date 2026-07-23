@@ -147,6 +147,15 @@ input:focus-visible {
   }
 }
 
+@keyframes bootbar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 @keyframes overlayIn {
   from {
     opacity: 0;

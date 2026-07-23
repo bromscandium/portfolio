@@ -1,17 +1,11 @@
+import { ARCH_LOGO } from '@/lib/config';
+
 interface Props {
   navRoot: string;
   names: string[];
   active: number;
   onNav: (i: number) => void;
 }
-
-const ARCH_LOGO = `      /\\
-     /  \\
-    /    \\
-   /      \\
-  /   ..   \\
- /   |  |   \\
-/_-\`\`    \`\`-_\\`;
 
 const NavItem = ({ label, branch, active, onClick }: { label: string; branch: string; active: boolean; onClick: () => void }) => (
   <button
