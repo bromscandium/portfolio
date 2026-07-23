@@ -12,6 +12,7 @@ export const useTerminalEffects = () => {
   }, []);
 
   useEffect(() => {
+    if (!running) return;
     const { setTyped } = useTerminal.getState();
     setTyped(0);
     let n = 0;
@@ -28,7 +29,7 @@ export const useTerminalEffects = () => {
       clearInterval(id);
       clearTimeout(fb);
     };
-  }, [session]);
+  }, [session, running]);
 
   useEffect(() => {
     if (!running) return;
