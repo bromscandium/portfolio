@@ -1,15 +1,13 @@
 import type { StateCreator } from 'zustand';
 import type { Combo, Lang, Mode } from '@/lib/i18n';
+import { splitCombo } from '@/lib/modes';
+import { STORAGE_KEYS, readLS, removeLS, writeLS } from '@/lib/storage';
 import type { TerminalState } from '../terminal';
 import { ALL_COMBOS } from '../constants';
 
 let dragFrom: Combo | null = null;
 
-const persistTabs = (tabs: Combo[]) => {
-  try {
-    localStorage.setItem('brom_tabs', JSON.stringify(tabs));
-  } catch {}
-};
+const persistTabs = (tabs: Combo[]) => writeLS(STORAGE_KEYS.tabs, JSON.stringify(tabs));
 
 export interface SessionSlice {
   mode: Mode;
@@ -37,12 +35,12 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
 
   restore: () => {
     try {
-      const m = localStorage.getItem('brom_mode');
-      const l = localStorage.getItem('brom_lang');
+      const m = readLS(STORAGE_KEYS.mode);
+      const l = readLS(STORAGE_KEYS.lang);
       const savedLang: Lang = l === 'uk' || l === 'en' ? l : 'en';
       if (m === 'dev' || m === 'human') {
         const combo = `${m}-${savedLang}` as Combo;
-        const saved = JSON.parse(localStorage.getItem('brom_tabs') || 'null');
+        const saved = JSON.parse(readLS(STORAGE_KEYS.tabs) || 'null');
         const tabs: Combo[] =
           Array.isArray(saved) && saved.length && saved.every((c) => ALL_COMBOS.includes(c)) && saved.includes(combo) ? saved : [combo];
         set({ mode: m, lang: savedLang, tabsOpen: tabs });
@@ -67,10 +65,8 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
         ...(reboot ? { phase: 'boot' as const, rebootNext: false, session: st.session + 1 } : {}),
       };
     });
-    try {
-      localStorage.setItem('brom_mode', m);
-      localStorage.setItem('brom_lang', l);
-    } catch {}
+    writeLS(STORAGE_KEYS.mode, m);
+    writeLS(STORAGE_KEYS.lang, l);
   },
 
   startDrag: (t) => {
@@ -100,31 +96,29 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     set({ tabsOpen: left });
     persistTabs(left);
     if (`${mode}-${lang}` === t) {
-      const [m, l] = left[0].split('-') as [Mode, Lang];
+      const [m, l] = splitCombo(left[0]);
       setCombo(m, l);
     }
   },
   cycleTab: (dir) => {
     const { tabsOpen, mode, lang, setCombo } = get();
     const i = tabsOpen.indexOf(`${mode}-${lang}` as Combo);
-    const [m, l] = tabsOpen[(i + dir + tabsOpen.length) % tabsOpen.length].split('-') as [Mode, Lang];
+    const [m, l] = splitCombo(tabsOpen[(i + dir + tabsOpen.length) % tabsOpen.length]);
     setCombo(m, l);
   },
   openNewTab: () => {
     const un = get().unopenedCombos();
     if (un.length) {
-      const [m, l] = un[0].split('-') as [Mode, Lang];
+      const [m, l] = splitCombo(un[0]);
       get().setCombo(m, l);
     }
   },
   unopenedCombos: () => ALL_COMBOS.filter((c) => !get().tabsOpen.includes(c)),
 
   confirmClose: () => {
-    try {
-      localStorage.removeItem('brom_mode');
-      localStorage.removeItem('brom_lang');
-      localStorage.removeItem('brom_tabs');
-    } catch {}
+    removeLS(STORAGE_KEYS.mode);
+    removeLS(STORAGE_KEYS.lang);
+    removeLS(STORAGE_KEYS.tabs);
     set({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: false, typedN: 0, phase: 'unload' });
   },
   cancelClose: () => set({ closeConfirm: false }),

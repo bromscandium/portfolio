@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { STORAGE_KEYS, readLS } from '@/lib/storage';
 
 interface Line {
   text: string;
@@ -11,9 +12,9 @@ const buildLines = (): Line[] => {
   let lang: string | null = null;
   let tabs = 0;
   try {
-    mode = localStorage.getItem('brom_mode');
-    lang = localStorage.getItem('brom_lang');
-    tabs = JSON.parse(localStorage.getItem('brom_tabs') || '[]').length || 0;
+    mode = readLS(STORAGE_KEYS.mode);
+    lang = readLS(STORAGE_KEYS.lang);
+    tabs = JSON.parse(readLS(STORAGE_KEYS.tabs) || '[]').length || 0;
   } catch {}
   const returning = mode === 'dev' || mode === 'human';
 

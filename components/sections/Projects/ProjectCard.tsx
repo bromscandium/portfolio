@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { Project } from '@/lib/data';
-import { slugify } from '@/lib/i18n';
+import { projectPath } from '@/lib/helpers';
 import { Heading } from '@/components/common/Typography';
 
 interface Props {
@@ -31,7 +31,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
     >
       <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">
         <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">
-          {human ? project.title : `~/projects/${slugify(project.title)}`}
+          {human ? project.title : projectPath(project.title)}
         </span>
         <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{catBadge}</span>
       </div>

@@ -3,6 +3,7 @@ import { portfolio } from '@/lib/data';
 import { useTerminal } from '@/store/terminal';
 import { Modal } from '@/components/common/Modal';
 import { LINKS, SECTION_LABELS } from '@/lib/config';
+import { fuzzy, openUrl } from '@/lib/helpers';
 
 interface Action {
   id: string;
@@ -11,23 +12,6 @@ interface Action {
   shortcut?: string;
   run: () => void;
 }
-
-const openUrl = (url: string) => {
-  if (url.startsWith('mailto:')) window.location.href = url;
-  else window.open(url, '_blank', 'noopener,noreferrer');
-};
-
-const fuzzy = (q: string, text: string): boolean => {
-  if (!q) return true;
-  const query = q.toLowerCase();
-  const hay = text.toLowerCase();
-  let i = 0;
-  for (const ch of hay) {
-    if (ch === query[i]) i += 1;
-    if (i === query.length) return true;
-  }
-  return false;
-};
 
 const Row =({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
   <button

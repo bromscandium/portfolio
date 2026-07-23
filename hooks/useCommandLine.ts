@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { autocomplete, runCommand, type CmdContext, type CmdLine, type CompletionOption } from '@/lib/commands';
+import { STORAGE_KEYS, readLS, writeLS } from '@/lib/storage';
 
 interface Menu {
   base: string;
@@ -11,8 +12,6 @@ export interface Row extends CmdLine {
   id: number;
   prompt?: boolean;
 }
-
-const HISTORY_KEY = 'brom_history';
 
 export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close'>) => {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
@@ -29,7 +28,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(HISTORY_KEY);
+      const saved = readLS(STORAGE_KEYS.history);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (saved) setHistory(JSON.parse(saved));
     } catch {}
@@ -72,9 +71,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
 
     setHistory((h) => {
       const nh = [...h, cmd];
-      try {
-        localStorage.setItem(HISTORY_KEY, JSON.stringify(nh.slice(-100)));
-      } catch {}
+      writeLS(STORAGE_KEYS.history, JSON.stringify(nh.slice(-100)));
       return nh;
     });
     setHistIdx(-1);

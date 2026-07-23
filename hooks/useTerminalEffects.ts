@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
 import { ALL_COMBOS } from '@/store/constants';
 import { arrowDirection } from '@/lib/keys';
-import type { Lang, Mode } from '@/lib/i18n';
+import { splitCombo } from '@/lib/modes';
 
 export const useTerminalEffects = () => {
   const session = useTerminal((s) => s.session);
@@ -68,7 +68,7 @@ export const useTerminalEffects = () => {
 
       if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
         e.preventDefault();
-        const [m, l] = ALL_COMBOS[Number(e.code.slice(5)) - 1].split('-') as [Mode, Lang];
+        const [m, l] = splitCombo(ALL_COMBOS[Number(e.code.slice(5)) - 1]);
         return st.setCombo(m, l);
       }
       if (e.key === 'Escape') {

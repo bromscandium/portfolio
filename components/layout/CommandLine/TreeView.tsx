@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { portfolio, type Project } from '@/lib/data';
+import { type Project } from '@/lib/data';
+import { byCategory } from '@/lib/helpers';
 import { slugify } from '@/lib/i18n';
 import { TERMINAL_ROOT } from '@/lib/config';
 import { arrowDirection } from '@/lib/keys';
@@ -39,8 +40,8 @@ const TREE: TreeNode[] = [
     children: CATS.map((c) => ({
       key: `cat:${c.key}`,
       label: `${c.label}/`,
-      children: portfolio
-        .filter((p) => p.category === c.key)
+      children: byCategory(c.key)
+        .slice()
         .sort((a, b) => b.id - a.id)
         .map((p) => ({ key: `p:${p.id}`, label: slugify(p.title), project: p })),
     })),

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { portfolio, type Category, type Project } from '@/lib/data';
+import { type Category, type Project } from '@/lib/data';
+import { byCategory, fuzzy } from '@/lib/helpers';
 import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
 import { Section } from '@/components/common/Section';
@@ -24,9 +25,7 @@ interface Props {
   onCloseSearch: () => void;
 }
 
-const catCount = (key: string): number => {
-  return key === 'all' ? portfolio.length : portfolio.filter((p) => p.category === key).length;
-}
+const catCount = (key: Category | 'all'): number => byCategory(key).length;
 
 const FilterChip = ({ label, count, active, onClick }: { label: string; count: number; active: boolean; onClick: () => void }) => (
   <button
@@ -42,18 +41,6 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
     {label} <span className="opacity-[.55]">({count})</span>
   </button>
 );
-
-const fuzzy = (q: string, text: string): boolean => {
-  if (!q) return true;
-  const query = q.toLowerCase();
-  const hay = text.toLowerCase();
-  let i = 0;
-  for (const ch of hay) {
-    if (ch === query[i]) i += 1;
-    if (i === query.length) return true;
-  }
-  return false;
-}
 
 export const Projects = ({
   ref,
@@ -135,7 +122,7 @@ export const Projects = ({
       )}
       <div className="mb-8 flex flex-wrap gap-2.5">
         {strings.catLabels.map((c) => (
-          <FilterChip key={c.key} label={c.label} count={catCount(c.key)} active={cat === c.key} onClick={() => onCat(c.key as Category | 'all')} />
+          <FilterChip key={c.key} label={c.label} count={catCount(c.key as Category | 'all')} active={cat === c.key} onClick={() => onCat(c.key as Category | 'all')} />
         ))}
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

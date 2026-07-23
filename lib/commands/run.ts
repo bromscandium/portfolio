@@ -1,6 +1,8 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
 import { slugify } from '../i18n';
+import { byCategory, projectPath } from '../helpers';
 import { LINKS } from '../config';
+import type { Category } from '../types';
 import { NEOFETCH, SECTIONS } from './constants';
 import { CATEGORIES, COMMANDS, findCommand } from './registry';
 import type { CmdContext, CmdLine, Tone } from './types';
@@ -79,7 +81,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const path = target.replace(/^~\/?/, '').replace(/^projects\/?/, '').replace(/\/+$/, '');
       let list = portfolio;
       if (path) {
-        if (CATEGORIES.includes(path)) list = portfolio.filter((p) => p.category === path);
+        if (CATEGORIES.includes(path)) list = byCategory(path as Category);
         else list = portfolio.filter((p) => slugify(p.title).includes(path));
       }
       if (!list.length) return [ok(`ls: cannot access '${target}': no matches`, 'error')];
@@ -126,7 +128,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const hits: CmdLine[] = [];
       portfolio.forEach((p) => {
         if (`${p.title} ${p.technologies.join(' ')} ${p.category} ${p.description.join(' ')}`.toLowerCase().includes(term)) {
-          hits.push(ok(`~/projects/${slugify(p.title)}: ${p.technologies.slice(0, 4).join(', ')}`));
+          hits.push(ok(`${projectPath(p.title)}: ${p.technologies.slice(0, 4).join(', ')}`));
         }
       });
       skillMap.forEach((r) => {
