@@ -418,8 +418,10 @@ export function Terminal() {
           actions={{
             goTo,
             openProject: (id) => setExpandedId(id),
-            setMode: (m) => setCombo(m, lang),
-            setLang: (l) => setCombo(mode, l),
+            openUrl: (url) => {
+              if (url.startsWith('mailto:')) window.location.href = url;
+              else window.open(url, '_blank', 'noopener,noreferrer');
+            },
             setCrt: setCrtOn,
           }}
         />

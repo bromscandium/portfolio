@@ -1,5 +1,5 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from './data';
-import { slugify, type Lang, type Mode } from './i18n';
+import { slugify } from './i18n';
 
 export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
 
@@ -19,12 +19,17 @@ export interface CmdLine {
 export interface CmdContext {
   goTo: (i: number) => void;
   openProject: (id: number) => void;
-  setMode: (m: Mode) => void;
-  setLang: (l: Lang) => void;
+  openUrl: (url: string) => void;
   setCrt: (on: boolean) => void;
   clear: () => void;
   close: () => void;
 }
+
+const LINKS = {
+  email: 'mailto:kkmshbiu@protonmail.com',
+  linkedin: 'https://www.linkedin.com/in/yaroslav-yeromenko/',
+  github: 'https://github.com/bromscandium',
+};
 
 const SECTIONS: Record<string, number> = {
   intro: 0,
@@ -51,6 +56,9 @@ export const COMMAND_NAMES = [
   'whoami',
   'neofetch',
   'echo',
+  'email',
+  'github',
+  'linkedin',
   'exit',
 ];
 
@@ -109,6 +117,7 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
         ok('  git log           work history as commits'),
         ok('  git tag           hackathons'),
         ok('  docker ps         skill stack as running containers'),
+        ok('  email · github · linkedin   open my links'),
         ok('  whoami · neofetch identity'),
         ok('  clear · exit      clear screen · close terminal'),
         ok('  switch view/lang from the status bar · ? for shortcuts', 'muted'),
@@ -178,6 +187,18 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
       return out;
     }
 
+    case 'email':
+      ctx.openUrl(LINKS.email);
+      return [ok('opening mail client…', 'cyan')];
+
+    case 'github':
+      ctx.openUrl(LINKS.github);
+      return [ok('opening github.com/bromscandium…', 'cyan')];
+
+    case 'linkedin':
+      ctx.openUrl(LINKS.linkedin);
+      return [ok('opening linkedin.com/in/yaroslav-yeromenko…', 'cyan')];
+
     case 'whoami':
       return [ok('yaroslav yeromenko · full-stack developer · remote · EU')];
 
@@ -201,9 +222,10 @@ export function runCommand(raw: string, ctx: CmdContext): CmdLine[] {
     // easter eggs
     case 'sudo':
       if (arg.startsWith('hire-me') || arg.startsWith('hire')) {
+        ctx.openUrl(`${LINKS.email}?subject=${encodeURIComponent("Let's work together")}&body=${encodeURIComponent('Hi Yaroslav,\n\n')}`);
         return [
           ok('[sudo] password for recruiter: ********', 'muted'),
-          ok('✓ access granted. redirecting to contact…', 'green'),
+          ok('✓ access granted. opening mail draft…', 'green'),
         ];
       }
       return [ok(`${args[0] ?? ''}: Permission denied (nice try 😏)`, 'error')];
