@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   applicationName: 'bromscandium terminal',
   authors: [{ name: 'Yaroslav Yeromenko', url: 'https://bromscandium.com' }],
   creator: 'Yaroslav Yeromenko',
-  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Developer', 'Next.js', 'Python', 'Docker', 'React', 'FastAPI', 'portfolio', 'terminal'],
+  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Developer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
   icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.png' }] },
   openGraph: {
