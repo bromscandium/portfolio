@@ -10,7 +10,7 @@ interface Props {
   onDragOver: (t: Combo) => void;
   onDragEnd: () => void;
   plusOpen: boolean;
-  setPlusOpen: (v: boolean | ((p: boolean) => boolean)) => void;
+  setPlusOpen: (v: boolean) => void;
   plusItems: Combo[];
   onOpenCombo: (c: Combo) => void;
   labelFor: (c: Combo) => string;
@@ -85,7 +85,7 @@ export function TabBar({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setPlusOpen((p) => !p);
+              setPlusOpen(!plusOpen);
             }}
             title="open new tab"
             className="cursor-pointer border-none bg-transparent p-0 font-mono text-[15px] text-fg-6 transition-colors hover:text-orange"
