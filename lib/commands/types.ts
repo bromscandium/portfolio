@@ -13,6 +13,16 @@ export interface CmdLine {
   row?: LsRow;
 }
 
+export interface CompletionOption {
+  value: string;
+  dir: boolean;
+}
+
+export interface Completion {
+  base: string;
+  options: CompletionOption[];
+}
+
 export interface CmdContext {
   goTo: (i: number) => void;
   goToPrev: () => void;

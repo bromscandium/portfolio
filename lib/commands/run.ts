@@ -1,9 +1,8 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
 import { slugify } from '../i18n';
 import { LINKS, NEOFETCH, SECTIONS } from './constants';
+import { CATEGORIES, COMMANDS, findCommand } from './registry';
 import type { CmdContext, CmdLine, Tone } from './types';
-
-const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
@@ -21,26 +20,17 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
   const arg = args.join(' ').toLowerCase();
 
   switch (cmd) {
-    case 'help':
+    case 'help': {
+      if (arg) {
+        const spec = findCommand(arg);
+        return spec && !spec.hidden ? [ok(`${spec.name.padEnd(10)} ${spec.usage}`)] : [ok(`help: no such command: ${arg}`, 'error')];
+      }
       return [
         ok('available commands:', 'muted'),
-        ok('  cd <section>      jump to intro/experience/skills/projects/contact'),
-        ok('  ls [category]     list projects (pet|hackathon|university|professional)'),
-        ok('  cat <file>        about | education | skills'),
-        ok('  open <project>    open a project window'),
-        ok('  tree              interactive site tree (↑↓ → ↵)'),
-        ok('  grep <term>       search projects & skills'),
-        ok('  pwd               print working directory'),
-        ok('  git log           work history as commits'),
-        ok('  git tag           hackathons'),
-        ok('  docker ps         skill stack as running containers'),
-        ok('  contact           jump to contact'),
-        ok('  email · github · linkedin   open my links'),
-        ok('  whoami · neofetch identity'),
-        ok('  man               keyboard shortcuts'),
-        ok('  clear · exit      clear screen · close terminal'),
-        ok('  switch view/lang from the status bar · ? for shortcuts', 'muted'),
+        ...COMMANDS.filter((c) => !c.hidden).map((c) => ok(`  ${c.name.padEnd(10)} ${c.usage}`)),
+        ok('  help <command> for details · ? for shortcuts', 'muted'),
       ];
+    }
 
     case 'clear':
       ctx.clear();
@@ -78,8 +68,14 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'l':
     case 'la':
     case 'll': {
-      const catArg = args.map((a) => a.toLowerCase()).find((a) => CATEGORIES.includes(a));
-      const list = catArg ? portfolio.filter((p) => p.category === catArg) : portfolio;
+      const target = args.find((a) => !a.startsWith('-'))?.toLowerCase() ?? '';
+      const path = target.replace(/^~\/?/, '').replace(/^projects\/?/, '').replace(/\/+$/, '');
+      let list = portfolio;
+      if (path) {
+        if (CATEGORIES.includes(path)) list = portfolio.filter((p) => p.category === path);
+        else list = portfolio.filter((p) => slugify(p.title).includes(path));
+      }
+      if (!list.length) return [ok(`ls: cannot access '${target}': no matches`, 'error')];
       const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
       list
         .slice()

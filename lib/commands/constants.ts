@@ -16,33 +16,6 @@ export const SECTIONS: Record<string, number> = {
   contact: 4,
 };
 
-export const COMMAND_NAMES = [
-  'help',
-  'clear',
-  'cd',
-  'ls',
-  'pwd',
-  'cat',
-  'open',
-  'tree',
-  'grep',
-  'git',
-  'docker',
-  'contact',
-  'whoami',
-  'neofetch',
-  'man',
-  'date',
-  'uname',
-  'uptime',
-  'history',
-  'echo',
-  'email',
-  'github',
-  'linkedin',
-  'exit',
-];
-
 export const NEOFETCH = [
   '      /\\          yaroslav@bromscandium',
   '     /  \\         ----------------------',
