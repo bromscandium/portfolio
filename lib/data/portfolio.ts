@@ -1,101 +1,9 @@
-export type Category = 'pet' | 'hackathon' | 'university' | 'professional';
-
-export interface ProjectLink {
-  label: string;
-  href: string;
-}
-
-export interface Project {
-  id: number;
-  image: string;
-  title: string;
-  description: string[];
-  technologies: string[];
-  live: string | null;
-  github: string | null;
-  links?: ProjectLink[];
-  category: Category;
-}
-
-export function projectLinks(p: Project): ProjectLink[] {
-  const links: ProjectLink[] = [];
-  if (p.live) links.push({ label: 'live', href: p.live });
-  if (p.links) links.push(...p.links);
-  else if (p.github) links.push({ label: 'github', href: p.github });
-  return links;
-}
-
-export interface InfoItem {
-  label: string;
-  value: string;
-  link?: string;
-}
-
-export interface Job {
-  hash: string;
-  period: string;
-  role: string;
-  org: string;
-  loc: string;
-  points: string[];
-}
-
-export interface Education {
-  title: string;
-  detail: string;
-  period: string;
-}
-
-export interface Hackathon {
-  event: string;
-  project: string;
-  role: string;
-  place: string;
-  win: boolean;
-}
-
-export interface Counter {
-  n: string;
-  key: 'years' | 'projects' | 'hackathons' | 'win';
-}
-
-export interface SkillRegion {
-  region: string;
-  cid: string;
-  span: number;
-  items: { name: string; y: number }[];
-}
-
-export interface ContactLink {
-  href: string;
-  icon: 'envelope' | 'linkedin' | 'github';
-  label: string;
-}
-
-export const about = {
-  paragraphs: [
-    "I'm a Full-Stack Developer with solid experience in building modern web applications. On the frontend, I specialize in JavaScript/TypeScript using React and Next.js, focusing on creating fast, responsive UIs and modernizing legacy websites with Headless CMS architectures.",
-    'On the backend, I work extensively with Python (FastAPI) and Node.js. I design robust APIs using REST and GraphQL, implement WebSockets for real-time features, and manage SQL/NoSQL databases including PostgreSQL, SQLite, Redis, and MariaDB. I also have experience building interactive chatbots and utilizing modern ORMs like SQLAlchemy and Tortoise ORM.',
-    'I am highly proficient in the complete DevOps lifecycle, utilizing Docker for containerization and GitHub Actions for CI/CD pipelines. From deploying scalable applications on AWS and VPS/PaaS platforms to optimizing technical SEO and performance, I focus on delivering efficient, production-ready solutions.',
-  ],
-  info: [
-    { label: 'Name:', value: 'Yaroslav Yeromenko' },
-    { label: 'Email:', value: 'kkmshbiu@protonmail.com', link: 'mailto:kkmshbiu@protonmail.com' },
-    { label: 'Location:', value: 'Remote' },
-    { label: 'Languages:', value: 'Ukrainian (Native) | English (B2) | Slovak (B2)' },
-  ] as InfoItem[],
-};
-
-export const contacts: ContactLink[] = [
-  { href: 'mailto:kkmshbiu@protonmail.com', icon: 'envelope', label: 'Email me' },
-  { href: 'https://www.linkedin.com/in/yaroslav-yeromenko/', icon: 'linkedin', label: 'LinkedIn' },
-  { href: 'https://github.com/bromscandium', icon: 'github', label: 'GitHub' },
-];
+import type { Project } from '../types';
 
 export const portfolio: Project[] = [
   {
     id: 19,
-    image: '/bromiumjs.webp',
+    image: '/covers/bromiumjs.webp',
     title: 'BromiumJS',
     description: [
       'BromiumJS is a modern JavaScript/TypeScript UI framework built for a bachelor thesis, unifying design patterns drawn from Vue, React, and Next.js into a single toolkit.',
@@ -120,7 +28,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 18,
-    image: '/scrollix.webp',
+    image: '/covers/scrollix.webp',
     title: 'Scrollix',
     description: [
       'Scrollix is a mobile game platform built in Godot that reimagines the TikTok feed as a vertical stack of short, swipeable mini-games instead of videos.',
@@ -134,7 +42,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 17,
-    image: '/walletapp.webp',
+    image: '/covers/walletapp.webp',
     title: 'Wallet App',
     description: [
       'A streamlined, mobile-first wallet interface consisting of a main dashboard and a dedicated transaction details view, designed to demonstrate core React principles.',
@@ -148,7 +56,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 16,
-    image: '/intelmarket.webp',
+    image: '/covers/intelmarket.webp',
     title: 'Vigil8',
     description: [
       'An advanced OSINT and Market Analysis platform developed as a collaborative Data Science project to track blockchain activity and web-based intelligence.',
@@ -162,7 +70,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 15,
-    image: '/uaconsulting.webp',
+    image: '/covers/uaconsulting.webp',
     title: 'UA Consulting',
     description: [
       'A legal consulting corporate website, completely rebuilt from a traditional WordPress builder into a high-performance Next.js application.',
@@ -176,7 +84,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 14,
-    image: '/sparrowiot.webp',
+    image: '/covers/sparrowiot.webp',
     title: 'Sparrow IoT',
     description: [
       'A full-stack IoT monitoring platform for managing ESP32 and Raspberry Pi Pico devices.',
@@ -190,7 +98,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 13,
-    image: '/sparrowai.webp',
+    image: '/covers/sparrowai.webp',
     title: 'Sparrow AI Builder',
     description: [
       'A platform built for small and medium-sized businesses to create, configure, and deploy AI-powered agents without complex development.',
@@ -204,7 +112,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 12,
-    image: '/strapinext.webp',
+    image: '/covers/strapinext.webp',
     title: 'Strapi+Next.js',
     description: [
       'Small pet project with combining Next and Strapi as CMS.',
@@ -218,7 +126,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 11,
-    image: '/tretiakovconsulting.webp',
+    image: '/covers/tretiakovconsulting.webp',
     title: 'Tretiakov Consulting',
     description: [
       'This is a self-made site on the WordPress builder, and previous projects were in groups.',
@@ -232,7 +140,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 10,
-    image: '/dest.webp',
+    image: '/covers/dest.webp',
     title: 'dEST',
     description: [
       'A decentralized real estate marketplace and the winning project of the ETHBratislava hackathon on the EURØP Challenge track.',
@@ -246,7 +154,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 9,
-    image: '/whelm.webp',
+    image: '/covers/whelm.webp',
     title: 'Whelm',
     description: [
       'Whelm is a project created for the Cassini Hackathon — a disaster response simulator powered by Copernicus data.',
@@ -260,7 +168,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 8,
-    image: '/jigsawsudoku.webp',
+    image: '/covers/jigsawsudoku.webp',
     title: 'Jigsaw Sudoku',
     description: [
       'This is my second university project, creating a game in Java, Spring, and part of the frontend.',
@@ -274,7 +182,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 7,
-    image: '/digitalkraj.webp',
+    image: '/covers/digitalkraj.webp',
     title: 'DigitalnyKraj (DigitalLand)',
     description: [
       'At a hackathon in Žilina, Slovakia, my team and I developed a prototype of a web portal for community residents.',
@@ -288,7 +196,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 6,
-    image: '/weather-ai.webp',
+    image: '/covers/weather-ai.webp',
     title: 'WeatherAI',
     description: [
       'A playful weather app that shows current conditions and a random tip based on your city.',
@@ -302,7 +210,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 5,
-    image: '/valli_cover.webp',
+    image: '/covers/valli_cover.webp',
     title: 'Valli',
     description: [
       'An experimental project exploring visual design and user flow.',
@@ -316,7 +224,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 4,
-    image: '/profile_cover.webp',
+    image: '/covers/profile_cover.webp',
     title: 'Own Profile',
     description: [
       'Personal website to showcase my projects, experiences, and skills.',
@@ -329,7 +237,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 3,
-    image: '/bot_cover.webp',
+    image: '/covers/bot_cover.webp',
     title: 'Jan Diddy',
     description: [
       'Jan Diddy is an asynchronous Telegram bot built for a Ukrainian university community, combining group-management tooling with an AI chat persona.',
@@ -347,7 +255,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 2,
-    image: '/astro_cover.webp',
+    image: '/covers/astro_cover.webp',
     title: 'Astro',
     description: [
       'Astro Game was my first serious project during university.',
@@ -361,7 +269,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 1,
-    image: '/hub_cover.webp',
+    image: '/covers/hub_cover.webp',
     title: 'Ukrainian Hub',
     description: [
       'A site for Promote Ukraine to showcase projects, cultural events, and advocacy efforts.',
@@ -371,129 +279,5 @@ export const portfolio: Project[] = [
     live: 'https://ukrainianhub.eu',
     github: null,
     category: 'professional',
-  },
-];
-
-export const experience: Job[] = [
-  {
-    hash: 'f8ad40e',
-    period: 'May 2025 — Present',
-    role: 'Full-Stack Developer',
-    org: 'Self-employed',
-    loc: 'Remote',
-    points: [
-      'Web apps and bot solutions for education and business clients.',
-      'Migrated a legacy platform to Next.js + Headless WordPress — 2× organic traffic (500 → 1,000 monthly users).',
-      'Scalable backends with FastAPI, Celery and Redis, monitored in real time via Flower.',
-    ],
-  },
-  {
-    hash: 'c76a1e2',
-    period: 'Sep 2025 — Dec 2025',
-    role: 'Full-Stack Developer Intern',
-    org: 'Meduzzen',
-    loc: 'Košice, Slovakia (Remote)',
-    points: [
-      'Built a full-stack app from scratch: Next.js, FastAPI, PostgreSQL.',
-      'Containerized with Docker; automated AWS deployments via GitHub Actions.',
-      'Unit & integration testing with Pytest and Jest under senior code review.',
-    ],
-  },
-  {
-    hash: '2f2022a',
-    period: 'Feb 2022 — Present',
-    role: 'Software Developer',
-    org: 'Promote Ukraine NGO',
-    loc: 'Brussels (Remote)',
-    points: [
-      'Led digital transformation for a major European NGO.',
-      'Shipped the Ukrainian Civil Society Hub and the Ukrainian Business Incubator in Belgium.',
-      'Automated internal workflows with SharePoint + PowerApps — ~30% less manual admin work.',
-    ],
-  },
-];
-
-export const education: Education[] = [
-  { title: 'Technical University of Košice', detail: 'BSc Computer Science', period: '2023 — 2026' },
-  { title: 'IT STEP Academy', detail: 'Professional Certificate, Software Development', period: '2019 — 2022' },
-  { title: 'Medical Lyceum', detail: 'High School, Physics & Mathematics', period: '2022 — 2023' },
-];
-
-export const hackathons: Hackathon[] = [
-  { event: 'ETH Bratislava', project: 'dEST', role: 'Frontend', place: 'Slovakia, 2025', win: true },
-  { event: 'European Defense Hackathon', project: 'Vigil8', role: 'Full-Stack', place: 'Netherlands, 2026', win: false },
-  { event: 'START Hack', project: 'Valli', role: 'Full-Stack', place: 'Switzerland, 2025', win: false },
-];
-
-export const counters: Counter[] = [
-  { n: '2+', key: 'years' },
-  { n: '19', key: 'projects' },
-  { n: '6', key: 'hackathons' },
-  { n: '1', key: 'win' },
-];
-
-export const skillMap: SkillRegion[] = [
-  {
-    region: 'Frontend',
-    cid: 'f8ad40e2c76a',
-    span: 5,
-    items: [
-      { name: 'JavaScript / TypeScript', y: 3 },
-      { name: 'React', y: 3 },
-      { name: 'Next.js', y: 2 },
-      { name: 'SCSS', y: 3 },
-      { name: 'Tailwind CSS / shadcn-ui', y: 2 },
-      { name: 'Redux', y: 1 },
-      { name: 'MUI', y: 1 },
-    ],
-  },
-  {
-    region: 'Backend',
-    cid: 'a1b2c3d4e5f6',
-    span: 4,
-    items: [
-      { name: 'Python', y: 3 },
-      { name: 'FastAPI', y: 2 },
-      { name: 'Node.js', y: 2 },
-      { name: 'REST API', y: 3 },
-      { name: 'GraphQL', y: 1 },
-      { name: 'WebSockets', y: 1 },
-      { name: 'Celery', y: 1 },
-    ],
-  },
-  {
-    region: 'Data',
-    cid: '2f2022a9b8c7',
-    span: 3,
-    items: [
-      { name: 'PostgreSQL', y: 2 },
-      { name: 'Redis', y: 1 },
-      { name: 'SQLite', y: 2 },
-      { name: 'MariaDB', y: 1 },
-      { name: 'SQLAlchemy', y: 1 },
-      { name: 'Tortoise ORM', y: 2 },
-    ],
-  },
-  {
-    region: 'DevOps',
-    cid: 'd0cke2926f01',
-    span: 4,
-    items: [
-      { name: 'Docker', y: 2 },
-      { name: 'GitHub Actions (CI/CD)', y: 2 },
-      { name: 'AWS', y: 1 },
-      { name: 'Linux (Arch/Debian)', y: 3 },
-      { name: 'nginx', y: 1 },
-      { name: 'Headless WordPress', y: 2 },
-    ],
-  },
-  {
-    region: 'Testing',
-    cid: '7e57ab1e0042',
-    span: 2,
-    items: [
-      { name: 'Pytest (Polyfactory)', y: 2 },
-      { name: 'Jest', y: 1 },
-    ],
   },
 ];

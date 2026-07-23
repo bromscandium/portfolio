@@ -1,4 +1,4 @@
-export type IconName = 'envelope' | 'linkedin' | 'github' | 'folder';
+import type { IconName } from '@/lib/types';
 
 export function Icon({ name, size = 20, className }: { name: IconName; size?: number; className?: string }) {
   const url = `/icons/${name}.svg`;
