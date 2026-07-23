@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { portfolio } from '@/lib/data';
 import { useTerminal } from '@/store/terminal';
+import { Modal } from '@/components/common/Modal';
 
 interface Action {
   id: string;
@@ -54,10 +55,10 @@ const Row = ({ action, active, onRun, onHover }: { action: Action; active: boole
   </button>
 );
 
-export const CommandPalette = () => {
+const PaletteBody = ({ close }: { close: () => void }) => {
   const mode = useTerminal((s) => s.mode);
   const lang = useTerminal((s) => s.lang);
-  const { goTo, openProject, setCombo, toggleHelp, closePalette } = useTerminal.getState();
+  const { goTo, openProject, setCombo, toggleHelp } = useTerminal.getState();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +87,7 @@ export const CommandPalette = () => {
 
   const exec = (a: Action) => {
     a.run();
-    closePalette();
+    close();
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -103,41 +104,47 @@ export const CommandPalette = () => {
     }
   };
 
-  const stop = (e: React.MouseEvent) => e.stopPropagation();
-
   return (
-    <div onClick={closePalette} className="fixed inset-0 z-[650] flex items-start justify-center bg-black/[.8] px-5 pt-[15vh]" style={{ animation: 'overlayIn .16s ease forwards' }}>
-      <div
-        onClick={stop}
-        className="flex max-h-[60vh] w-[min(640px,94vw)] flex-col overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
-        style={{ animation: 'modalPop .2s ease-out forwards' }}
-      >
-        <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4 py-3">
-          <span className="text-orange">❯</span>
-          <input
-            ref={inputRef}
-            autoFocus
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setSel(0);
-            }}
-            onKeyDown={onKeyDown}
-            placeholder="type to filter actions… ↑↓ enter"
-            className="min-w-0 flex-1 border-none bg-transparent font-mono text-[13px] text-fg outline-none placeholder:text-fg-6"
-            spellCheck={false}
-            autoComplete="off"
-          />
-          <span className="shrink-0 text-[11px] text-fg-6">{filtered.length}</span>
-        </div>
-        <div className="flex flex-col gap-0.5 overflow-y-auto p-2">
-          {filtered.length > 0 ? (
-            filtered.map((a, i) => <Row key={a.id} action={a} active={i === selClamped} onRun={exec} onHover={() => setSel(i)} />)
-          ) : (
-            <div className="px-3 py-4 text-[12px] text-fg-6">no matching actions</div>
-          )}
-        </div>
+    <>
+      <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4 py-3">
+        <span className="text-orange">❯</span>
+        <input
+          ref={inputRef}
+          autoFocus
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setSel(0);
+          }}
+          onKeyDown={onKeyDown}
+          placeholder="type to filter actions… ↑↓ enter"
+          className="min-w-0 flex-1 border-none bg-transparent font-mono text-[13px] text-fg outline-none placeholder:text-fg-6"
+          spellCheck={false}
+          autoComplete="off"
+        />
+        <span className="shrink-0 text-[11px] text-fg-6">{filtered.length}</span>
       </div>
-    </div>
+      <div className="flex flex-col gap-0.5 overflow-y-auto p-2">
+        {filtered.length > 0 ? (
+          filtered.map((a, i) => <Row key={a.id} action={a} active={i === selClamped} onRun={exec} onHover={() => setSel(i)} />)
+        ) : (
+          <div className="px-3 py-4 text-[12px] text-fg-6">no matching actions</div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export const CommandPalette = () => {
+  const closePalette = useTerminal((s) => s.closePalette);
+  return (
+    <Modal
+      onClose={closePalette}
+      z={650}
+      backdropClass="bg-black/[.8]"
+      panelClassName="flex max-h-[60vh] w-[min(640px,94vw)] flex-col overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
+    >
+      {(close) => <PaletteBody close={close} />}
+    </Modal>
   );
 };

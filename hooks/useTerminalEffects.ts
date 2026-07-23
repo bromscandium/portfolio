@@ -49,27 +49,15 @@ export const useTerminalEffects = () => {
         e.preventDefault();
         return st.togglePalette();
       }
+      // Modal-based overlays own their own keys (Esc/close animate themselves)
+      if (st.closeConfirm || st.helpOpen || st.paletteOpen || st.picker) return;
+
       if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
         e.preventDefault();
         const [m, l] = ALL_COMBOS[Number(e.code.slice(5)) - 1].split('-') as [Mode, Lang];
         return st.setCombo(m, l);
       }
-      if (st.closeConfirm) {
-        if (st.mode === 'dev') {
-          if (e.key === 'Escape' || e.key.toLowerCase() === 'n') {
-            e.preventDefault();
-            return st.cancelClose();
-          }
-          if (e.key.toLowerCase() === 'y') {
-            e.preventDefault();
-            return st.confirmClose();
-          }
-        }
-        return;
-      }
       if (e.key === 'Escape') {
-        if (st.paletteOpen) return st.closePalette();
-        if (st.helpOpen) return st.closeHelp();
         if (st.searchOpen) return st.closeSearch();
         if (st.expandedId !== null) return st.closeModal();
         if (st.cmdOpen) return st.closeCmd();

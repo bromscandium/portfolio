@@ -1,3 +1,5 @@
+import { Modal } from '@/components/common/Modal';
+
 interface Props {
   onClose: () => void;
 }
@@ -47,23 +49,14 @@ const HelpGroup = ({ title, rows }: { title: string; rows: [string, string][] })
   </div>
 );
 
-export const HelpOverlay = ({ onClose }: Props) => {
-  const stop = (e: React.MouseEvent) => e.stopPropagation();
-  return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-[600] flex items-center justify-center bg-black/[.8] p-5"
-      style={{ animation: 'overlayIn .16s ease forwards' }}
-    >
-      <div
-        onClick={stop}
-        className="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
-        style={{ animation: 'modalPop .2s ease-out forwards' }}
-      >
+export const HelpOverlay = ({ onClose }: Props) => (
+  <Modal onClose={onClose} z={600} panelClassName="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]">
+    {(close) => (
+      <>
         <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4.5 py-3 text-[12px] text-fg-3">
           <span className="font-bold text-orange">❯ </span>
           <span className="text-[#eee]">man keybindings</span>
-          <button onClick={onClose} className="ml-auto cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange">
+          <button onClick={close} className="ml-auto cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange">
             ✕
           </button>
         </div>
@@ -73,7 +66,7 @@ export const HelpOverlay = ({ onClose }: Props) => {
           ))}
           <div className="text-[10px] text-fg-7">{'// shortcuts are disabled while typing in an input'}</div>
         </div>
-      </div>
-    </div>
-  );
-}
+      </>
+    )}
+  </Modal>
+);
