@@ -1,11 +1,11 @@
 import type { Education, Hackathon, Job } from '@/lib/types';
-import { Heading } from '@/components/common/Typography';
+import { Body, Heading } from '@/components/common/Typography';
 
 const Point = ({ text }: { text: string }) => (
-  <div className="flex gap-3 text-[13.5px] leading-[1.6] text-fg-2">
+  <Body as="div" className="flex gap-3 !leading-[1.6]">
     <span className="text-fg-9">│</span>
     <span>{text}</span>
-  </div>
+  </Body>
 );
 
 export const JobEntry = ({ job, index, human }: { job: Job; index: number; human: boolean }) => (

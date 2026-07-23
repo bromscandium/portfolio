@@ -20,15 +20,27 @@ const DEFAULT_TAG: Record<Variant, ElementType> = {
   card: 'span',
 };
 
-interface Props {
+interface HeadingProps {
   variant: Variant;
   as?: ElementType;
   className?: string;
   children: ReactNode;
 }
 
-export const Heading = ({ variant, as, className = '', children }: Props) => {
+export const Heading = ({ variant, as, className = '', children }: HeadingProps) => {
   const Tag = as ?? DEFAULT_TAG[variant];
   const color = variant === 'stroke' ? '' : 'text-fg';
   return <Tag className={`font-display ${color} ${VARIANT[variant]} ${className}`}>{children}</Tag>;
+};
+
+interface TextProps {
+  as?: ElementType;
+  className?: string;
+  children: ReactNode;
+}
+
+// recurring body paragraph (project descriptions, experience bullets)
+export const Body = ({ as, className = '', children }: TextProps) => {
+  const Tag = as ?? 'p';
+  return <Tag className={`text-[13.5px] leading-[1.65] text-fg-2 ${className}`}>{children}</Tag>;
 };

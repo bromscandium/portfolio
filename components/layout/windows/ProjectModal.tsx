@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
 import { slugify, type Strings } from '@/lib/i18n';
-import { Heading } from '@/components/common/Typography';
+import { Body, Heading } from '@/components/common/Typography';
 
 interface Props {
   project: Project;
@@ -10,7 +10,7 @@ interface Props {
   onClose: () => void;
 }
 
-const Paragraph = ({ text }: { text: string }) => <p className="m-0 text-[13.5px] leading-[1.65] text-fg-2">{text}</p>;
+const Paragraph = ({ text }: { text: string }) => <Body className="m-0">{text}</Body>;
 
 const TechChip = ({ label }: { label: string }) => (
   <span className="rounded-badge border border-[#262626] bg-panel-4 px-2.25 py-1 text-[11px] text-[#aaa]">{label}</span>
