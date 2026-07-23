@@ -13,8 +13,8 @@ export function comboLabel(combo: string, short: boolean): string {
     : {
         'dev-en': '~/portfolio — zsh',
         'dev-uk': '~/портфоліо — zsh',
-        'human-en': 'portfolio — english',
-        'human-uk': 'портфоліо — українською',
+        'human-en': 'portfolio',
+        'human-uk': 'портфоліо',
       };
   return map[combo];
 }
@@ -63,7 +63,7 @@ export function getStrings(mode: Mode, lang: Lang): Strings {
 
   return {
     navRoot: human ? (uk ? 'Ярослав' : 'Yaroslav') : '~/yaroslav',
-    navNames: human && uk ? ['вступ', 'досвід', 'стек', 'роботи', 'контакти'] : ['intro', 'experience', 'skills', 'work', 'contact'],
+    navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
     roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
     statement:
       (human ? '' : '# ') +
@@ -77,7 +77,7 @@ export function getStrings(mode: Mode, lang: Lang): Strings {
       hackathons: uk ? 'хакатонів' : 'hackathons',
       win: uk ? 'перемога' : 'win',
     },
-    btnWork: human ? (uk ? 'Дивитись роботи →' : 'View work →') : 'cd ~/work →',
+    btnWork: human ? (uk ? 'Дивитись проєкти' : 'View projects') : 'cd ~/projects',
     btnContact: human ? (uk ? 'Звʼязатися' : 'Contact me') : 'contact --open',
     hExp: uk ? 'Досвід' : 'Experience',
     hSkills: uk ? 'Навички — роки досвіду' : 'Skills — years of use',
@@ -138,7 +138,7 @@ export function getStrings(mode: Mode, lang: Lang): Strings {
           : `${maxY} ${maxY === 1 ? 'year' : 'years'}`
         : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
-    modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/work/${slug} — maximized`),
+    modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => (hovering ? (uk ? 'en_US.UTF-8' : 'uk_UA.UTF-8') : uk ? 'uk_UA.UTF-8' : 'en_US.UTF-8'),
     viewValue: (hovering: boolean) =>
       hovering

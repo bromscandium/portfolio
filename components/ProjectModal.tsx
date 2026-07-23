@@ -16,12 +16,13 @@ export function ProjectModal({ project, closing, strings, onClose }: Props) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[300] flex items-center justify-center bg-black/[.82] px-[5vw] py-[5vh] backdrop-blur-[4px]"
-      style={{ animation: closing ? 'fadeOutM .24s ease forwards' : 'fadeUp .25s ease-out forwards' }}
+      className="fixed inset-0 z-[300] flex items-center justify-center bg-black/[.85] px-[5vw] py-[5vh]"
+      style={{ animation: closing ? 'fadeOutM .2s ease forwards' : 'overlayIn .18s ease forwards', willChange: 'opacity' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="max-h-[90vh] w-full max-w-[980px] overflow-y-auto rounded-modal border border-orange/50 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
+        style={{ animation: closing ? 'none' : 'modalPop .22s ease-out forwards', willChange: 'transform, opacity' }}
       >
         <div className="sticky top-0 flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4 py-3">
           <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[12px] text-fg-3">{path}</span>

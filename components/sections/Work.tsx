@@ -38,14 +38,14 @@ export function Work({
   dashSec,
 }: Props) {
   return (
-    <section ref={ref} data-screen-label="Work" className="box-border border-t border-line-0 px-[6vw] py-[90px]">
+    <section ref={ref} data-screen-label="Projects" className="box-border border-t border-line-0 px-[6vw] py-[90px]">
       <div className="mb-[30px] flex flex-wrap items-baseline justify-between gap-[14px]">
         {human ? (
           <h2 className="m-0 font-display text-[30px] font-semibold tracking-[2px] text-fg">{strings.hWork}</h2>
         ) : (
           <div className="text-[14px]">
             <span className="font-bold text-orange">❯ </span>
-            <span className="text-[#eee]">l ~/work</span>
+            <span className="text-[#eee]">l ~/projects</span>
             <span className="text-ghost"> --group-directories-first</span>
           </div>
         )}
@@ -87,7 +87,7 @@ export function Work({
             >
               <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-[14px] py-[10px]">
                 <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-fg-3">
-                  {human ? p.title : `~/work/${slugify(p.title)}`}
+                  {human ? p.title : `~/projects/${slugify(p.title)}`}
                 </span>
                 <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{strings.catBadge[p.category]}</span>
               </div>

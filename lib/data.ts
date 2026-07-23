@@ -19,9 +19,9 @@ export interface Project {
 
 export function projectLinks(p: Project): ProjectLink[] {
   const links: ProjectLink[] = [];
-  if (p.live) links.push({ label: 'live ↗', href: p.live });
+  if (p.live) links.push({ label: 'live', href: p.live });
   if (p.links) links.push(...p.links);
-  else if (p.github) links.push({ label: 'github ↗', href: p.github });
+  else if (p.github) links.push({ label: 'github', href: p.github });
   return links;
 }
 
@@ -106,15 +106,15 @@ export const portfolio: Project[] = [
     live: null,
     github: null,
     links: [
-      { label: 'bromiumjs: code ↗', href: 'https://github.com/bromscandium/bromiumjs' },
-      { label: 'bromiumjs demo ↗', href: 'https://bromscandium.github.io/bromiumjs-website/' },
-      { label: 'bromiumjs site: code ↗', href: 'https://github.com/bromscandium/bromiumjs-website' },
-      { label: 'react demo ↗', href: 'https://bromscandium.github.io/react-website/' },
-      { label: 'react site: code ↗', href: 'https://github.com/bromscandium/react-website' },
-      { label: 'vue demo ↗', href: 'https://bromscandium.github.io/vue-website/' },
-      { label: 'vue site: code ↗', href: 'https://github.com/bromscandium/vue-website' },
-      { label: 'angular demo ↗', href: 'https://bromscandium.github.io/angular-website/' },
-      { label: 'angular site: code ↗', href: 'https://github.com/bromscandium/angular-website' },
+      { label: 'bromiumjs: code', href: 'https://github.com/bromscandium/bromiumjs' },
+      { label: 'bromiumjs demo', href: 'https://bromscandium.github.io/bromiumjs-website/' },
+      { label: 'bromiumjs site: code', href: 'https://github.com/bromscandium/bromiumjs-website' },
+      { label: 'react demo', href: 'https://bromscandium.github.io/react-website/' },
+      { label: 'react site: code', href: 'https://github.com/bromscandium/react-website' },
+      { label: 'vue demo', href: 'https://bromscandium.github.io/vue-website/' },
+      { label: 'vue site: code', href: 'https://github.com/bromscandium/vue-website' },
+      { label: 'angular demo', href: 'https://bromscandium.github.io/angular-website/' },
+      { label: 'angular site: code', href: 'https://github.com/bromscandium/angular-website' },
     ],
     category: 'university',
   },
@@ -340,8 +340,8 @@ export const portfolio: Project[] = [
     live: null,
     github: null,
     links: [
-      { label: 'github: jan-diddy ↗', href: 'https://github.com/bromscandium/jan-diddy' },
-      { label: 'github: jan-diddy-llm ↗', href: 'https://github.com/bromscandium/jan-diddy-llm' },
+      { label: 'github: jan-diddy', href: 'https://github.com/bromscandium/jan-diddy' },
+      { label: 'github: jan-diddy-llm', href: 'https://github.com/bromscandium/jan-diddy-llm' },
     ],
     category: 'university',
   },
