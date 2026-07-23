@@ -58,23 +58,17 @@ export const TabBar = ({
         />
       ))}
       <div className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
-        <button
-          onClick={togglePlus}
-          title="open new tab / command palette"
-          className="cursor-pointer border-none bg-transparent p-0 font-mono text-[15px] text-fg-6 transition-colors hover:text-orange"
-        >
-          +
-        </button>
-        {plusOpen && (
+        {plusItems.length > 0 && (
+          <button
+            onClick={togglePlus}
+            title="open new tab"
+            className="cursor-pointer border-none bg-transparent p-0 font-mono text-[15px] text-fg-6 transition-colors hover:text-orange"
+          >
+            +
+          </button>
+        )}
+        {plusOpen && plusItems.length > 0 && (
           <div className="absolute left-0 top-9 z-[700] flex min-w-47.5 flex-col rounded-card border border-line-5 bg-panel-6 p-1.5 shadow-[0_14px_40px_rgba(0,0,0,.6)]">
-            <button
-              onClick={onOpenPalette}
-              className="flex cursor-pointer items-center justify-between rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-[#222] hover:text-orange"
-            >
-              <span>⌘ command palette</span>
-              <span className="text-[10px] text-fg-6">⌃K</span>
-            </button>
-            {plusItems.length > 0 && <div className="my-1 border-t border-line-4" />}
             {plusItems.map((c) => (
               <button
                 key={c}

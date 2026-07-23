@@ -22,7 +22,7 @@ export const IntroPrompt = ({ typedCmd, ghostCmd }: { typedCmd: string; ghostCmd
       <span className="font-bold text-orange">❯ </span>
       <span className="text-[#eee]">{typedCmd}</span>
       <span className="text-ghost">{ghostCmd}</span>
-      <span className="blink bg-orange text-orange">█</span>
+      <span className="blink ml-0.5 inline-block h-[1em] w-[7px] translate-y-[1px] bg-orange" aria-hidden />
     </div>
   </div>
 );
