@@ -96,7 +96,7 @@ export const Terminal = () => {
 
       {t.paletteOpen && <CommandPalette />}
 
-      {t.closeConfirm && <CloseConfirm onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
+      {t.closeConfirm && <CloseConfirm human={human} uk={t.lang === 'uk'} onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
 
       {modalP && <ProjectModal project={modalP} closing={t.closingM} strings={s} onClose={t.closeModal} />}
 

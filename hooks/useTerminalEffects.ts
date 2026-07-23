@@ -55,13 +55,15 @@ export const useTerminalEffects = () => {
         return st.setCombo(m, l);
       }
       if (st.closeConfirm) {
-        if (e.key === 'Escape' || e.key.toLowerCase() === 'n') {
-          e.preventDefault();
-          return st.cancelClose();
-        }
-        if (e.key.toLowerCase() === 'y') {
-          e.preventDefault();
-          return st.confirmClose();
+        if (st.mode === 'dev') {
+          if (e.key === 'Escape' || e.key.toLowerCase() === 'n') {
+            e.preventDefault();
+            return st.cancelClose();
+          }
+          if (e.key.toLowerCase() === 'y') {
+            e.preventDefault();
+            return st.confirmClose();
+          }
         }
         return;
       }
