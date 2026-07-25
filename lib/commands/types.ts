@@ -13,8 +13,11 @@ export interface CmdLine {
   row?: LsRow;
 }
 
+export type Seg = string[];
+
 export interface CompletionOption {
   value: string;
+  label?: string;
   dir: boolean;
 }
 
@@ -33,4 +36,6 @@ export interface CmdContext {
   close: () => void;
   exitSession: () => void;
   setContactClosed: (v: boolean) => void;
+  pwd: Seg;
+  setPwd: (p: Seg) => void;
 }

@@ -1,4 +1,4 @@
-import type { CmdContext } from '@/lib/commands';
+import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { CommandRow } from './CommandRow';
@@ -9,11 +9,11 @@ interface Props {
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
-  actions: Omit<CmdContext, 'clear' | 'close'>;
+  actions: Omit<CmdContext, 'clear' | 'close' | 'pwd' | 'setPwd'>;
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize } = useCommandLine(open, onClose, actions);
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd } = useCommandLine(open, onClose, actions);
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -59,7 +59,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
             <CommandRow key={r.id} row={r} />
           ))}
           <div className="mt-2">
-            <PathLine />
+            <PathLine path={displayPwd(pwd)} />
             <div className="flex items-center gap-2">
               <span className="text-orange">❯</span>
               <div className="relative min-w-0 flex-1">
@@ -89,7 +89,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                     className="whitespace-pre"
                     style={{ background: i === menu.index ? '#161616' : 'transparent', color: i === menu.index ? 'var(--color-orange)' : '#8a8a8a' }}
                   >
-                    {o.value}
+                    {o.label ?? o.value}
                     {o.dir && <span className="text-fg-8">/</span>}
                   </span>
                 ))}

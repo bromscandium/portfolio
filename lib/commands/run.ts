@@ -1,10 +1,10 @@
 import { education, experience, hackathons, portfolio, skillMap } from '../data';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
-import { byCategory, projectPath } from '../helpers';
-import { LINKS, SECTION_LABELS, SHELL } from '../config';
-import type { Category } from '../types';
-import { NEOFETCH, SECTIONS } from './constants';
-import { CATEGORIES, COMMANDS, findCommand } from './registry';
+import { projectPath } from '../helpers';
+import { LINKS, SHELL } from '../config';
+import { NEOFETCH } from './constants';
+import { COMMANDS, findCommand } from './registry';
+import { SECTIONS_LOWER, children, resolvePath } from './fs';
 import type { CmdContext, CmdLine, Tone } from './types';
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
@@ -50,30 +50,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'cd': {
-      const key = arg
-        .replace(/^~\/portfolio\/?/, '')
-        .replace(/^~\/?/, '')
-        .replace(/^\.\//, '')
-        .replace(/\/+$/, '');
-      if (!key || key === '~' || key === '..') {
-        ctx.goTo(0);
-        return [ok('→ intro', 'cyan')];
-      }
-      if (key === '-') {
-        ctx.goToPrev();
-        return [ok('→ previous', 'cyan')];
-      }
-      if (key.startsWith('projects/')) {
-        const slug = key.slice('projects/'.length);
-        const p = portfolio.find((x) => slugify(x.title) === slug) ?? portfolio.find((x) => slugify(x.title).includes(slug));
-        if (!p) return [ok(`cd: no such project: ${slug}`, 'error')];
-        ctx.goTo(3);
-        return [ok(`→ projects/${slugify(p.title)}  ·  run \`open ${slugify(p.title)}\` to view`, 'cyan')];
-      }
-      const i = SECTIONS[key];
-      if (i === undefined) return [ok(`cd: no such section: ${arg}`, 'error')];
-      ctx.goTo(i);
-      return [ok(`→ ${key}`, 'cyan')];
+      const dest = resolvePath(ctx.pwd, arg.trim() || '~');
+      if (!dest) return [ok(`cd: no such file or directory: ${arg}`, 'error')];
+      ctx.setPwd(dest);
+      return [];
     }
 
     case 'ls':
@@ -81,31 +61,41 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'la':
     case 'll': {
       const raw = args.find((a) => !a.startsWith('-')) ?? '';
-      const t = raw
-        .replace(/^~\/portfolio\/?/, '')
-        .replace(/^~\/?/, '')
-        .replace(/^\.\//, '')
-        .replace(/\/+$/, '')
-        .toLowerCase();
-
+      const dir = resolvePath(ctx.pwd, raw || '.');
+      if (!dir) return [ok(`ls: cannot access '${raw}': no such directory`, 'error')];
       const head: CmdLine = { row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } };
+      const rows = children(dir).map((e) => {
+        const proj = e.dir && dir.length === 1 && dir[0] === 'projects' ? portfolio.find((x) => slugify(x.title) === e.name) : undefined;
+        return {
+          row: {
+            perms: e.dir ? 'drwxr-xr-x' : '-rwxr-xr-x',
+            size: proj ? sizeOf(proj) : '—',
+            name: e.dir ? `${e.name}/` : e.name,
+          },
+        };
+      });
+      return [head, ...rows];
+    }
 
-      if (t === '') {
-        return [head, ...SECTION_LABELS.map((label) => ({ row: { perms: 'drwxr-xr-x', size: '—', name: `${label.toLowerCase()}/` } }))];
+    case './open.sh':
+    case 'open.sh': {
+      const p = ctx.pwd;
+      if (p.length === 0) return [ok('open.sh: not found — cd into a section or project first', 'error')];
+      if (p[0] === 'projects' && p.length === 2) {
+        const proj = portfolio.find((x) => slugify(x.title) === p[1]);
+        if (!proj) return [ok('open.sh: unknown project', 'error')];
+        ctx.goTo(3);
+        ctx.openProject(proj.id);
+        return [ok(`❯ opening projects/${p[1]}…`, 'cyan')];
       }
-
-      let list: typeof portfolio;
-      if (t === 'projects') list = portfolio;
-      else if (CATEGORIES.includes(t)) list = byCategory(t as Category);
-      else if (t.startsWith('projects/')) list = portfolio.filter((p) => slugify(p.title).includes(t.slice('projects/'.length)));
-      else list = portfolio.filter((p) => slugify(p.title).includes(t));
-
-      if (!list.length) return [ok(`ls: cannot access '${raw}': no matches`, 'error')];
-      return [head, ...list.map((p) => ({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }))];
+      const i = SECTIONS_LOWER.indexOf(p[0]);
+      if (i < 0) return [ok('open.sh: nothing to open here', 'error')];
+      ctx.goTo(i);
+      return [ok(`❯ opening ${p[0]}…`, 'cyan')];
     }
 
     case 'pwd':
-      return [ok('/home/yaroslav/portfolio')];
+      return [ok(`/home/yaroslav/portfolio${ctx.pwd.length ? '/' + ctx.pwd.join('/') : ''}`)];
 
     case 'cat': {
       const f = arg.replace(/\.txt$/, '');
@@ -266,7 +256,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ok(`email      ${LINKS.email.replace('mailto:', '')}`, 'cyan'),
         ok(`github     ${LINKS.github.replace('https://', '')}`, 'cyan'),
         ok(`linkedin   ${LINKS.linkedin.replace('https://', '')}`, 'cyan'),
-        ok('→ contact --open to jump to the section · --close to hang up', 'muted'),
+        ok('❯ contact --open to jump to the section · --close to hang up', 'muted'),
       ];
     }
 

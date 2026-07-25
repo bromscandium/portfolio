@@ -1,33 +1,18 @@
 import { COMMAND_NAMES, findCommand } from './registry';
-import type { Completion, CompletionOption } from './types';
+import { children, resolvePath } from './fs';
+import type { Completion, CompletionOption, Seg } from './types';
 
-const PATH_PREFIXES = ['~/portfolio/', '~/'];
+const PATH_CMDS = new Set(['cd', 'ls', 'l', 'la', 'll']);
 
-const pathComplete = (pool: CompletionOption[], frag: string): CompletionOption[] => {
-  let prefix = '';
-  let rel = frag;
-  for (const p of PATH_PREFIXES) {
-    if (frag.startsWith(p)) {
-      prefix = p;
-      rel = frag.slice(p.length);
-      break;
-    }
-  }
-  const slash = rel.lastIndexOf('/');
-  const baseDir = slash >= 0 ? rel.slice(0, slash + 1) : '';
-  const stub = slash >= 0 ? rel.slice(slash + 1) : rel;
-
-  const seen = new Map<string, boolean>();
-  for (const o of pool) {
-    if (!o.value.startsWith(baseDir)) continue;
-    const remainder = o.value.slice(baseDir.length);
-    if (!remainder) continue;
-    const next = remainder.indexOf('/');
-    const seg = next >= 0 ? remainder.slice(0, next) : remainder;
-    if (!seg.startsWith(stub)) continue;
-    seen.set(seg, (seen.get(seg) ?? false) || next >= 0);
-  }
-  return [...seen].map(([seg, dir]) => ({ value: `${prefix}${baseDir}${seg}`, dir }));
+const fsComplete = (pwd: Seg, frag: string): CompletionOption[] => {
+  const slash = frag.lastIndexOf('/');
+  const prefix = slash >= 0 ? frag.slice(0, slash + 1) : '';
+  const stub = (slash >= 0 ? frag.slice(slash + 1) : frag).toLowerCase();
+  const base = resolvePath(pwd, prefix === '' ? '.' : prefix);
+  if (!base) return [];
+  return children(base)
+    .filter((e) => e.name.toLowerCase().startsWith(stub))
+    .map((e) => ({ value: `${prefix}${e.name}`, label: e.name, dir: e.dir }));
 };
 
 const wordComplete = (pool: CompletionOption[], frag: string): CompletionOption[] => {
@@ -50,7 +35,7 @@ const wordComplete = (pool: CompletionOption[], frag: string): CompletionOption[
   return out;
 };
 
-export const autocomplete = (input: string): Completion => {
+export const autocomplete = (input: string, pwd: Seg = []): Completion => {
   const parts = input.split(' ');
 
   if (parts.length === 1) {
@@ -59,8 +44,8 @@ export const autocomplete = (input: string): Completion => {
 
   const [cmd, ...rest] = parts;
   const frag = rest.join(' ');
-  const spec = findCommand(cmd);
-  const pool = spec?.options?.() ?? [];
-  const options = spec?.path ? pathComplete(pool, frag) : wordComplete(pool, frag);
-  return { base: `${cmd} `, options };
+  if (PATH_CMDS.has(cmd)) return { base: `${cmd} `, options: fsComplete(pwd, frag) };
+
+  const pool = findCommand(cmd)?.options?.() ?? [];
+  return { base: `${cmd} `, options: wordComplete(pool, frag) };
 };

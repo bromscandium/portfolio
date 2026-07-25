@@ -17,7 +17,7 @@ export const CommandRow = ({ row }: { row: Row }) => {
   if (row.prompt) {
     return (
       <div className="mt-2 first:mt-0">
-        <PathLine />
+        <PathLine path={row.path} />
         <div className="whitespace-pre-wrap break-words">
           <span className="text-orange">❯</span> <span className="text-[#eee]">{row.text}</span>
         </div>

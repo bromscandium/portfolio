@@ -60,7 +60,7 @@ const flatten = (nodes: TreeNode[], expanded: Set<string>, ancestors: boolean[] 
 };
 
 interface Props {
-  actions: Omit<CmdContext, 'clear' | 'close'>;
+  actions: Omit<CmdContext, 'clear' | 'close' | 'pwd' | 'setPwd'>;
   onExit: () => void;
 }
 

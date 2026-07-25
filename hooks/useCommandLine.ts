@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { autocomplete, runCommand, type CmdContext, type CmdLine, type CompletionOption } from '@/lib/commands';
+import { autocomplete, displayPwd, runCommand, type CmdContext, type CmdLine, type CompletionOption, type Seg } from '@/lib/commands';
 import { STORAGE_KEYS, readLS, writeLS } from '@/lib/storage';
 
 interface Menu {
@@ -11,11 +11,13 @@ interface Menu {
 export interface Row extends CmdLine {
   id: number;
   prompt?: boolean;
+  path?: string;
 }
 
-export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close'>) => {
+export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close' | 'pwd' | 'setPwd'>) => {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
   const [input, setInput] = useState('');
+  const [pwd, setPwd] = useState<Seg>([]);
   const [height, setHeight] = useState(280);
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
@@ -56,7 +58,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       return;
     }
 
-    const echo: Row = { id: nextId(), text: cmd, prompt: true };
+    const echo: Row = { id: nextId(), text: cmd, prompt: true, path: displayPwd(pwd) };
     if (cmd === 'clear') {
       setRows([]);
     } else if (cmd === 'tree') {
@@ -65,7 +67,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     } else if (cmd === 'history') {
       append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {
-      const ctx: CmdContext = { ...actions, clear: () => setRows([]), close: onClose };
+      const ctx: CmdContext = { ...actions, clear: () => setRows([]), close: onClose, pwd, setPwd };
       append([echo, ...runCommand(cmd, ctx).map((l) => ({ ...l, id: nextId() }))]);
     }
 
@@ -95,7 +97,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       setInput(menu.base + menu.options[index].value);
       return;
     }
-    const { base, options } = autocomplete(input);
+    const { base, options } = autocomplete(input, pwd);
     if (options.length === 0) return;
     if (options.length === 1) {
       const o = options[0];
@@ -172,5 +174,5 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  return { rows, input, setInput, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize };
+  return { rows, input, setInput, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd };
 };
