@@ -208,7 +208,22 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       }
       if (args[0] === 'tag') {
         ctx.goTo(1);
-        return hackathons.map((h) => ok(`hackathons/${slugify(h.event)}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default'));
+        const tags: { name: string; line: CmdLine }[] = [
+          ...experience.map((j) => {
+            const jc = JOB_COPY[j.hash]?.en;
+            const name = `work/${slugify(j.org)}`;
+            return { name, line: ok(`${name}   ${jc?.role ?? ''} · ${j.period}`, 'accent') };
+          }),
+          ...hackathons.map((h) => {
+            const name = `hackathons/${slugify(h.event)}`;
+            return { name, line: ok(`${name}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default') };
+          }),
+        ];
+        const pattern = args.slice(1).find((a) => !a.startsWith('-'));
+        const rx = pattern ? new RegExp(`^${pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`) : null;
+        const shown = rx ? tags.filter((t) => rx.test(t.name)) : tags;
+        if (!shown.length) return [ok(`git tag: no tags matching '${pattern}'`, 'muted')];
+        return shown.map((t) => t.line);
       }
       if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
       if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
