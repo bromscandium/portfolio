@@ -32,6 +32,16 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
       ['Esc', 'close overlay / modal'],
     ],
   },
+  {
+    title: 'terminal · dev',
+    rows: [
+      ['cd <dir> · ls', 'browse the filesystem'],
+      ['./open.sh', 'open the current section / project'],
+      ['open <project>', 'open a project window'],
+      ['git log · git tag', 'work · study · hackathons'],
+      ['help', 'full command list'],
+    ],
+  },
 ];
 
 const HelpGroup = ({ title, rows }: { title: string; rows: [string, string][] }) => (
