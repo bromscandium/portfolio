@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const DESCRIPTION =
-  'Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 21 shipped projects.';
+  'Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 18 shipped projects.';
 
 export const viewport: Viewport = {
   width: 'device-width',

@@ -29,7 +29,7 @@ export interface Strings {
   roleWord: string;
   statement: string;
   stmtColor: string;
-  counterLabels: Record<'years' | 'projects' | 'hackathons' | 'win', string>;
+  counterLabels: Record<'years' | 'projects' | 'hackathons' | 'contributions', string>;
   btnWork: string;
   btnContact: string;
   hExp: string;
@@ -81,7 +81,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       years: uk ? 'роки досвіду' : 'yrs experience',
       projects: uk ? 'проєктів' : 'projects',
       hackathons: uk ? 'хакатонів' : 'hackathons',
-      win: uk ? 'перемога' : 'win',
+      contributions: uk ? 'контрибуцій' : 'contributions',
     },
     btnWork: human ? (uk ? 'Дивитись проєкти' : 'View projects') : 'cd ~/projects',
     btnContact: human ? (uk ? 'Звʼязатися' : 'Contact me') : 'contact --open',

@@ -242,7 +242,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           ok('yaroslav yeromenko · full-stack engineer'),
           ok('prague · remote · open to full-time', 'muted'),
           ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
-          ok('4+ yrs · 21 projects · 10+ hackathons', 'muted'),
+          ok('4+ yrs · 18 projects · 10+ hackathons · 1.5k+ commits', 'muted'),
         ];
       }
       return [ok('yaroslav')];

@@ -52,7 +52,7 @@ export interface Hackathon {
 
 export interface Counter {
   n: string;
-  key: 'years' | 'projects' | 'hackathons' | 'win';
+  key: 'years' | 'projects' | 'hackathons' | 'contributions';
 }
 
 export interface SkillRegion {

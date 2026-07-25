@@ -20,19 +20,6 @@ export const portfolio: Project[] = [
     category: 'professional',
   },
   {
-    id: 20,
-    image: '/covers/python-next.webp',
-    title: 'Python + Next.js',
-    description: [
-      'A small sandbox wiring a Next.js frontend to a Python backend to practice the full request/response round-trip.',
-      'Focused on the integration seam — API routes, data flow and project structure — rather than feature breadth.',
-    ],
-    technologies: ['Next.js', 'Python', 'FastAPI'],
-    live: null,
-    github: 'https://github.com/bromscandium/python-next',
-    category: 'pet',
-  },
-  {
     id: 19,
     image: '/covers/bromiumjs.webp',
     title: 'BromiumJS',
@@ -70,20 +57,6 @@ export const portfolio: Project[] = [
     live: null,
     github: 'https://github.com/bromscandium/scrollix',
     category: 'hackathon',
-  },
-  {
-    id: 17,
-    image: '/covers/walletapp.webp',
-    title: 'Wallet App',
-    description: [
-      'A streamlined, mobile-first wallet interface consisting of a main dashboard and a dedicated transaction details view, designed to demonstrate core React principles.',
-      'Focused on clean code architecture and efficient state management, ensuring a seamless user experience across a high-performance two-page navigation flow.',
-      'Prioritized precision in UI/UX implementation and comprehensive unit testing over unnecessary complexity, showcasing a production-ready approach to a focused feature set.',
-    ],
-    technologies: ['React', 'TypeScript', 'Jest', 'Tailwind CSS'],
-    live: 'https://bromscandium.github.io/wallet-app/',
-    github: 'https://github.com/bromscandium/wallet-app',
-    category: 'pet',
   },
   {
     id: 16,
@@ -140,20 +113,6 @@ export const portfolio: Project[] = [
     live: null,
     github: 'https://github.com/NikStor03/prosto-telekom',
     category: 'hackathon',
-  },
-  {
-    id: 12,
-    image: '/covers/strapinext.webp',
-    title: 'Strapi+Next.js',
-    description: [
-      'Small pet project with combining Next and Strapi as CMS.',
-      "Main Purpose of it is understanding how to create own CMS (it's popular tech).",
-      'Basically, I was trying to understand how it works and how to create a connection between website and content system.',
-    ],
-    technologies: ['Next.js', 'Strapi', 'Tailwind', 'Vitest'],
-    live: null,
-    github: 'https://github.com/bromscandium/strapi-usage',
-    category: 'pet',
   },
   {
     id: 11,
