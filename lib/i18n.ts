@@ -456,7 +456,7 @@ export const JOB_COPY: Record<string, { en: JobCopy; uk: JobCopy }> = {
       ],
     },
     uk: {
-      role: 'Full-Stack інженер (стажер)',
+      role: 'Full-Stack інженер (інтерн)',
       loc: 'Віддалено',
       summary: 'Пройшов інтенсивну інженерну програму, зосереджену на створенні й доставці full-stack хмарних застосунків під менторством сеньйорів.',
       points: [
