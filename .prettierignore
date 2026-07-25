@@ -1,0 +1,7 @@
+node_modules
+.next
+out
+bun.lock
+public
+*.md
+design_handoff_terminal_portfolio

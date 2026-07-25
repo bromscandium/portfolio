@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "predeploy": "bun run build && touch out/.nojekyll && cp public/CNAME out/",
     "deploy": "gh-pages -d out -t true"
   },
@@ -27,6 +29,8 @@
     "eslint-config-next": "^16.2.11",
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.22",
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "tailwindcss": "^4.3.3",
     "typescript": "5"
   }
