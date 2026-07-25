@@ -80,7 +80,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case './open.sh':
     case 'open.sh': {
       const p = ctx.pwd;
-      if (p.length === 0) return [ok('open.sh: not found — cd into a section or project first', 'error')];
+      if (p.length === 0) {
+        ctx.goTo(0);
+        return [ok('❯ opening ~/portfolio…', 'cyan')];
+      }
       if (p[0] === 'projects' && p.length === 2) {
         const proj = portfolio.find((x) => slugify(x.title) === p[1]);
         if (!proj) return [ok('open.sh: unknown project', 'error')];

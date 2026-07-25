@@ -37,7 +37,7 @@ export interface Entry {
 }
 
 export const children = (segs: Seg): Entry[] => {
-  if (segs.length === 0) return SECTIONS_LOWER.map((name) => ({ name, dir: true }));
+  if (segs.length === 0) return [...SECTIONS_LOWER.map((name) => ({ name, dir: true })), { name: 'open.sh', dir: false }];
   if (segs.length === 1 && segs[0] === 'projects') return [...slugs().map((name) => ({ name, dir: true })), { name: 'open.sh', dir: false }];
   return [{ name: 'open.sh', dir: false }];
 };
