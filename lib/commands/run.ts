@@ -90,11 +90,16 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const dir = resolvePath(ctx.pwd, raw || '.');
       if (!dir) return [ok(`ls: cannot access '${raw}': no such directory`, 'error')];
       const entries = children(dir);
-      if (!entries.length) return [ok('nothing to list here — run ./open.sh to open this', 'muted')];
       const head: CmdLine = { row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } };
       const rows = entries.map((e) => {
-        const proj = dir.length === 1 && dir[0] === 'projects' ? portfolio.find((x) => slugify(x.title) === e.name) : undefined;
-        return { row: { perms: 'drwxr-xr-x', size: proj ? sizeOf(proj) : '—', name: `${e.name}/` } };
+        const proj = e.dir && dir.length === 1 && dir[0] === 'projects' ? portfolio.find((x) => slugify(x.title) === e.name) : undefined;
+        return {
+          row: {
+            perms: e.dir ? 'drwxr-xr-x' : '-rwxr-xr-x',
+            size: proj ? sizeOf(proj) : e.dir ? '—' : '0.1k',
+            name: e.dir ? `${e.name}/` : e.name,
+          },
+        };
       });
       return [head, ...rows];
     }

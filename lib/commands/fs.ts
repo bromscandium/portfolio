@@ -36,10 +36,12 @@ export interface Entry {
   dir: boolean;
 }
 
+const OPEN_SH: Entry = { name: 'open.sh', dir: false };
+
 export const children = (segs: Seg): Entry[] => {
-  if (segs.length === 0) return SECTIONS_LOWER.map((name) => ({ name, dir: true }));
-  if (segs.length === 1 && segs[0] === 'projects') return slugs().map((name) => ({ name, dir: true }));
-  return [];
+  if (segs.length === 0) return [...SECTIONS_LOWER.map((name) => ({ name, dir: true })), OPEN_SH];
+  if (segs.length === 1 && segs[0] === 'projects') return [...slugs().map((name) => ({ name, dir: true })), OPEN_SH];
+  return [OPEN_SH];
 };
 
 export const displayPwd = (segs: Seg): string => `~/portfolio${segs.length ? '/' + segs.join('/') : ''}`;
