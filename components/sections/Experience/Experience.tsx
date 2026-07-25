@@ -23,7 +23,7 @@ export const Experience = ({ ref, human, strings }: Props) => {
       </div>
       <div className="mt-10 grid grid-cols-1 gap-15 md:grid-cols-2">
         <div>
-          <CommandHeader variant="sub" human={human} command="cat education.txt" heading={strings.hEdu} className="mb-5" />
+          <CommandHeader variant="sub" human={human} command="git tag -l study/*" heading={strings.hEdu} className="mb-5" />
           <Panel>
             {education.map((e) => (
               <EduRow key={e.title} item={e} />

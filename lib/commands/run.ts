@@ -1,7 +1,7 @@
-import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
+import { education, experience, hackathons, portfolio, skillMap } from '../data';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
 import { byCategory, projectPath } from '../helpers';
-import { LINKS, SHELL } from '../config';
+import { LINKS, SECTION_LABELS, SHELL } from '../config';
 import type { Category } from '../types';
 import { NEOFETCH, SECTIONS } from './constants';
 import { CATEGORIES, COMMANDS, findCommand } from './registry';
@@ -68,8 +68,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         const p = portfolio.find((x) => slugify(x.title) === slug) ?? portfolio.find((x) => slugify(x.title).includes(slug));
         if (!p) return [ok(`cd: no such project: ${slug}`, 'error')];
         ctx.goTo(3);
-        ctx.openProject(p.id);
-        return [ok(`opening ${p.title}…`, 'cyan')];
+        return [ok(`→ projects/${slugify(p.title)}  ·  run \`open ${slugify(p.title)}\` to view`, 'cyan')];
       }
       const i = SECTIONS[key];
       if (i === undefined) return [ok(`cd: no such section: ${arg}`, 'error')];
@@ -81,17 +80,28 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'l':
     case 'la':
     case 'll': {
-      const target = args.find((a) => !a.startsWith('-'))?.toLowerCase() ?? '';
-      const path = target.replace(/^~\/?/, '').replace(/^projects\/?/, '').replace(/\/+$/, '');
-      let list = portfolio;
-      if (path) {
-        if (CATEGORIES.includes(path)) list = byCategory(path as Category);
-        else list = portfolio.filter((p) => slugify(p.title).includes(path));
+      const raw = args.find((a) => !a.startsWith('-')) ?? '';
+      const t = raw
+        .replace(/^~\/portfolio\/?/, '')
+        .replace(/^~\/?/, '')
+        .replace(/^\.\//, '')
+        .replace(/\/+$/, '')
+        .toLowerCase();
+
+      const head: CmdLine = { row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } };
+
+      if (t === '') {
+        return [head, ...SECTION_LABELS.map((label) => ({ row: { perms: 'drwxr-xr-x', size: '—', name: `${label.toLowerCase()}/` } }))];
       }
-      if (!list.length) return [ok(`ls: cannot access '${target}': no matches`, 'error')];
-      const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
-      list.forEach((p) => rows.push({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }));
-      return rows;
+
+      let list: typeof portfolio;
+      if (t === 'projects') list = portfolio;
+      else if (CATEGORIES.includes(t)) list = byCategory(t as Category);
+      else if (t.startsWith('projects/')) list = portfolio.filter((p) => slugify(p.title).includes(t.slice('projects/'.length)));
+      else list = portfolio.filter((p) => slugify(p.title).includes(t));
+
+      if (!list.length) return [ok(`ls: cannot access '${raw}': no matches`, 'error')];
+      return [head, ...list.map((p) => ({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }))];
     }
 
     case 'pwd':
@@ -99,10 +109,15 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'cat': {
       const f = arg.replace(/\.txt$/, '');
-      if (f === 'about') return about.paragraphs.map((p) => ok(p));
-      if (f === 'education') return education.map((e) => ok(`${e.period}  ${e.title} — ${e.detail}`));
-      if (f === 'skills') return skillMap.map((r) => ok(`${r.region}: ${r.items.map((s) => s.name).join(', ')}`));
-      return [ok(`cat: ${arg}: No such file`, 'error')];
+      if (f === 'cat') {
+        return [
+          ok('   /\\_/\\', 'yellow'),
+          ok('  ( o.o )', 'yellow'),
+          ok('   > ^ <', 'yellow'),
+          ok('  meow — nothing to see here. try `ls`, `git log` or `git tag`.', 'muted'),
+        ];
+      }
+      return [ok(`cat: ${arg || 'cat.txt'}: No such file (hint: cat cat.txt)`, 'error')];
     }
 
     case 'open': {
@@ -217,6 +232,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
             const jc = JOB_COPY[j.hash]?.en;
             const name = `work/${slugify(j.org)}`;
             return { name, line: ok(`${name}   ${jc?.role ?? ''} · ${j.period}`, 'accent') };
+          }),
+          ...education.map((e) => {
+            const name = `study/${slugify(e.title)}`;
+            return { name, line: ok(`${name}   ${e.title} · ${e.period}`, 'cyan') };
           }),
           ...hackathons.map((h) => {
             const name = `hackathons/${slugify(h.event)}`;
