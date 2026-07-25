@@ -15,5 +15,5 @@ export const NEOFETCH = [
   `   /      \\       Shell: ${SHELL} + spaceship`,
   '  /   ..   \\      Role: Full-Stack Engineer',
   ' /   |  |   \\     Stack: Next.js · Python · Docker',
-  '/_-``    ``-_\\    Uptime: 4+ years · 18 projects',
+  '/_-``    ``-_\\    Uptime: 4+ years · 17 projects',
 ];

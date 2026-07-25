@@ -86,10 +86,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       }
       if (!list.length) return [ok(`ls: cannot access '${target}': no matches`, 'error')];
       const rows: CmdLine[] = [{ row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } }];
-      list
-        .slice()
-        .sort((a, b) => b.id - a.id)
-        .forEach((p) => rows.push({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }));
+      list.forEach((p) => rows.push({ row: { perms: 'drwxr-xr-x', size: sizeOf(p), name: `${slugify(p.title)}/` } }));
       return rows;
     }
 
@@ -243,7 +240,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           ok('yaroslav yeromenko · full-stack engineer'),
           ok('prague · remote · open to full-time', 'muted'),
           ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
-          ok('4+ yrs · 18 projects · 10+ hackathons · 1.5k+ commits', 'muted'),
+          ok('4+ yrs · 17 projects · 10+ hackathons · 1.5k+ commits', 'muted'),
         ];
       }
       return [ok('yaroslav')];

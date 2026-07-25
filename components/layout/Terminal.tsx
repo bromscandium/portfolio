@@ -34,10 +34,7 @@ export const Terminal = () => {
   const activeCombo = `${t.mode}-${t.lang}` as Combo;
   const heroDone = human || t.typedN >= CMD.length;
 
-  const visible = useMemo(
-    () => byCategory(t.cat).slice().sort((a, b) => b.id - a.id),
-    [t.cat],
-  );
+  const visible = useMemo(() => byCategory(t.cat), [t.cat]);
   const modalP = t.expandedId !== null ? portfolio.find((p) => p.id === t.expandedId) ?? null : null;
 
   useEffect(() => {

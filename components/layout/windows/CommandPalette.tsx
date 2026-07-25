@@ -47,10 +47,7 @@ const PaletteBody = ({ close }: { close: () => void }) => {
       { id: 'view-human', label: 'Switch view: human', hint: 'view', run: () => setCombo('human', lang) },
       { id: 'lang-en', label: 'Language: English', hint: 'lang', run: () => setCombo(mode, 'en') },
       { id: 'lang-uk', label: 'Language: Українська', hint: 'lang', run: () => setCombo(mode, 'uk') },
-      ...portfolio
-        .slice()
-        .sort((a, b) => b.id - a.id)
-        .map((p) => ({ id: `open-${p.id}`, label: `Open project: ${p.title}`, hint: p.category, run: () => { goTo(3); openProject(p.id); } })),
+      ...portfolio.map((p) => ({ id: `open-${p.id}`, label: `Open project: ${p.title}`, hint: p.category, run: () => { goTo(3); openProject(p.id); } })),
       { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(LINKS.email) },
       { id: 'github', label: 'Open GitHub', hint: 'link', run: () => openUrl(LINKS.github) },
       { id: 'linkedin', label: 'Open LinkedIn', hint: 'link', run: () => openUrl(LINKS.linkedin) },

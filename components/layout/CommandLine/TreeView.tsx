@@ -40,10 +40,7 @@ const TREE: TreeNode[] = [
     children: CATS.map((c) => ({
       key: `cat:${c.key}`,
       label: `${c.label}/`,
-      children: byCategory(c.key)
-        .slice()
-        .sort((a, b) => b.id - a.id)
-        .map((p) => ({ key: `p:${p.id}`, label: slugify(p.title), project: p })),
+      children: byCategory(c.key).map((p) => ({ key: `p:${p.id}`, label: slugify(p.title), project: p })),
     })),
   },
   { key: 'contact', label: 'contact', section: 4 },

@@ -267,18 +267,6 @@ export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
       'Мета — підвищити продуктивність і зменшити операційні витрати, автоматизуючи рутинні задачі на кшталт обробки замовлень та відбору працівників.',
     ],
   },
-  11: {
-    en: [
-      'This is a self-made site on the WordPress builder, and previous projects were in groups.',
-      'The site itself provides legal consulting services in various fields.',
-      'This project was built from the very beginning: from connecting the hosting to the design structure.',
-    ],
-    uk: [
-      'Самостійно зроблений сайт на WordPress-білдері, тоді як попередні проєкти були командними.',
-      'Сам сайт надає послуги юридичного консалтингу в різних сферах.',
-      'Проєкт зроблено з нуля: від підключення хостингу до структури дизайну.',
-    ],
-  },
   10: {
     en: [
       'A decentralized real estate marketplace and the winning project of the ETHBratislava hackathon on the EURØP Challenge track.',
