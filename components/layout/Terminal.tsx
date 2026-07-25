@@ -1,21 +1,21 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { Contact, Experience, Intro, Projects, Skills } from '@/components/sections';
+import { useTerminalEffects } from '@/hooks/useTerminalEffects';
+import { SHELL } from '@/lib/config';
 import { portfolio } from '@/lib/data';
 import { byCategory, openUrl } from '@/lib/helpers';
 import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
-import { SHELL } from '@/lib/config';
 import { splitCombo } from '@/lib/modes';
 import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
-import { useTerminalEffects } from '@/hooks/useTerminalEffects';
-import { TabBar } from './TabBar';
-import { Sidebar } from './Sidebar';
-import { StatusBar } from './StatusBar';
-import { CommandLine } from './CommandLine';
-import { CloseConfirm, CommandPalette, HelpOverlay, ProfilePicker, ProjectModal } from './windows';
+import { useEffect, useMemo } from 'react';
 import { BootLoader } from './BootLoader';
 import { BootUnloader } from './BootUnloader';
-import { Contact, Experience, Intro, Projects, Skills } from '@/components/sections';
+import { CommandLine } from './CommandLine';
+import { Sidebar } from './Sidebar';
+import { StatusBar } from './StatusBar';
+import { TabBar } from './TabBar';
+import { CloseConfirm, CommandPalette, HelpOverlay, ProfilePicker, ProjectModal } from './windows';
 
 export const Terminal = () => {
   useTerminalEffects();
@@ -27,7 +27,7 @@ export const Terminal = () => {
   const heroDone = human || t.typedN >= CMD.length;
 
   const visible = useMemo(() => byCategory(t.cat), [t.cat]);
-  const modalP = t.expandedId !== null ? portfolio.find((p) => p.id === t.expandedId) ?? null : null;
+  const modalP = t.expandedId !== null ? (portfolio.find((p) => p.id === t.expandedId) ?? null) : null;
 
   useEffect(() => {
     const name = s.navNames[t.active];
@@ -140,7 +140,10 @@ export const Terminal = () => {
       </main>
 
       {t.toast && (
-        <div className="fixed bottom-15 left-1/2 z-[650] -translate-x-1/2 rounded-btn border border-line-5 bg-panel-6 px-4 py-2 font-mono text-[12px] text-green shadow-[0_10px_30px_rgba(0,0,0,.6)]" style={{ animation: 'fadeUp .2s ease-out' }}>
+        <div
+          className="fixed bottom-15 left-1/2 z-[650] -translate-x-1/2 rounded-btn border border-line-5 bg-panel-6 px-4 py-2 font-mono text-[12px] text-green shadow-[0_10px_30px_rgba(0,0,0,.6)]"
+          style={{ animation: 'fadeUp .2s ease-out' }}
+        >
           ✓ {t.toast}
         </div>
       )}
@@ -164,4 +167,4 @@ export const Terminal = () => {
       )}
     </div>
   );
-}
+};

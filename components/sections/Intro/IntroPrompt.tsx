@@ -1,5 +1,5 @@
-import { heroPrompt } from '@/lib/data';
 import { TERMINAL_ROOT } from '@/lib/config';
+import { heroPrompt } from '@/lib/data';
 import type { PromptTool } from '@/lib/types';
 
 const PromptSegment = ({ tool }: { tool: PromptTool }) => (

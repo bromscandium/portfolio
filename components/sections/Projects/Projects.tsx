@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { CommandHeader } from '@/components/common/CommandHeader';
+import { Section } from '@/components/common/Section';
+import { useStrings } from '@/hooks/useStrings';
 import { type Category, type Project } from '@/lib/data';
 import { byCategory, fuzzy } from '@/lib/helpers';
 import type { Ref } from 'react';
-import { useStrings } from '@/hooks/useStrings';
-import { Section } from '@/components/common/Section';
-import { CommandHeader } from '@/components/common/CommandHeader';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ProjectCard } from './ProjectCard';
 
 interface Props {
@@ -40,20 +40,7 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
   </button>
 );
 
-export const Projects = ({
-  ref,
-  projects,
-  cat,
-  onCat,
-  hoverId,
-  expandedId,
-  onEnter,
-  onLeave,
-  onClick,
-  dashSec,
-  searchOpen,
-  onCloseSearch,
-}: Props) => {
+export const Projects = ({ ref, projects, cat, onCat, hoverId, expandedId, onEnter, onLeave, onClick, dashSec, searchOpen, onCloseSearch }: Props) => {
   const strings = useStrings();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
@@ -111,7 +98,9 @@ export const Projects = ({
             spellCheck={false}
             autoComplete="off"
           />
-          <span className="shrink-0 text-[11px] text-fg-6">{filtered.length} match{filtered.length === 1 ? '' : 'es'}</span>
+          <span className="shrink-0 text-[11px] text-fg-6">
+            {filtered.length} match{filtered.length === 1 ? '' : 'es'}
+          </span>
           <button onClick={onCloseSearch} className="shrink-0 cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange">
             ✕
           </button>
@@ -119,7 +108,13 @@ export const Projects = ({
       )}
       <div className="mb-8 flex flex-wrap gap-2.5">
         {strings.catLabels.map((c) => (
-          <FilterChip key={c.key} label={c.label} count={catCount(c.key as Category | 'all')} active={cat === c.key} onClick={() => onCat(c.key as Category | 'all')} />
+          <FilterChip
+            key={c.key}
+            label={c.label}
+            count={catCount(c.key as Category | 'all')}
+            active={cat === c.key}
+            onClick={() => onCat(c.key as Category | 'all')}
+          />
         ))}
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -143,4 +138,4 @@ export const Projects = ({
       <div className="mt-6.5 text-center text-[12px] text-ghost">{strings.workHint}</div>
     </Section>
   );
-}
+};

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;

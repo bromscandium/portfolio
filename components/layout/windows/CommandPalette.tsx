@@ -1,9 +1,9 @@
-import { useMemo, useRef, useState } from 'react';
-import { portfolio } from '@/lib/data';
-import { useTerminal } from '@/store/terminal';
 import { Modal } from '@/components/common/Modal';
 import { LINKS, SECTION_LABELS } from '@/lib/config';
+import { portfolio } from '@/lib/data';
 import { fuzzy, openUrl } from '@/lib/helpers';
+import { useTerminal } from '@/store/terminal';
+import { useMemo, useRef, useState } from 'react';
 
 interface Action {
   id: string;
@@ -13,7 +13,7 @@ interface Action {
   run: () => void;
 }
 
-const Row =({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
+const Row = ({ action, active, onRun, onHover }: { action: Action; active: boolean; onRun: (a: Action) => void; onHover: () => void }) => (
   <button
     onMouseEnter={onHover}
     onMouseDown={(e) => {
@@ -47,7 +47,15 @@ const PaletteBody = ({ close }: { close: () => void }) => {
       { id: 'view-human', label: 'Switch view: human', hint: 'view', run: () => setCombo('human', lang) },
       { id: 'lang-en', label: 'Language: English', hint: 'lang', run: () => setCombo(mode, 'en') },
       { id: 'lang-uk', label: 'Language: Українська', hint: 'lang', run: () => setCombo(mode, 'uk') },
-      ...portfolio.map((p) => ({ id: `open-${p.id}`, label: `Open project: ${p.title}`, hint: p.category, run: () => { goTo(3); openProject(p.id); } })),
+      ...portfolio.map((p) => ({
+        id: `open-${p.id}`,
+        label: `Open project: ${p.title}`,
+        hint: p.category,
+        run: () => {
+          goTo(3);
+          openProject(p.id);
+        },
+      })),
       { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(LINKS.email) },
       { id: 'github', label: 'Open GitHub', hint: 'link', run: () => openUrl(LINKS.github) },
       { id: 'linkedin', label: 'Open LinkedIn', hint: 'link', run: () => openUrl(LINKS.linkedin) },

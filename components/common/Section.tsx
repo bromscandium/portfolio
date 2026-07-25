@@ -13,4 +13,4 @@ export const Section = ({ ref, label, className = '', children }: Props) => {
       {children}
     </section>
   );
-}
+};

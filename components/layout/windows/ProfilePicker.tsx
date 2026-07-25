@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { PICKER_COPY, type Lang, type Mode } from '@/lib/i18n';
 import { LANGS, LOCALE_LABEL } from '@/lib/modes';
+import { useState } from 'react';
 
 interface Props {
   lang: Lang;

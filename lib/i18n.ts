@@ -1,10 +1,10 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
-import { LOCALE_LABEL } from './modes';
 import type { Lang, Mode } from './modes';
+import { LOCALE_LABEL } from './modes';
 import type { JobCopy, Option } from './types';
 
-export type { Mode, Lang, Combo } from './modes';
+export type { Combo, Lang, Mode } from './modes';
 
 export const comboLabel = (combo: string, short: boolean): string => {
   const map: Record<string, string> = short
@@ -21,7 +21,7 @@ export const comboLabel = (combo: string, short: boolean): string => {
         'human-uk': 'портфоліо',
       };
   return map[combo];
-}
+};
 
 export interface Strings {
   navRoot: string;
@@ -140,14 +140,10 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       : { pet: 'pet', hackathon: 'hackathon', university: 'university', professional: 'professional' },
     projectDesc: (id: number) => PROJECT_DESC[id]?.[uk ? 'uk' : 'en'] ?? [],
     jobCopy: (hash: string) => JOB_COPY[hash]?.[uk ? 'uk' : 'en'] ?? { role: '', loc: '', summary: '', points: [] },
-    regionName: (region: string) => (human ? (uk ? regionUk[region] ?? region : region) : `stack/${region.toLowerCase()}:latest`),
+    regionName: (region: string) => (human ? (uk ? (regionUk[region] ?? region) : region) : `stack/${region.toLowerCase()}:latest`),
     yLabel: (y: number) => (human ? (uk ? `${y} р.` : `${y} y`) : `Up ${y.toFixed(1)}y`),
     regionStatus: (maxY: number) =>
-      human
-        ? uk
-          ? `${maxY} ${maxY === 1 ? 'рік' : 'роки'}`
-          : `${maxY} ${maxY === 1 ? 'year' : 'years'}`
-        : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
+      human ? (uk ? `${maxY} ${maxY === 1 ? 'рік' : 'роки'}` : `${maxY} ${maxY === 1 ? 'year' : 'years'}`) : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => LOCALE_LABEL[hovering ? (uk ? 'en' : 'uk') : uk ? 'uk' : 'en'],
@@ -158,30 +154,16 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       return `${uk ? 'оновлено' : 'updated'} ${date}`;
     },
     viewValue: (hovering: boolean) =>
-      hovering
-        ? human
-          ? uk
-            ? 'розробник'
-            : 'developer'
-          : uk
-            ? 'людина'
-            : 'human'
-        : human
-          ? uk
-            ? 'людина'
-            : 'human'
-          : uk
-            ? 'розробник'
-            : 'developer',
+      hovering ? (human ? (uk ? 'розробник' : 'developer') : uk ? 'людина' : 'human') : human ? (uk ? 'людина' : 'human') : uk ? 'розробник' : 'developer',
   };
-}
+};
 
 export const slugify = (title: string): string => {
   return title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
-}
+};
 
 export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
   21: {
@@ -375,14 +357,8 @@ export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
     ],
   },
   1: {
-    en: [
-      'A site for Promote Ukraine to showcase projects, cultural events, and advocacy efforts.',
-      'Supports communication and outreach for an NGO.',
-    ],
-    uk: [
-      'Сайт для Promote Ukraine для показу проєктів, культурних подій та адвокаційних ініціатив.',
-      'Підтримує комунікацію й аутрич для НГО.',
-    ],
+    en: ['A site for Promote Ukraine to showcase projects, cultural events, and advocacy efforts.', 'Supports communication and outreach for an NGO.'],
+    uk: ['Сайт для Promote Ukraine для показу проєктів, культурних подій та адвокаційних ініціатив.', 'Підтримує комунікацію й аутрич для НГО.'],
   },
 };
 

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { HOST } from '@/lib/config';
+import { useEffect, useState } from 'react';
 
 const LINES = [
   { text: '❯ exit', tone: 'muted' as const },

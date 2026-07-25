@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import { Modal } from '@/components/common/Modal';
-import { CLOSE_COPY } from '@/lib/i18n';
 import { useHuman } from '@/hooks/useStrings';
+import { CLOSE_COPY } from '@/lib/i18n';
 import { useTerminal } from '@/store/terminal';
+import { useEffect } from 'react';
 
 interface Props {
   onConfirm: () => void;

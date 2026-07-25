@@ -1,9 +1,9 @@
-import type { StateCreator } from 'zustand';
 import type { Combo, Lang, Mode } from '@/lib/i18n';
 import { splitCombo } from '@/lib/modes';
 import { STORAGE_KEYS, readLS, removeLS, writeLS } from '@/lib/storage';
-import type { TerminalState } from '../terminal';
+import type { StateCreator } from 'zustand';
 import { ALL_COMBOS } from '../constants';
+import type { TerminalState } from '../terminal';
 
 let dragFrom: Combo | null = null;
 
@@ -42,8 +42,7 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       if (m === 'dev' || m === 'human') {
         const combo = `${m}-${savedLang}` as Combo;
         const saved = JSON.parse(readLS(STORAGE_KEYS.tabs) || 'null');
-        const tabs: Combo[] =
-          Array.isArray(saved) && saved.length && saved.every((c) => ALL_COMBOS.includes(c)) && saved.includes(combo) ? saved : [combo];
+        const tabs: Combo[] = Array.isArray(saved) && saved.length && saved.every((c) => ALL_COMBOS.includes(c)) && saved.includes(combo) ? saved : [combo];
         set({ mode: m, lang: savedLang, tabsOpen: tabs });
       } else {
         set({ lang: savedLang, picker: true });

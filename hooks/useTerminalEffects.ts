@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
-import { ALL_COMBOS } from '@/store/constants';
+import { SECTION_LABELS } from '@/lib/config';
 import { arrowDirection } from '@/lib/keys';
 import { splitCombo } from '@/lib/modes';
-import { SECTION_LABELS } from '@/lib/config';
+import { ALL_COMBOS } from '@/store/constants';
+import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
+import { useEffect } from 'react';
 
 const LAST_SECTION = SECTION_LABELS.length - 1;
 
@@ -126,4 +126,4 @@ export const useTerminalEffects = () => {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
-}
+};

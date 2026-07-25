@@ -1,6 +1,6 @@
+import { useCommandLine } from '@/hooks/useCommandLine';
 import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
-import { useCommandLine } from '@/hooks/useCommandLine';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
 import { TreeView } from './TreeView';
@@ -13,7 +13,11 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd } = useCommandLine(open, onClose, actions);
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd } = useCommandLine(
+    open,
+    onClose,
+    actions,
+  );
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -45,7 +49,11 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           {SHELL} — {TERMINAL_ROOT}
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
-        <button onClick={onClose} className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange" aria-label="close terminal">
+        <button
+          onClick={onClose}
+          className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange"
+          aria-label="close terminal"
+        >
           ✕
         </button>
       </div>
@@ -100,4 +108,4 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
       )}
     </div>
   );
-}
+};

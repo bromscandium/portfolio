@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
 import { SHELL } from '@/lib/config';
+import { useEffect, useState } from 'react';
 
 const useClock = () => {
   const [t, setT] = useState('');
   useEffect(() => {
-    const fmt = () =>
-      new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const fmt = () => new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setT(fmt());
     const id = setInterval(() => setT(fmt()), 1000);
     return () => clearInterval(id);
   }, []);
   return t;
-}
+};
 
 interface Props {
   activeIdx: number;
@@ -76,4 +75,4 @@ export const StatusBar = ({
       </span>
     </div>
   );
-}
+};

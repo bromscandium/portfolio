@@ -1,7 +1,7 @@
-import type { StateCreator } from 'zustand';
 import type { Category } from '@/lib/types';
-import type { TerminalState } from '../terminal';
+import type { StateCreator } from 'zustand';
 import { EXPAND_DELAY, PRE_DELAY } from '../constants';
+import type { TerminalState } from '../terminal';
 
 let preT: ReturnType<typeof setTimeout> | null = null;
 let hoverT: ReturnType<typeof setTimeout> | null = null;

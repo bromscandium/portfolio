@@ -1,6 +1,6 @@
 import { Icon } from '@/components/common/Icon';
-import type { Tone } from '@/lib/commands';
 import type { Row } from '@/hooks/useCommandLine';
+import type { Tone } from '@/lib/commands';
 import { PathLine } from './PathLine';
 
 const TONE: Record<Tone, string> = {
@@ -52,4 +52,4 @@ export const CommandRow = ({ row }: { row: Row }) => {
       {row.text}
     </div>
   );
-}
+};

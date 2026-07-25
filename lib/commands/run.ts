@@ -1,20 +1,20 @@
-import { education, experience, hackathons, portfolio, skillMap } from '../data';
-import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
-import { projectPath } from '../helpers';
 import { LINKS, SHELL } from '../config';
+import { education, experience, hackathons, portfolio, skillMap } from '../data';
+import { projectPath } from '../helpers';
+import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
 import { NEOFETCH } from './constants';
-import { COMMANDS, findCommand } from './registry';
 import { children, displayPwd, resolvePath } from './fs';
+import { COMMANDS, findCommand } from './registry';
 import type { CmdContext, CmdLine, Tone } from './types';
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
-}
+};
 
 const sizeOf = (p: { id: number; technologies: string[] }): string => {
   const chars = (PROJECT_DESC[p.id]?.en.join(' ').length ?? 0) + p.technologies.join('').length;
   return `${(chars / 170).toFixed(1)}k`;
-}
+};
 
 export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
   const input = raw.trim();
@@ -107,11 +107,12 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'open': {
       const live = args.includes('--live');
-      const q = args.filter((a) => !a.startsWith('-')).join(' ').toLowerCase();
+      const q = args
+        .filter((a) => !a.startsWith('-'))
+        .join(' ')
+        .toLowerCase();
       if (!q) return [ok('usage: open [--live] <project>', 'muted')];
-      const p =
-        portfolio.find((x) => slugify(x.title) === q || x.title.toLowerCase() === q) ??
-        portfolio.find((x) => slugify(x.title).includes(q));
+      const p = portfolio.find((x) => slugify(x.title) === q || x.title.toLowerCase() === q) ?? portfolio.find((x) => slugify(x.title).includes(q));
       if (!p) return [ok(`open: project not found: ${q}`, 'error')];
       if (live) {
         if (!p.live) return [ok(`open: ${p.title} has no live URL`, 'error')];
@@ -153,7 +154,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       if (!sub) return [ok('usage: docker <ps|images|inspect> [--filter label=<region>]', 'muted')];
 
       if (sub === 'inspect') {
-        const target = (args[1] ?? '').replace(/^stack\//, '').replace(/:latest$/, '').toLowerCase();
+        const target = (args[1] ?? '')
+          .replace(/^stack\//, '')
+          .replace(/:latest$/, '')
+          .toLowerCase();
         const r = skillMap.find((x) => x.region.toLowerCase() === target);
         if (!r) return [ok(`docker inspect: no such container (try: ${skillMap.map((x) => x.region.toLowerCase()).join(', ')})`, 'error')];
         ctx.goTo(2);
@@ -171,7 +175,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       if (sub === 'ps') {
         const fi = args.findIndex((a) => a === '--filter');
         const raw = fi >= 0 ? (args[fi + 1] ?? '') : '';
-        const label = raw.replace(/^['"]?label=/, '').replace(/['"]$/, '').toLowerCase();
+        const label = raw
+          .replace(/^['"]?label=/, '')
+          .replace(/['"]$/, '')
+          .toLowerCase();
         let regions = skillMap;
         if (label && label !== 'stack') regions = skillMap.filter((r) => r.region.toLowerCase() === label);
         if (!regions.length) {
@@ -307,4 +314,4 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     default:
       return [ok(`${SHELL}: command not found: ${cmd}`, 'error')];
   }
-}
+};

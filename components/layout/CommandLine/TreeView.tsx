@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import type { CmdContext } from '@/lib/commands';
+import { TERMINAL_ROOT } from '@/lib/config';
 import { type Project } from '@/lib/data';
 import { byCategory } from '@/lib/helpers';
 import { slugify } from '@/lib/i18n';
-import { TERMINAL_ROOT } from '@/lib/config';
 import { arrowDirection } from '@/lib/keys';
-import type { CmdContext } from '@/lib/commands';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface TreeNode {
   key: string;

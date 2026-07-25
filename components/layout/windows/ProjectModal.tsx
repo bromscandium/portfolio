@@ -1,8 +1,8 @@
-import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
-import { slugify } from '@/lib/i18n';
-import { useStrings } from '@/hooks/useStrings';
 import { Body, Heading } from '@/components/common/Typography';
 import { ProjectCover } from '@/components/sections/Projects/ProjectCover';
+import { useStrings } from '@/hooks/useStrings';
+import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
+import { slugify } from '@/lib/i18n';
 
 interface Props {
   project: Project;
@@ -73,11 +73,7 @@ export const ProjectModal = ({ project, closing, onClose }: Props) => {
               ))}
             </div>
             <div className="flex flex-wrap gap-5.5">
-              {links.length > 0 ? (
-                links.map((l) => <ModalLink key={l.label} link={l} />)
-              ) : (
-                <span className="text-[11px] text-fg-7">{strings.privateNote}</span>
-              )}
+              {links.length > 0 ? links.map((l) => <ModalLink key={l.label} link={l} />) : <span className="text-[11px] text-fg-7">{strings.privateNote}</span>}
             </div>
           </div>
         </div>

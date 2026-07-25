@@ -11,16 +11,16 @@ export const readLS = (key: string): string | null => {
   } catch {
     return null;
   }
-}
+};
 
 export const writeLS = (key: string, value: string): void => {
   try {
     localStorage.setItem(key, value);
   } catch {}
-}
+};
 
 export const removeLS = (key: string): void => {
   try {
     localStorage.removeItem(key);
   } catch {}
-}
+};

@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
 import type { Combo } from '@/lib/i18n';
 import { ALL_COMBOS } from '@/store/constants';
+import { useEffect, useRef } from 'react';
 import { Tab } from './Tab';
 
 interface Props {

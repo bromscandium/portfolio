@@ -1,9 +1,9 @@
-import { contacts } from '@/lib/data';
-import type { ContactLink } from '@/lib/types';
-import { Icon } from '@/components/common/Icon';
 import { CommandHeader } from '@/components/common/CommandHeader';
+import { Icon } from '@/components/common/Icon';
 import { Heading } from '@/components/common/Typography';
 import { useHuman, useStrings } from '@/hooks/useStrings';
+import { contacts } from '@/lib/data';
+import type { ContactLink } from '@/lib/types';
 import type { Ref } from 'react';
 
 interface Props {
@@ -89,4 +89,4 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
       </div>
     </section>
   );
-}
+};

@@ -8,7 +8,7 @@ export const projectLinks = (p: Project): ProjectLink[] => {
   if (p.links) links.push(...p.links);
   else if (p.github) links.push({ label: 'github', href: p.github });
   return links;
-}
+};
 
 export const fuzzy = (q: string, text: string): boolean => {
   if (!q) return true;
@@ -20,14 +20,13 @@ export const fuzzy = (q: string, text: string): boolean => {
     if (i === query.length) return true;
   }
   return false;
-}
+};
 
 export const openUrl = (url: string): void => {
   if (url.startsWith('mailto:')) window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');
-}
+};
 
 export const projectPath = (title: string): string => `~/projects/${slugify(title)}`;
 
-export const byCategory = (cat: Category | 'all'): Project[] =>
-  cat === 'all' ? portfolio : portfolio.filter((p) => p.category === cat);
+export const byCategory = (cat: Category | 'all'): Project[] => (cat === 'all' ? portfolio : portfolio.filter((p) => p.category === cat));

@@ -20,10 +20,22 @@ export const COMMANDS: CommandSpec[] = [
   { name: './close.sh', usage: 'close the terminal (from ~)' },
   { name: 'pwd', usage: 'print working directory' },
   { name: 'cat', usage: 'cat cat.txt 🐱', options: () => opts(['cat.txt'], false) },
-  { name: 'open', usage: 'open a project window [--live]', options: () => opts(portfolio.map((p) => slugify(p.title)), true) },
+  {
+    name: 'open',
+    usage: 'open a project window [--live]',
+    options: () =>
+      opts(
+        portfolio.map((p) => slugify(p.title)),
+        true,
+      ),
+  },
   { name: 'tree', usage: 'interactive site tree' },
   { name: 'grep', usage: 'search projects & skills' },
-  { name: 'git', usage: 'log · tag -l work/* | study/* | hackathons/* · status', options: () => opts(['log', 'tag', 'tag -l work/*', 'tag -l study/*', 'tag -l hackathons/*', 'status', 'blame'], false) },
+  {
+    name: 'git',
+    usage: 'log · tag -l work/* | study/* | hackathons/* · status',
+    options: () => opts(['log', 'tag', 'tag -l work/*', 'tag -l study/*', 'tag -l hackathons/*', 'status', 'blame'], false),
+  },
   { name: 'docker', usage: 'ps | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
   { name: 'contact', usage: 'list contacts · --open jumps to section · --close hangs up', options: () => opts(['--open', '--close'], false) },
   { name: 'whoami', usage: 'identity (-v for details)' },

@@ -1,5 +1,5 @@
-import type { StateCreator } from 'zustand';
 import { SECTION_LABELS } from '@/lib/config';
+import type { StateCreator } from 'zustand';
 import type { TerminalState } from '../terminal';
 
 const sectionEls: (HTMLElement | null)[] = SECTION_LABELS.map(() => null);

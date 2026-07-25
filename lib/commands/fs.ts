@@ -1,6 +1,6 @@
+import { SECTION_LABELS } from '../config';
 import { portfolio } from '../data';
 import { slugify } from '../i18n';
-import { SECTION_LABELS } from '../config';
 import type { Seg } from './types';
 
 export const SECTIONS_LOWER = SECTION_LABELS.map((l) => l.toLowerCase());

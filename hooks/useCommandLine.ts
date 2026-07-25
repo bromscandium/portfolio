@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { autocomplete, displayPwd, runCommand, type CmdContext, type CmdLine, type CompletionOption, type Seg } from '@/lib/commands';
 import { STORAGE_KEYS, readLS, writeLS } from '@/lib/storage';
+import { useEffect, useRef, useState } from 'react';
 
 interface Menu {
   base: string;
@@ -54,7 +54,10 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     if (!cmd) return;
     if (cmd === '!!') cmd = history[history.length - 1] ?? '';
     if (!cmd) {
-      append([{ id: nextId(), text: raw, prompt: true }, { id: nextId(), text: '!!: no previous command', tone: 'error' }]);
+      append([
+        { id: nextId(), text: raw, prompt: true },
+        { id: nextId(), text: '!!: no previous command', tone: 'error' },
+      ]);
       return;
     }
 

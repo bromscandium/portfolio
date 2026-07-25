@@ -23,4 +23,4 @@ export const Icon = ({ name, size = 20, className }: { name: IconName; size?: nu
       }}
     />
   );
-}
+};

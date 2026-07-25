@@ -59,7 +59,11 @@ const HelpGroup = ({ title, rows }: { title: string; rows: [string, string][] })
 );
 
 export const HelpOverlay = ({ onClose }: Props) => (
-  <Modal onClose={onClose} z={600} panelClassName="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]">
+  <Modal
+    onClose={onClose}
+    z={600}
+    panelClassName="w-[min(560px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
+  >
     {(close) => (
       <>
         <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4.5 py-3 text-[12px] text-fg-3">

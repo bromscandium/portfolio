@@ -8,4 +8,4 @@ export const PathLine = ({ path = TERMINAL_ROOT }: { path?: string }) => {
       <span className="text-green">main</span>
     </div>
   );
-}
+};

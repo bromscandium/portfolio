@@ -10,15 +10,7 @@ interface Props {
   children: ReactNode | ((close: () => void) => ReactNode);
 }
 
-export const Modal = ({
-  onClose,
-  panelClassName = '',
-  z = 300,
-  backdropClass = 'bg-black/[.82]',
-  closeOnBackdrop = true,
-  escAllowed,
-  children,
-}: Props) => {
+export const Modal = ({ onClose, panelClassName = '', z = 300, backdropClass = 'bg-black/[.82]', closeOnBackdrop = true, escAllowed, children }: Props) => {
   const [closing, setClosing] = useState(false);
 
   const close = () => {

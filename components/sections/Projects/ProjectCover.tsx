@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
-import { useState } from 'react';
 import type { Project } from '@/lib/data';
 import { slugify } from '@/lib/i18n';
+import Image from 'next/image';
+import { useState } from 'react';
 
 const VERBS = ['feat', 'refactor', 'perf', 'chore', 'fix'];
 

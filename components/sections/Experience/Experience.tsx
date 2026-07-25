@@ -1,10 +1,10 @@
+import { CommandHeader } from '@/components/common/CommandHeader';
+import { Section } from '@/components/common/Section';
+import { useStrings } from '@/hooks/useStrings';
 import { education, experience, hackathons } from '@/lib/data';
 import type { Ref } from 'react';
-import { useStrings } from '@/hooks/useStrings';
-import { Section } from '@/components/common/Section';
-import { CommandHeader } from '@/components/common/CommandHeader';
-import { Panel } from './Panel';
 import { EduRow, HackRow, JobEntry } from './Entries';
+import { Panel } from './Panel';
 
 export const Experience = ({ ref }: { ref?: Ref<HTMLElement> }) => {
   const strings = useStrings();

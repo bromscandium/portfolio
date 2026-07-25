@@ -1,7 +1,7 @@
+import { Heading } from '@/components/common/Typography';
+import { useHuman, useStrings } from '@/hooks/useStrings';
 import type { Project } from '@/lib/data';
 import { projectPath } from '@/lib/helpers';
-import { useHuman, useStrings } from '@/hooks/useStrings';
-import { Heading } from '@/components/common/Typography';
 import { ProjectCover } from './ProjectCover';
 
 interface Props {
@@ -31,9 +31,7 @@ export const ProjectCard = ({ project, hovering, forceOrange, dashSec, onEnter, 
       }`}
     >
       <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-3.5 py-2.5">
-        <span className="min-w-0 truncate text-[11px] text-fg-3">
-          {human ? project.title : projectPath(project.title)}
-        </span>
+        <span className="min-w-0 truncate text-[11px] text-fg-3">{human ? project.title : projectPath(project.title)}</span>
         <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{catBadge}</span>
       </div>
       <div className="relative">
@@ -59,9 +57,7 @@ export const ProjectCard = ({ project, hovering, forceOrange, dashSec, onEnter, 
       </div>
       <div className="flex items-baseline justify-between gap-2.5 px-4 py-3.5">
         <Heading variant="card">{project.title}</Heading>
-        <span className="truncate text-[10px] text-ghost">
-          {project.technologies.slice(0, 2).join(' · ')}
-        </span>
+        <span className="truncate text-[10px] text-ghost">{project.technologies.slice(0, 2).join(' · ')}</span>
       </div>
     </div>
   );

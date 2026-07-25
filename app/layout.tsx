@@ -1,6 +1,6 @@
-import type { Metadata, Viewport } from 'next';
-import { Jura, JetBrains_Mono } from 'next/font/google';
 import { SITE_URL } from '@/lib/config';
+import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono, Jura } from 'next/font/google';
 import './globals.css';
 
 const jura = Jura({
@@ -49,16 +49,12 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" className={`${jura.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
     </html>
   );
-}
+};
 
 export default RootLayout;

@@ -1,5 +1,5 @@
-import { COMMAND_NAMES, findCommand } from './registry';
 import { children, resolvePath } from './fs';
+import { COMMAND_NAMES, findCommand } from './registry';
 import type { Completion, CompletionOption, Seg } from './types';
 
 const PATH_CMDS = new Set(['cd', 'ls', 'l', 'la', 'll']);

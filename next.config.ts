@@ -8,7 +8,12 @@ try {
 
 const allowedDevOrigins = (process.env.ALLOWED_ORIGINS ?? '')
   .split(',')
-  .map((o) => o.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, ''))
+  .map((o) =>
+    o
+      .trim()
+      .replace(/^https?:\/\//, '')
+      .replace(/\/.*$/, ''),
+  )
   .filter(Boolean);
 
 const nextConfig: NextConfig = {

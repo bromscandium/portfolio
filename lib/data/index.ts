@@ -1,11 +1,11 @@
-export * from '../types';
 export { projectLinks } from '../helpers';
-export * from './hero';
+export * from '../types';
 export * from './about';
 export * from './contacts';
-export * from './portfolio';
-export * from './experience';
-export * from './education';
-export * from './hackathons';
 export * from './counters';
+export * from './education';
+export * from './experience';
+export * from './hackathons';
+export * from './hero';
+export * from './portfolio';
 export * from './skills';

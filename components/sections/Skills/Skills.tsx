@@ -1,8 +1,8 @@
+import { CommandHeader } from '@/components/common/CommandHeader';
+import { Section } from '@/components/common/Section';
+import { useStrings } from '@/hooks/useStrings';
 import { skillMap } from '@/lib/data';
 import type { Ref } from 'react';
-import { useStrings } from '@/hooks/useStrings';
-import { Section } from '@/components/common/Section';
-import { CommandHeader } from '@/components/common/CommandHeader';
 import { SkillCard } from './SkillCard';
 
 export const Skills = ({ ref }: { ref?: Ref<HTMLElement> }) => {

@@ -1,5 +1,5 @@
-import { Heading } from './Typography';
 import { useHuman } from '@/hooks/useStrings';
+import { Heading } from './Typography';
 
 interface Props {
   command: string;
@@ -28,4 +28,4 @@ export const CommandHeader = ({ command, args, heading, variant = 'main', classN
       {args && <span className="text-ghost">{args}</span>}
     </div>
   );
-}
+};

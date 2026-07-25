@@ -1,5 +1,5 @@
-import type { SkillRegion } from '@/lib/types';
 import { useHuman, useStrings } from '@/hooks/useStrings';
+import type { SkillRegion } from '@/lib/types';
 
 const SkillRow = ({ name, yLabel, last }: { name: string; yLabel: string; last: boolean }) => (
   <div className="flex items-baseline gap-3 py-0.5 hover:bg-panel-4">
