@@ -13,7 +13,7 @@ export const NEOFETCH = [
   '     /  \\         ----------------------',
   '    /    \\        OS: Arch Linux x86_64',
   '   /      \\       Shell: zsh + spaceship',
-  '  /   ..   \\      Role: Full-Stack Developer',
+  '  /   ..   \\      Role: Full-Stack Engineer',
   ' /   |  |   \\     Stack: Next.js · Python · Docker',
-  '/_-``    ``-_\\    Uptime: 2+ years · 19 projects',
+  '/_-``    ``-_\\    Uptime: 4+ years · 21 projects',
 ];

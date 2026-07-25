@@ -145,7 +145,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok('Linux bromscandium 6.6.0-arch x86_64 GNU/Linux')];
 
     case 'uptime':
-      return [ok('up 2+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
+      return [ok('up 4+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
 
     case 'docker': {
       const sub = args[0];
@@ -239,10 +239,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'whoami':
       if (args.includes('--verbose') || args.includes('-v')) {
         return [
-          ok('yaroslav yeromenko · full-stack developer'),
-          ok('remote · EU · open to full-time', 'muted'),
+          ok('yaroslav yeromenko · full-stack engineer'),
+          ok('prague · remote · open to full-time', 'muted'),
           ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
-          ok('2+ yrs · 19 projects · 6 hackathons · 1 win', 'muted'),
+          ok('4+ yrs · 21 projects · 10+ hackathons · 1 win', 'muted'),
         ];
       }
       return [ok('yaroslav')];

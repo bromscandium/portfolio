@@ -2,6 +2,37 @@ import type { Project } from '../types';
 
 export const portfolio: Project[] = [
   {
+    id: 21,
+    image: '/covers/quizapp.webp',
+    title: 'Quiz App',
+    description: [
+      'The full-stack quiz platform built during the Meduzzen engineering internship — a multi-language quiz system with real-time analytics.',
+      'The Next.js 16 frontend uses Redux Toolkit and MUI for dynamic quiz workflows, analytics dashboards and Auth0 authentication.',
+      'The FastAPI backend follows a Unit of Work pattern over PostgreSQL and Redis, containerized with Docker and deployed to AWS via GitHub Actions, covered by Pytest and Jest.',
+    ],
+    technologies: ['Next.js', 'Redux Toolkit', 'MUI', 'Auth0', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker'],
+    live: null,
+    github: null,
+    links: [
+      { label: 'github: frontend', href: 'https://github.com/bromscandium/Quiz-App-FE' },
+      { label: 'github: backend', href: 'https://github.com/bromscandium/Quiz-App-BE' },
+    ],
+    category: 'professional',
+  },
+  {
+    id: 20,
+    image: '/covers/python-next.webp',
+    title: 'Python + Next.js',
+    description: [
+      'A small sandbox wiring a Next.js frontend to a Python backend to practice the full request/response round-trip.',
+      'Focused on the integration seam — API routes, data flow and project structure — rather than feature breadth.',
+    ],
+    technologies: ['Next.js', 'Python', 'FastAPI'],
+    live: null,
+    github: 'https://github.com/bromscandium/python-next',
+    category: 'pet',
+  },
+  {
     id: 19,
     image: '/covers/bromiumjs.webp',
     title: 'BromiumJS',
@@ -219,7 +250,7 @@ export const portfolio: Project[] = [
     ],
     technologies: ['React', 'SASS', 'Python', 'Docker', 'OpenAI API', 'Django', 'FastAPI'],
     live: null,
-    github: 'https://github.com/bromscandium/BioGrow/tree/main',
+    github: 'https://github.com/bromscandium/valli',
     category: 'hackathon',
   },
   {

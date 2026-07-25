@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const DESCRIPTION =
-  'Yaroslav Yeromenko — Full-Stack Developer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 19 shipped projects.';
+  'Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 21 shipped projects.';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -31,19 +31,19 @@ export const metadata: Metadata = {
   applicationName: 'bromscandium terminal',
   authors: [{ name: 'Yaroslav Yeromenko', url: 'https://bromscandium.com' }],
   creator: 'Yaroslav Yeromenko',
-  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Developer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
+  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Engineer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
   icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }] },
   openGraph: {
     type: 'website',
     url: 'https://bromscandium.com',
     siteName: 'bromscandium',
-    title: 'Yaroslav Yeromenko | Full-Stack Developer',
+    title: 'Yaroslav Yeromenko | Full-Stack Engineer',
     description: DESCRIPTION,
   },
   twitter: {
     card: 'summary',
-    title: 'Yaroslav Yeromenko | Full-Stack Developer',
+    title: 'Yaroslav Yeromenko | Full-Stack Engineer',
     description: DESCRIPTION,
   },
 };

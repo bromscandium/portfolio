@@ -2,14 +2,14 @@ import type { InfoItem } from '../types';
 
 export const about = {
   paragraphs: [
-    "I'm a Full-Stack Developer with solid experience in building modern web applications. On the frontend, I specialize in JavaScript/TypeScript using React and Next.js, focusing on creating fast, responsive UIs and modernizing legacy websites with Headless CMS architectures.",
-    'On the backend, I work extensively with Python (FastAPI) and Node.js. I design robust APIs using REST and GraphQL, implement WebSockets for real-time features, and manage SQL/NoSQL databases including PostgreSQL, SQLite, Redis, and MariaDB. I also have experience building interactive chatbots and utilizing modern ORMs like SQLAlchemy and Tortoise ORM.',
-    'I am highly proficient in the complete DevOps lifecycle, utilizing Docker for containerization and GitHub Actions for CI/CD pipelines. From deploying scalable applications on AWS and VPS/PaaS platforms to optimizing technical SEO and performance, I focus on delivering efficient, production-ready solutions.',
+    "I'm a Full-Stack Engineer with 4+ years of experience building and optimizing scalable web applications across B2B E-commerce and NGO domains. On the frontend I work in JavaScript/TypeScript with React and Next.js, building responsive multi-language UIs, real-time analytics dashboards, and dynamic workflows with Redux Toolkit and MUI.",
+    'On the backend I architect modular services in Python with FastAPI and Django, designing REST and GraphQL APIs, WebSockets, and async task queues with ARQ, Celery and Redis. I work extensively with PostgreSQL (TimescaleDB, pgvector), Redis, MariaDB and SQLite, and modern ORMs like SQLAlchemy, Alembic and Tortoise ORM.',
+    'I own the full DevOps lifecycle — Docker containerization, GitHub Actions CI/CD, and automated AWS deployments — and handle production diagnostics with Grafana, Sentry, Redash and CloudWatch. On the side I build LLM systems (RAG, QLoRA fine-tuning, pgvector) and framework-level tooling.',
   ],
   info: [
     { label: 'Name:', value: 'Yaroslav Yeromenko' },
     { label: 'Email:', value: 'kkmshbiu@protonmail.com', link: 'mailto:kkmshbiu@protonmail.com' },
-    { label: 'Location:', value: 'Remote' },
-    { label: 'Languages:', value: 'Ukrainian (Native) | English (B2) | Slovak (B2)' },
+    { label: 'Location:', value: 'Prague, Czech Republic · Remote' },
+    { label: 'Languages:', value: 'Ukrainian (Native) | English (B2) | Slovak (B2) | Czech (B1)' },
   ] as InfoItem[],
 };

@@ -1,4 +1,5 @@
 import { TERMINAL_ROOT } from './config';
+import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
 import type { Option } from './types';
 
@@ -69,12 +70,12 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     navRoot: human ? (uk ? 'Портфоліо' : 'Portfolio') : TERMINAL_ROOT,
     navNames: human && uk ? ['вступ', 'досвід', 'стек', 'проєкти', 'контакти'] : ['intro', 'experience', 'skills', 'projects', 'contact'],
     heroName: uk ? ['ЯРОСЛАВ', 'ЄРЬОМЕНКО'] : ['YAROSLAV', 'YEROMENKO'],
-    roleWord: uk ? 'FULL-STACK РОЗРОБНИК' : 'FULL-STACK DEVELOPER',
+    roleWord: uk ? 'FULL-STACK ІНЖЕНЕР' : 'FULL-STACK ENGINEER',
     statement:
       (human ? '' : '# ') +
       (uk
-        ? 'Розробляю продукти від початку до кінця: бекенд-архітектура, API та автоматизовані DevOps-деплої. EdTech, НГО, бізнес-операції. Remote · EU.'
-        : 'I ship end-to-end: backend architecture, APIs and automated DevOps deployments. EdTech, NGOs, business ops. Remote · EU.'),
+        ? '4+ роки будую масштабовані продукти від початку до кінця: React/Next.js, Python/FastAPI, автоматизовані DevOps-деплої. B2B E-commerce, НГО, LLM-системи. Prague · Remote.'
+        : '4+ years shipping scalable products end-to-end: React/Next.js, Python/FastAPI, automated DevOps. B2B E-commerce, NGOs, LLM systems. Prague · Remote.'),
     stmtColor: human ? '#c4c4c4' : '#6f7a68',
     counterLabels: {
       years: uk ? 'роки досвіду' : 'yrs experience',
@@ -95,8 +96,8 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
         ? 'Числа = роки практичного досвіду'
         : 'Numbers = years of hands-on use'
       : uk
-        ? '5 контейнерів запущено · STATUS = роки практичного досвіду'
-        : '5 containers running · STATUS = years of hands-on use',
+        ? `${skillMap.length} контейнерів запущено · STATUS = роки практичного досвіду`
+        : `${skillMap.length} containers running · STATUS = years of hands-on use`,
     contactNote:
       (human ? '' : uk ? 'Зʼєднання встановлено. ' : 'Connection established. ') +
       (uk ? 'Відкритий до full-time · remote.' : 'Available for full-time · remote.'),
