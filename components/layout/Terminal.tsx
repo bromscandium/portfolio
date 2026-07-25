@@ -59,6 +59,7 @@ export const Terminal = () => {
     };
   }, [overlayActive]);
 
+  if (t.picker) return <ProfilePicker lang={t.lang} onPick={(m, l) => t.setCombo(m, l, true)} />;
   if (t.phase === 'unload') return <BootUnloader onDone={t.unloadDone} />;
   if (t.phase === 'boot') return <BootLoader onDone={t.bootDone} />;
 
@@ -96,8 +97,6 @@ export const Terminal = () => {
           </button>
         ))}
       </div>
-
-      {t.picker && <ProfilePicker lang={t.lang} onPick={(m, l) => t.setCombo(m, l, true)} />}
 
       {t.helpOpen && <HelpOverlay onClose={t.closeHelp} />}
 

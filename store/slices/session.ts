@@ -55,14 +55,14 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     set((st) => {
       const tabsOpen = fromPicker ? [combo] : st.tabsOpen.includes(combo) ? st.tabsOpen : [...st.tabsOpen, combo];
       persistTabs(tabsOpen);
-      const reboot = fromPicker && st.rebootNext;
+      const reboot = fromPicker;
       return {
         mode: m,
         lang: l,
         plusOpen: false,
         picker: fromPicker ? false : st.picker,
         tabsOpen,
-        ...(reboot ? { phase: 'boot' as const, rebootNext: false, session: st.session + 1 } : {}),
+        ...(reboot ? { phase: 'boot' as const, session: st.session + 1 } : {}),
       };
     });
     writeLS(STORAGE_KEYS.mode, m);
