@@ -1,5 +1,6 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
+import { LOCALE_LABEL } from './modes';
 import type { Lang, Mode } from './modes';
 import type { JobCopy, Option } from './types';
 
@@ -149,7 +150,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
         : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
-    langValue: (hovering: boolean) => (hovering ? (uk ? 'en_US.UTF-8' : 'uk_UA.UTF-8') : uk ? 'uk_UA.UTF-8' : 'en_US.UTF-8'),
+    langValue: (hovering: boolean) => LOCALE_LABEL[hovering ? (uk ? 'en' : 'uk') : uk ? 'uk' : 'en'],
     lastUpdated: (iso: string) => {
       const d = iso ? new Date(iso) : new Date(0);
       if (!human) return `updated ${Math.floor(d.getTime() / 1000)}`;

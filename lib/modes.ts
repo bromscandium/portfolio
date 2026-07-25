@@ -13,3 +13,8 @@ export const MODE_META: Record<Mode, { icon: string }> = {
 };
 
 export const splitCombo = (c: Combo): [Mode, Lang] => c.split('-') as [Mode, Lang];
+
+export const LOCALE_LABEL: Record<Lang, string> = {
+  en: 'en_US.UTF-8',
+  uk: 'uk_UA.UTF-8',
+};
