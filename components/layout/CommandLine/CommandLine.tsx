@@ -1,5 +1,5 @@
 import type { CmdContext } from '@/lib/commands';
-import { TERMINAL_ROOT } from '@/lib/config';
+import { SHELL, TERMINAL_ROOT } from '@/lib/config';
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
@@ -42,7 +42,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           className="cursor-pointer transition-colors hover:text-orange"
           title="click to close"
         >
-          zsh — {TERMINAL_ROOT}
+          {SHELL} — {TERMINAL_ROOT}
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button onClick={onClose} className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange" aria-label="close terminal">

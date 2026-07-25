@@ -1,7 +1,7 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
 import { slugify } from '../i18n';
 import { byCategory, projectPath } from '../helpers';
-import { LINKS } from '../config';
+import { LINKS, SHELL } from '../config';
 import type { Category } from '../types';
 import { NEOFETCH, SECTIONS } from './constants';
 import { CATEGORIES, COMMANDS, findCommand } from './registry';
@@ -251,7 +251,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return NEOFETCH.map((t) => ok(t, 'accent'));
 
     case 'echo': {
-      const vars: Record<string, string> = { $USER: 'yaroslav', $SHELL: '/bin/zsh', $HOME: '/home/yaroslav', $PWD: '/home/yaroslav/portfolio' };
+      const vars: Record<string, string> = { $USER: 'yaroslav', $SHELL: `/bin/${SHELL}`, $HOME: '/home/yaroslav', $PWD: '/home/yaroslav/portfolio' };
       return [ok(args.map((a) => vars[a] ?? a).join(' '))];
     }
 
@@ -270,6 +270,6 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok('rm: missing operand', 'error')];
 
     default:
-      return [ok(`zsh: command not found: ${cmd}`, 'error')];
+      return [ok(`${SHELL}: command not found: ${cmd}`, 'error')];
   }
 }

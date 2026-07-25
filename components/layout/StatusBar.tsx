@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SHELL } from '@/lib/config';
 
 const useClock = () => {
   const [t, setT] = useState('');
@@ -70,7 +71,7 @@ export const StatusBar = ({
         >
           {langValue}
         </button>
-        <span className="hidden sm:inline">&nbsp;· Arch · zsh · spaceship</span>
+        <span className="hidden sm:inline">&nbsp;· Arch · {SHELL} · spaceship</span>
         {clock && <span className="ml-2 text-fg-8 tabular-nums">· {clock}</span>}
       </span>
     </div>

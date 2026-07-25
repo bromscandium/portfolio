@@ -1,4 +1,4 @@
-import { TERMINAL_ROOT } from './config';
+import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
 import type { Option } from './types';
@@ -8,14 +8,14 @@ export type { Mode, Lang, Combo } from './modes';
 export const comboLabel = (combo: string, short: boolean): string => {
   const map: Record<string, string> = short
     ? {
-        'dev-en': 'zsh · english',
-        'dev-uk': 'zsh · українська',
+        'dev-en': `${SHELL} · english`,
+        'dev-uk': `${SHELL} · українська`,
         'human-en': 'plain english',
         'human-uk': 'простою українською',
       }
     : {
-        'dev-en': `${TERMINAL_ROOT} — zsh`,
-        'dev-uk': `${TERMINAL_ROOT} — zsh`,
+        'dev-en': `${TERMINAL_ROOT} — ${SHELL}`,
+        'dev-uk': `${TERMINAL_ROOT} — ${SHELL}`,
         'human-en': 'portfolio',
         'human-uk': 'портфоліо',
       };

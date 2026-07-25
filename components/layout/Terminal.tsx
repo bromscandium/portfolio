@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { portfolio } from '@/lib/data';
 import { byCategory, openUrl } from '@/lib/helpers';
 import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
+import { SHELL } from '@/lib/config';
 import { splitCombo } from '@/lib/modes';
 import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
 import { useTerminalEffects } from '@/hooks/useTerminalEffects';
@@ -46,7 +47,7 @@ export const Terminal = () => {
     if (t.phase === 'boot') title = uk ? 'завантаження… | portfolio' : 'booting… | portfolio';
     else if (t.phase === 'unload') title = uk ? 'закриття сесії… | portfolio' : 'closing session… | portfolio';
     else if (t.picker) title = uk ? 'вибір профілю | portfolio' : 'select profile | portfolio';
-    else title = human ? `portfolio | ${name}` : `~/${name} | zsh`;
+    else title = human ? `portfolio | ${name}` : `~/${name} | ${SHELL}`;
     document.title = title;
   }, [t.phase, t.picker, t.active, t.lang, human, s]);
 

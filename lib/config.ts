@@ -1,5 +1,7 @@
 export const TERMINAL_ROOT = '~/portfolio';
 
+export const SHELL = 'zsh';
+
 export const GITHUB_USER = 'bromscandium';
 
 export const LINKS = {
