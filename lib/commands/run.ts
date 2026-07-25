@@ -5,7 +5,7 @@ import { LINKS, SHELL } from '../config';
 import { NEOFETCH } from './constants';
 import { COMMANDS, findCommand } from './registry';
 import { SECTIONS_LOWER, children, resolvePath } from './fs';
-import type { CmdContext, CmdLine, Tone } from './types';
+import type { CmdContext, CmdLine, Seg, Tone } from './types';
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
@@ -16,11 +16,37 @@ const sizeOf = (p: { id: number; technologies: string[] }): string => {
   return `${(chars / 170).toFixed(1)}k`;
 }
 
+const openDir = (p: Seg, ctx: CmdContext): CmdLine[] => {
+  if (p.length === 0) {
+    ctx.goTo(0);
+    return [ok('❯ opening ~/portfolio…', 'cyan')];
+  }
+  if (p[0] === 'projects' && p.length === 2) {
+    const proj = portfolio.find((x) => slugify(x.title) === p[1]);
+    if (!proj) return [ok('open.sh: unknown project', 'error')];
+    ctx.goTo(3);
+    ctx.openProject(proj.id);
+    return [ok(`❯ opening projects/${p[1]}…`, 'cyan')];
+  }
+  const i = SECTIONS_LOWER.indexOf(p[0]);
+  if (i < 0) return [ok('open.sh: nothing to open here', 'error')];
+  ctx.goTo(i);
+  return [ok(`❯ opening ${p[0]}…`, 'cyan')];
+}
+
 export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
   const input = raw.trim();
   if (!input) return [];
   const [cmd, ...args] = input.split(/\s+/);
   const arg = args.join(' ').toLowerCase();
+
+  const openScript = cmd.replace(/^\.\//, '');
+  if (openScript === 'open.sh' || openScript.endsWith('/open.sh')) {
+    const dirArg = openScript.slice(0, -'open.sh'.length).replace(/\/+$/, '');
+    const dir = dirArg ? resolvePath(ctx.pwd, dirArg) : ctx.pwd;
+    if (!dir) return [ok(`${cmd}: no such file or directory`, 'error')];
+    return openDir(dir, ctx);
+  }
 
   switch (cmd) {
     case 'help': {
@@ -63,38 +89,14 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const raw = args.find((a) => !a.startsWith('-')) ?? '';
       const dir = resolvePath(ctx.pwd, raw || '.');
       if (!dir) return [ok(`ls: cannot access '${raw}': no such directory`, 'error')];
+      const entries = children(dir);
+      if (!entries.length) return [ok('nothing to list here — run ./open.sh to open this', 'muted')];
       const head: CmdLine = { row: { head: true, perms: 'Permissions', size: 'Size', name: 'Name' } };
-      const rows = children(dir).map((e) => {
-        const proj = e.dir && dir.length === 1 && dir[0] === 'projects' ? portfolio.find((x) => slugify(x.title) === e.name) : undefined;
-        return {
-          row: {
-            perms: e.dir ? 'drwxr-xr-x' : '-rwxr-xr-x',
-            size: proj ? sizeOf(proj) : '—',
-            name: e.dir ? `${e.name}/` : e.name,
-          },
-        };
+      const rows = entries.map((e) => {
+        const proj = dir.length === 1 && dir[0] === 'projects' ? portfolio.find((x) => slugify(x.title) === e.name) : undefined;
+        return { row: { perms: 'drwxr-xr-x', size: proj ? sizeOf(proj) : '—', name: `${e.name}/` } };
       });
       return [head, ...rows];
-    }
-
-    case './open.sh':
-    case 'open.sh': {
-      const p = ctx.pwd;
-      if (p.length === 0) {
-        ctx.goTo(0);
-        return [ok('❯ opening ~/portfolio…', 'cyan')];
-      }
-      if (p[0] === 'projects' && p.length === 2) {
-        const proj = portfolio.find((x) => slugify(x.title) === p[1]);
-        if (!proj) return [ok('open.sh: unknown project', 'error')];
-        ctx.goTo(3);
-        ctx.openProject(proj.id);
-        return [ok(`❯ opening projects/${p[1]}…`, 'cyan')];
-      }
-      const i = SECTIONS_LOWER.indexOf(p[0]);
-      if (i < 0) return [ok('open.sh: nothing to open here', 'error')];
-      ctx.goTo(i);
-      return [ok(`❯ opening ${p[0]}…`, 'cyan')];
     }
 
     case 'pwd':
