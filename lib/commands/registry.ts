@@ -15,9 +15,9 @@ export interface CommandSpec {
 
 export const COMMANDS: CommandSpec[] = [
   { name: 'help', usage: 'list commands · help <cmd> for one' },
-  { name: 'cd', usage: 'change directory (cd <dir> · .. · ~ · -)' },
+  { name: 'cd', usage: 'change directory (cd <dir> · .. · ~)' },
   { name: 'ls', usage: 'list directory contents' },
-  { name: './open.sh', usage: 'open the current dir — section or project (cd there first)' },
+  { name: './close.sh', usage: 'close the terminal (from ~)' },
   { name: 'pwd', usage: 'print working directory' },
   { name: 'cat', usage: 'cat cat.txt 🐱', options: () => opts(['cat.txt'], false) },
   { name: 'open', usage: 'open a project window [--live]', options: () => opts(portfolio.map((p) => slugify(p.title)), true) },

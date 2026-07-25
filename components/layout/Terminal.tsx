@@ -158,6 +158,7 @@ export const Terminal = () => {
             openHelp: t.openHelp,
             exitSession: t.confirmClose,
             setContactClosed: t.setContactClosed,
+            requestClose: t.requestClose,
           }}
         />
       )}

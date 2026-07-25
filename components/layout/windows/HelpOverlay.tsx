@@ -36,9 +36,9 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
     title: 'terminal · dev',
     rows: [
       ['cd <dir> · ls', 'browse the filesystem'],
-      ['./open.sh', 'open the current section / project'],
       ['open <project>', 'open a project window'],
       ['git log · git tag', 'work · study · hackathons'],
+      ['./close.sh', 'close the terminal (from ~)'],
       ['help', 'full command list'],
     ],
   },

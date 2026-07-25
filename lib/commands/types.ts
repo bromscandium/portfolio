@@ -36,6 +36,7 @@ export interface CmdContext {
   close: () => void;
   exitSession: () => void;
   setContactClosed: (v: boolean) => void;
+  requestClose: () => void;
   pwd: Seg;
   setPwd: (p: Seg) => void;
 }

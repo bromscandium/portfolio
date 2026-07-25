@@ -17,7 +17,7 @@ export interface Row extends CmdLine {
 export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit<CmdContext, 'clear' | 'close' | 'pwd' | 'setPwd'>) => {
   const [rows, setRows] = useState<Row[]>([{ id: 0, text: "type 'help' to get started", tone: 'muted' }]);
   const [input, setInput] = useState('');
-  const [pwd, setPwd] = useState<Seg>([]);
+  const [pwd, setPwd] = useState<Seg>(['portfolio']);
   const [height, setHeight] = useState(280);
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);

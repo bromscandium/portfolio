@@ -23,6 +23,7 @@ export interface SessionSlice {
   cycleTab: (dir: number) => void;
   openNewTab: () => void;
   unopenedCombos: () => Combo[];
+  requestClose: () => void;
   confirmClose: () => void;
   cancelClose: () => void;
 }
@@ -122,4 +123,5 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
     set({ mode: 'dev', lang: 'en', tabsOpen: ['dev-en'], closeConfirm: false, picker: false, typedN: 0, phase: 'unload' });
   },
   cancelClose: () => set({ closeConfirm: false }),
+  requestClose: () => set({ closeConfirm: true }),
 });
