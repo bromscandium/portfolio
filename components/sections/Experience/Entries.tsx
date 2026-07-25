@@ -1,11 +1,30 @@
-import type { Education, Hackathon, Job } from '@/lib/types';
+import type { Education, Hackathon, Job, ProjectLink } from '@/lib/types';
 import { Body, Heading } from '@/components/common/Typography';
 
-const Point = ({ text }: { text: string }) => (
-  <Body as="div" className="flex gap-3 !leading-[1.6]">
-    <span className="text-fg-9">│</span>
-    <span>{text}</span>
-  </Body>
+const Point = ({ text }: { text: string }) => {
+  const i = text.indexOf(': ');
+  const label = i > 0 ? text.slice(0, i) : '';
+  const rest = i > 0 ? text.slice(i + 2) : text;
+  return (
+    <Body as="div" className="flex gap-3 !leading-[1.6]">
+      <span className="text-fg-9">│</span>
+      <span>
+        {label && <span className="font-semibold text-fg-2">{label}: </span>}
+        {rest}
+      </span>
+    </Body>
+  );
+};
+
+const RefLink = ({ link }: { link: ProjectLink }) => (
+  <a
+    href={link.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="border-b border-orange/40 pb-0.25 text-[12px] text-orange hover:!text-orange-dark"
+  >
+    {link.label}
+  </a>
 );
 
 export const JobEntry = ({ job, index, human }: { job: Job; index: number; human: boolean }) => (
@@ -23,13 +42,31 @@ export const JobEntry = ({ job, index, human }: { job: Job; index: number; human
       </div>
       <Heading variant="role" as="div" className="mt-2.5">
         {job.role}
-        <span className="font-light text-fg-3"> — {job.org}</span>
+        <span className="font-light text-fg-3">
+          {' — '}
+          {job.orgLink ? (
+            <a href={job.orgLink} target="_blank" rel="noopener noreferrer" className="text-fg-3 hover:!text-orange">
+              {job.org}
+            </a>
+          ) : (
+            job.org
+          )}
+        </span>
       </Heading>
+      <div className="mt-2 text-[12px] italic text-fg-5">{job.summary}</div>
       <div className="mt-3.5 flex flex-col gap-2">
         {job.points.map((pt, k) => (
           <Point key={k} text={pt} />
         ))}
       </div>
+      {job.links && (
+        <div className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 pl-3">
+          <span className="text-[12px] text-fg-9">↳</span>
+          {job.links.map((l) => (
+            <RefLink key={l.href} link={l} />
+          ))}
+        </div>
+      )}
     </div>
   </div>
 );

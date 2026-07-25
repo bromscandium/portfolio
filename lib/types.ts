@@ -29,8 +29,11 @@ export interface Job {
   period: string;
   role: string;
   org: string;
+  orgLink?: string;
   loc: string;
+  summary: string;
   points: string[];
+  links?: ProjectLink[];
 }
 
 export interface Education {
