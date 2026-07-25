@@ -60,7 +60,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 16,
-    image: '/covers/intelmarket.webp',
+    image: '/covers/vigil8.webp',
     title: 'Vigil8',
     description: [
       'An advanced OSINT and Market Analysis platform developed as a collaborative Data Science project to track blockchain activity and web-based intelligence.',
@@ -214,8 +214,8 @@ export const portfolio: Project[] = [
   },
   {
     id: 4,
-    image: '/covers/profile_cover.webp',
-    title: 'Own Profile',
+    image: '/covers/portfolio.webp',
+    title: 'Portfolio',
     description: [
       'Personal website to showcase my projects, experiences, and skills.',
       'Fully built with Next.js and smooth UX in mind, styled as an authentic developer terminal.',
