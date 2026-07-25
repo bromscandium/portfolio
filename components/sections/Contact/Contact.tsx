@@ -9,6 +9,7 @@ import type { Ref } from 'react';
 interface Props {
   ref?: Ref<HTMLElement>;
   isDev: boolean;
+  closed: boolean;
   strings: Strings;
   onCopyEmail: (email: string) => void;
 }
@@ -27,7 +28,7 @@ const ContactButton = ({ link }: { link: ContactLink }) => (
   </a>
 );
 
-export const Contact = ({ ref, isDev, strings, onCopyEmail }: Props) => {
+export const Contact = ({ ref, isDev, closed, strings, onCopyEmail }: Props) => {
   const copyEmail = (e: React.MouseEvent) => {
     if (!navigator.clipboard) return;
     e.preventDefault();
@@ -45,23 +46,37 @@ export const Contact = ({ ref, isDev, strings, onCopyEmail }: Props) => {
       data-screen-label="Contact"
       className="box-border flex min-h-[70vh] flex-col justify-center border-t border-line-0 px-[6vw] pb-17.5 pt-22.5"
     >
-      <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
-      <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
-      <Heading variant="stroke" className="m-0 mb-9">
-        LET&apos;S TALK
-      </Heading>
-      <a
-        href={`mailto:${EMAIL}`}
-        onClick={copyEmail}
-        className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all duration-300 hover:border-orange hover:!text-orange"
-      >
-        {EMAIL}
-      </a>
-      <div className="mt-12 flex gap-5">
-        {contacts.map((c) => (
-          <ContactButton key={c.icon} link={c} />
-        ))}
-      </div>
+      {closed ? (
+        <div className="text-[13px] leading-[1.8] text-fg-6">
+          <div>
+            <span className="text-orange">❯</span> contact --close
+          </div>
+          <div className="text-yellow">connection closed — contact section unmounted.</div>
+          <div className="text-fg-8">
+            run <span className="text-orange">contact --open</span> to reconnect.
+          </div>
+        </div>
+      ) : (
+        <>
+          <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
+          <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
+          <Heading variant="stroke" className="m-0 mb-9">
+            LET&apos;S TALK
+          </Heading>
+          <a
+            href={`mailto:${EMAIL}`}
+            onClick={copyEmail}
+            className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all duration-300 hover:border-orange hover:!text-orange"
+          >
+            {EMAIL}
+          </a>
+          <div className="mt-12 flex gap-5">
+            {contacts.map((c) => (
+              <ContactButton key={c.icon} link={c} />
+            ))}
+          </div>
+        </>
+      )}
       <div className="mt-17.5 text-[12px] text-fg-8">
         {isDev && (
           <>

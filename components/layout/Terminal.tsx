@@ -148,7 +148,7 @@ export const Terminal = () => {
           searchOpen={t.searchOpen}
           onCloseSearch={t.closeSearch}
         />
-        <Contact ref={(el) => setSectionEl(4, el)} isDev={!human} strings={s} onCopyEmail={() => t.showToast('copied to clipboard')} />
+        <Contact ref={(el) => setSectionEl(4, el)} isDev={!human} closed={!human && t.contactClosed} strings={s} onCopyEmail={() => t.showToast('copied to clipboard')} />
       </main>
 
       {t.toast && (
@@ -169,6 +169,7 @@ export const Terminal = () => {
             openUrl,
             openHelp: t.openHelp,
             exitSession: t.confirmClose,
+            setContactClosed: t.setContactClosed,
           }}
         />
       )}

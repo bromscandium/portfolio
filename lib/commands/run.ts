@@ -216,11 +216,13 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'contact': {
       if (args.includes('--open')) {
+        ctx.setContactClosed(false);
         ctx.goTo(4);
         return [ok('Connection established. Available for full-time · remote.', 'green')];
       }
       if (args.includes('--close')) {
-        return [ok('Connection to recruiter closed. (nah — jk, hit me up 😉)', 'yellow')];
+        ctx.setContactClosed(true);
+        return [ok('Connection closed — contact section unmounted. (run `contact --open` to reconnect)', 'yellow')];
       }
       return [
         ok(`email      ${LINKS.email.replace('mailto:', '')}`, 'cyan'),

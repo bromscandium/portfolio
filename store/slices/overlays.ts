@@ -16,8 +16,10 @@ export interface OverlaySlice {
   cmdOpen: boolean;
   toast: string | null;
   paletteOpen: boolean;
+  contactClosed: boolean;
 
   setTyped: (n: number) => void;
+  setContactClosed: (v: boolean) => void;
   setPlusOpen: (v: boolean) => void;
   setLangHover: (v: boolean) => void;
   setViewHover: (v: boolean) => void;
@@ -50,8 +52,10 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   cmdOpen: false,
   toast: null,
   paletteOpen: false,
+  contactClosed: false,
 
   setTyped: (n) => set({ typedN: n }),
+  setContactClosed: (v) => set({ contactClosed: v }),
   setPlusOpen: (v) => set({ plusOpen: v }),
   setLangHover: (v) => set({ langHover: v }),
   setViewHover: (v) => set({ viewHover: v }),

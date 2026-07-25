@@ -32,4 +32,5 @@ export interface CmdContext {
   clear: () => void;
   close: () => void;
   exitSession: () => void;
+  setContactClosed: (v: boolean) => void;
 }
