@@ -1,7 +1,7 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
-import type { Option } from './types';
+import type { JobCopy, Option } from './types';
 
 export type { Mode, Lang, Combo } from './modes';
 
@@ -45,6 +45,7 @@ export interface Strings {
   catLabels: Option[];
   catBadge: Record<string, string>;
   projectDesc: (id: number) => string[];
+  jobCopy: (hash: string) => JobCopy;
   regionName: (region: string) => string;
   yLabel: (y: number) => string;
   regionStatus: (maxY: number) => string;
@@ -137,6 +138,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       ? { pet: 'пет', hackathon: 'хакатон', university: 'універ', professional: 'комерційний' }
       : { pet: 'pet', hackathon: 'hackathon', university: 'university', professional: 'professional' },
     projectDesc: (id: number) => PROJECT_DESC[id]?.[uk ? 'uk' : 'en'] ?? [],
+    jobCopy: (hash: string) => JOB_COPY[hash]?.[uk ? 'uk' : 'en'] ?? { role: '', loc: '', summary: '', points: [] },
     regionName: (region: string) => (human ? (uk ? regionUk[region] ?? region : region) : `stack/${region.toLowerCase()}:latest`),
     yLabel: (y: number) => (human ? (uk ? `${y} р.` : `${y} y`) : `Up ${y.toFixed(1)}y`),
     regionStatus: (maxY: number) =>
@@ -392,6 +394,99 @@ export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
       'Сайт для Promote Ukraine для показу проєктів, культурних подій та адвокаційних ініціатив.',
       'Підтримує комунікацію й аутрич для НГО.',
     ],
+  },
+};
+
+export const JOB_COPY: Record<string, { en: JobCopy; uk: JobCopy }> = {
+  b6e2c11: {
+    en: {
+      role: 'Software Support Engineer',
+      loc: 'Remote',
+      summary: 'Delivered technical system diagnostics, production issue resolution, and system integrity operations for a B2B E-commerce platform.',
+      points: [
+        'Production Diagnostics & Hotfixing: Investigated backend anomalies within Django and Python services, analyzing AWS CloudWatch log traces to identify code level issues and deploy production hotfixes.',
+        'System Integrity & Data Validation: Ensured platform stability by monitoring system health in Grafana and running SQL queries in Redash to verify data parity across PostgreSQL and Redis caching layers.',
+        'Cross-Functional Collaboration & Support: Partnered with core dev teams, product managers, and operations via Jira and Intercom to clarify L3 requirements, communicate technical context, and align cross-department workflows.',
+      ],
+    },
+    uk: {
+      role: 'Інженер підтримки ПЗ',
+      loc: 'Віддалено',
+      summary: 'Технічна діагностика систем, усунення продакшн-проблем і підтримка цілісності системи для B2B E-commerce платформи.',
+      points: [
+        'Діагностика та хотфікси продакшену: досліджував бекенд-аномалії в сервісах на Django/Python, аналізував трейси логів AWS CloudWatch, щоб локалізувати проблеми на рівні коду й розгортати продакшн-виправлення.',
+        'Цілісність системи та валідація даних: забезпечував стабільність платформи, моніторячи стан систем у Grafana і виконуючи SQL-запити в Redash для перевірки узгодженості даних між PostgreSQL і кешем Redis.',
+        'Міжкомандна співпраця та підтримка: працював з командами розробки, продакт-менеджерами й операціями через Jira та Intercom — уточнював вимоги рівня L3, доносив технічний контекст і синхронізував процеси між відділами.',
+      ],
+    },
+  },
+  f8ad40e: {
+    en: {
+      role: 'Full-Stack Engineer',
+      loc: 'Remote',
+      summary: 'Delivered custom web platforms, AI systems, and framework-level tools across commercial, open-source, and academic initiatives.',
+      points: [
+        'Frontend Architecture & Tooling: Engineered a lightweight, signal-based reactive UI framework monorepo (TypeScript) featuring a custom JSX runtime, client-side router, and Vite plugin for fine-grained DOM reactivity.',
+        'LLM Engineering & RAG Infrastructure: Designed an end-to-end LLM orchestration engine using FastAPI, PyTorch, and pgvector for a university initiative, implementing QLoRA fine-tuning on Gemma 3 4B using custom chat datasets for domain alignment.',
+        'Platform Performance & Optimization: Spearheaded the migration of a legacy system to a Next.js and Headless WordPress architecture, doubling organic traffic from 500 to 1,000 monthly users through Core Web Vitals and SEO optimization.',
+        'Asynchronous Backend Systems: Built high-throughput backend services using Python and FastAPI, leveraging ARQ and Redis for asynchronous task queues, caching, and real-time state management.',
+      ],
+    },
+    uk: {
+      role: 'Full-Stack інженер',
+      loc: 'Віддалено',
+      summary: 'Розробляв кастомні веб-платформи, AI-системи та інструменти рівня фреймворків для комерційних, опенсорс- та академічних ініціатив.',
+      points: [
+        'Архітектура та інструментарій фронтенду: створив легкий сигнал-орієнтований UI-фреймворк-монорепозиторій (TypeScript) з власним JSX-рантаймом, клієнтським роутером і Vite-плагіном для дрібнозернистої реактивності DOM.',
+        'LLM-інженерія та RAG-інфраструктура: спроєктував наскрізний рушій оркестрації LLM на FastAPI, PyTorch і pgvector для університетської ініціативи, реалізувавши QLoRA-донавчання Gemma 3 4B на власних чат-датасетах для доменного вирівнювання.',
+        'Продуктивність і оптимізація платформи: очолив міграцію legacy-системи на архітектуру Next.js + Headless WordPress, подвоївши органічний трафік з 500 до 1 000 користувачів на місяць через Core Web Vitals та SEO.',
+        'Асинхронні бекенд-системи: побудував високонавантажені бекенд-сервіси на Python і FastAPI, використовуючи ARQ і Redis для асинхронних черг задач, кешування й керування станом у реальному часі.',
+      ],
+    },
+  },
+  c76a1e2: {
+    en: {
+      role: 'Full-Stack Engineer Intern',
+      loc: 'Remote',
+      summary: 'Completed an intensive engineering program focused on building and shipping full-stack cloud applications under senior mentorship.',
+      points: [
+        'Frontend Engineering: Built a responsive, multi-language UI using Next.js 16, Redux Toolkit, and MUI, implementing dynamic quiz workflows, real-time analytics dashboards, and Auth0.',
+        'Backend & Infrastructure: Architected a modular FastAPI service with PostgreSQL and Redis, implementing a Unit of Work pattern, Docker containerization, and automated AWS deployment pipelines via GitHub Actions.',
+        'Engineering Process & Quality: Collaborated with senior engineers in Agile workflows, participating in code reviews and implementing Pytest and Jest suites to ensure reliability.',
+      ],
+    },
+    uk: {
+      role: 'Full-Stack інженер (стажер)',
+      loc: 'Віддалено',
+      summary: 'Пройшов інтенсивну інженерну програму, зосереджену на створенні й доставці full-stack хмарних застосунків під менторством сеньйорів.',
+      points: [
+        'Фронтенд-інженерія: створив адаптивний багатомовний UI на Next.js 16, Redux Toolkit і MUI з динамічними сценаріями квізів, аналітичними дашбордами в реальному часі та Auth0.',
+        'Бекенд та інфраструктура: спроєктував модульний FastAPI-сервіс з PostgreSQL і Redis, реалізувавши патерн Unit of Work, контейнеризацію в Docker та автоматичні пайплайни деплою на AWS через GitHub Actions.',
+        'Процес і якість розробки: працював із сеньйор-інженерами в Agile, брав участь у код-рев’ю і писав тести на Pytest та Jest для надійності.',
+      ],
+    },
+  },
+  '2f2022a': {
+    en: {
+      role: 'Software Engineer',
+      loc: 'Brussels, Belgium',
+      summary: 'Led digital transformation, web platform creation, and workflow automation for a major European NGO.',
+      points: [
+        'Web Architecture & Delivery: Managed the end-to-end development and deployment of key organizational platforms, including the active Promote Ukraine portal, Ukrainian Civil Society Hub, and Ukrainian Business Incubator in Belgium.',
+        'Product Development & Support: Contributed to the development and ongoing maintenance of the Preventia health initiative web project, driving continuous platform improvements and community adoption.',
+        'Internal Systems & Automation: Engineered a custom asset-tracking application and automated internal workflows via SharePoint and Power Platform, reducing manual administrative workload by ~30%.',
+      ],
+    },
+    uk: {
+      role: 'Інженер-програміст',
+      loc: 'Брюссель, Бельгія',
+      summary: 'Керував цифровою трансформацією, створенням веб-платформ і автоматизацією процесів для великої європейської НГО.',
+      points: [
+        'Веб-архітектура та доставка: керував наскрізною розробкою й розгортанням ключових платформ організації, зокрема чинного порталу Promote Ukraine, Ukrainian Civil Society Hub та Українського бізнес-інкубатора в Бельгії.',
+        'Розробка продукту та підтримка: долучався до розробки й підтримки вебпроєкту ініціативи Preventia, стимулюючи постійні покращення та залучення спільноти.',
+        'Внутрішні системи та автоматизація: розробив кастомний застосунок обліку активів і автоматизував внутрішні процеси через SharePoint і Power Platform, скоротивши ручну адмінроботу приблизно на 30%.',
+      ],
+    },
   },
 };
 

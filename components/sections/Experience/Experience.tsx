@@ -18,7 +18,7 @@ export const Experience = ({ ref, human, strings }: Props) => {
       <CommandHeader human={human} command="git log --graph work-history" heading={strings.hExp} className="mb-11" />
       <div className="flex flex-col">
         {experience.map((j, i) => (
-          <JobEntry key={j.hash} job={j} index={i} human={human} />
+          <JobEntry key={j.hash} job={j} index={i} human={human} strings={strings} />
         ))}
       </div>
       <div className="mt-10 grid grid-cols-1 gap-15 md:grid-cols-2">

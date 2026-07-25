@@ -1,5 +1,5 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
-import { PROJECT_DESC, slugify } from '../i18n';
+import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
 import { byCategory, projectPath } from '../helpers';
 import { LINKS, SHELL } from '../config';
 import type { Category } from '../types';
@@ -203,8 +203,9 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ctx.goTo(1);
         const out: CmdLine[] = [];
         experience.forEach((j, i) => {
-          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${j.role} — ${j.org}`, i === 0 ? 'accent' : 'default'));
-          out.push(ok(`|   ${j.period} · ${j.loc}`, 'muted'));
+          const jc = JOB_COPY[j.hash]?.en;
+          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${jc?.role ?? ''} — ${j.org}`, i === 0 ? 'accent' : 'default'));
+          out.push(ok(`|   ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
         });
         return out;
       }

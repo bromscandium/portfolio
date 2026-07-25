@@ -26,13 +26,16 @@ export interface InfoItem {
 export interface Job {
   hash: string;
   period: string;
-  role: string;
   org: string;
   orgLink?: string;
+  links?: ProjectLink[];
+}
+
+export interface JobCopy {
+  role: string;
   loc: string;
   summary: string;
   points: string[];
-  links?: ProjectLink[];
 }
 
 export interface Education {
