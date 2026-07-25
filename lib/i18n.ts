@@ -109,7 +109,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
         ? 'наведи курсор на вікно — воно відкриється'
         : 'hover a window to view more'
       : uk
-        ? '// hover = view more · наведи і потримай'
+        ? '// наведи курсор на вікно й потримай — воно відкриється'
         : '// hover a window to view more',
     catLabels: human
       ? uk
