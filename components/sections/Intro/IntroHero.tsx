@@ -1,4 +1,6 @@
 import { counters, heroRole } from '@/lib/data';
+import { GITHUB_USER } from '@/lib/config';
+import { useContributions } from '@/hooks/useContributions';
 import { Heading } from '@/components/common/Typography';
 import type { Strings } from '@/lib/i18n';
 
@@ -15,7 +17,11 @@ interface Props {
   onContact: () => void;
 }
 
-export const IntroHero = ({ strings, onWork, onContact }: Props) => (
+export const IntroHero = ({ strings, onWork, onContact }: Props) => {
+  const liveContrib = useContributions(GITHUB_USER);
+  const counterN = (key: string, fallback: string) => (key === 'contributions' && liveContrib ? liveContrib : fallback);
+
+  return (
   <div className="fade-up mt-9">
     <Heading variant="display" className="m-0">
       {strings.heroName[0]}
@@ -31,7 +37,7 @@ export const IntroHero = ({ strings, onWork, onContact }: Props) => (
     </div>
     <div className="mt-7.5 text-[14px] tracking-[1px] text-fg-5">
       {counters.map((c, i) => (
-        <Counter key={c.key} n={c.n} label={strings.counterLabels[c.key]} first={i === 0} />
+        <Counter key={c.key} n={counterN(c.key, c.n)} label={strings.counterLabels[c.key]} first={i === 0} />
       ))}
     </div>
     <div className="mt-10 flex flex-wrap gap-4">
@@ -49,4 +55,5 @@ export const IntroHero = ({ strings, onWork, onContact }: Props) => (
       </button>
     </div>
   </div>
-);
+  );
+};
