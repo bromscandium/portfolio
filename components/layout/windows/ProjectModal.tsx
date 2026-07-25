@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
 import { slugify, type Strings } from '@/lib/i18n';
 import { Body, Heading } from '@/components/common/Typography';
+import { ProjectCover } from '@/components/sections/Projects/ProjectCover';
 
 interface Props {
   project: Project;
@@ -54,7 +54,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
         </div>
         <div className="grid grid-cols-1 gap-8.5 p-7 md:grid-cols-[minmax(240px,460px)_minmax(280px,1fr)]">
           <div className="self-start overflow-hidden rounded-card border border-line-4">
-            <Image src={project.image} alt={project.title} width={460} height={288} className="block aspect-[16/10] w-full object-cover" />
+            <ProjectCover project={project} width={460} height={288} />
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-baseline gap-3.5">

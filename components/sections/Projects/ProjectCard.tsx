@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import type { Project } from '@/lib/data';
 import { projectPath } from '@/lib/helpers';
 import { Heading } from '@/components/common/Typography';
+import { ProjectCover } from './ProjectCover';
 
 interface Props {
   project: Project;
@@ -36,7 +36,7 @@ export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, d
         <span className="ml-auto shrink-0 text-[9px] uppercase tracking-[2px] text-orange/80">{catBadge}</span>
       </div>
       <div className="relative">
-        <Image src={project.image} alt={project.title} width={400} height={250} className="block aspect-[16/10] w-full object-cover" />
+        <ProjectCover project={project} width={400} height={250} />
         {hovering && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/[.65]">
             <svg width="44" height="44" viewBox="0 0 36 36" style={{ transform: 'rotate(-90deg)' }}>
