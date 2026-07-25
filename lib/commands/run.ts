@@ -50,7 +50,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'cd': {
-      const key = arg.replace(/^~\/?/, '').replace(/\/+$/, '');
+      const key = arg
+        .replace(/^~\/portfolio\/?/, '')
+        .replace(/^~\/?/, '')
+        .replace(/^\.\//, '')
+        .replace(/\/+$/, '');
       if (!key || key === '~' || key === '..') {
         ctx.goTo(0);
         return [ok('→ intro', 'cyan')];

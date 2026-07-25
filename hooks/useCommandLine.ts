@@ -40,7 +40,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
 
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-  }, [rows, open]);
+  }, [rows, open, menu]);
 
   const nextId = () => idRef.current++;
   const append = (newRows: Row[]) => setRows((r) => [...r, ...newRows]);

@@ -1,6 +1,6 @@
 import { portfolio } from '../data';
 import { slugify } from '../i18n';
-import { SECTIONS } from './constants';
+import { SECTION_LABELS } from '../config';
 import type { CompletionOption } from './types';
 
 export const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
@@ -11,6 +11,7 @@ export interface CommandSpec {
   name: string;
   usage: string;
   hidden?: boolean;
+  path?: boolean;
   options?: () => CompletionOption[];
 }
 
@@ -19,7 +20,11 @@ export const COMMANDS: CommandSpec[] = [
   {
     name: 'cd',
     usage: 'jump to a section or project',
-    options: () => [...opts(Object.keys(SECTIONS), true), ...opts(portfolio.map((p) => `projects/${slugify(p.title)}`), true)],
+    path: true,
+    options: () => [
+      ...opts(SECTION_LABELS.map((l) => l.toLowerCase()), false),
+      ...opts(portfolio.map((p) => `projects/${slugify(p.title)}`), false),
+    ],
   },
   { name: 'ls', usage: 'list projects [category | ~/projects/<name>]', options: () => opts(CATEGORIES, false) },
   { name: 'pwd', usage: 'print working directory' },
