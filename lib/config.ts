@@ -4,6 +4,10 @@ export const SHELL = 'zsh';
 
 export const GITHUB_USER = 'bromscandium';
 
+export const HOST = 'bromscandium.com';
+
+export const SITE_URL = `https://${HOST}`;
+
 export const LINKS = {
   email: 'mailto:kkmshbiu@protonmail.com',
   github: `https://github.com/${GITHUB_USER}`,

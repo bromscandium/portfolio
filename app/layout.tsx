@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Jura, JetBrains_Mono } from 'next/font/google';
+import { SITE_URL } from '@/lib/config';
 import './globals.css';
 
 const jura = Jura({
@@ -25,18 +26,18 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://bromscandium.com'),
+  metadataBase: new URL(SITE_URL),
   title: 'portfolio',
   description: DESCRIPTION,
   applicationName: 'bromscandium terminal',
-  authors: [{ name: 'Yaroslav Yeromenko', url: 'https://bromscandium.com' }],
+  authors: [{ name: 'Yaroslav Yeromenko', url: SITE_URL }],
   creator: 'Yaroslav Yeromenko',
   keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Engineer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
   icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }] },
   openGraph: {
     type: 'website',
-    url: 'https://bromscandium.com',
+    url: SITE_URL,
     siteName: 'bromscandium',
     title: 'Yaroslav Yeromenko | Full-Stack Engineer',
     description: DESCRIPTION,

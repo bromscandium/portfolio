@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { HOST } from '@/lib/config';
 
 const LINES = [
   { text: '❯ exit', tone: 'muted' as const },
@@ -6,7 +7,7 @@ const LINES = [
   { ok: true, text: 'stopping containers' },
   { ok: true, text: 'unmounting /dev/portfolio' },
   { text: 'logout', tone: 'muted' as const },
-  { text: 'Connection to bromscandium.com closed.', tone: 'yellow' as const },
+  { text: `Connection to ${HOST} closed.`, tone: 'yellow' as const },
 ];
 
 export const BootUnloader = ({ onDone }: { onDone: () => void }) => {

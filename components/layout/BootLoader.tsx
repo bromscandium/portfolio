@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { HOST } from '@/lib/config';
 import { STORAGE_KEYS, readLS } from '@/lib/storage';
 
 interface Line {
@@ -19,8 +20,8 @@ const buildLines = (): Line[] => {
   const returning = mode === 'dev' || mode === 'human';
 
   return [
-    { text: 'ssh yaroslav@bromscandium.com', tone: 'muted' },
-    { text: "yaroslav@bromscandium.com's password: ********", tone: 'muted' },
+    { text: `ssh yaroslav@${HOST}`, tone: 'muted' },
+    { text: `yaroslav@${HOST}'s password: ********`, tone: 'muted' },
     { ok: true, text: 'connection established · Arch Linux' },
     { ok: true, text: 'fonts loaded — JetBrains Mono · Jura' },
     { ok: true, text: 'sections mounted' },
