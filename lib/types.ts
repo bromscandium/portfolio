@@ -11,7 +11,6 @@ export interface Project {
   id: number;
   image: string;
   title: string;
-  description: string[];
   technologies: string[];
   live: string | null;
   github: string | null;

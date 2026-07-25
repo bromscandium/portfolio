@@ -62,7 +62,7 @@ export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
               <span className="text-[10px] uppercase tracking-[2px] text-orange/80">{strings.catBadge[project.category]}</span>
             </div>
             <div className="my-4 mb-5 flex flex-col gap-2.5">
-              {project.description.map((par, i) => (
+              {strings.projectDesc(project.id).map((par, i) => (
                 <Paragraph key={i} text={par} />
               ))}
             </div>

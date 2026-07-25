@@ -1,5 +1,5 @@
 import { about, education, experience, hackathons, portfolio, skillMap } from '../data';
-import { slugify } from '../i18n';
+import { PROJECT_DESC, slugify } from '../i18n';
 import { byCategory, projectPath } from '../helpers';
 import { LINKS, SHELL } from '../config';
 import type { Category } from '../types';
@@ -11,8 +11,8 @@ const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
 }
 
-const sizeOf = (p: { description: string[]; technologies: string[] }): string => {
-  const chars = p.description.join(' ').length + p.technologies.join('').length;
+const sizeOf = (p: { id: number; technologies: string[] }): string => {
+  const chars = (PROJECT_DESC[p.id]?.en.join(' ').length ?? 0) + p.technologies.join('').length;
   return `${(chars / 170).toFixed(1)}k`;
 }
 
@@ -127,7 +127,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const term = arg;
       const hits: CmdLine[] = [];
       portfolio.forEach((p) => {
-        if (`${p.title} ${p.technologies.join(' ')} ${p.category} ${p.description.join(' ')}`.toLowerCase().includes(term)) {
+        if (`${p.title} ${p.technologies.join(' ')} ${p.category} ${PROJECT_DESC[p.id]?.en.join(' ') ?? ''}`.toLowerCase().includes(term)) {
           hits.push(ok(`${projectPath(p.title)}: ${p.technologies.slice(0, 4).join(', ')}`));
         }
       });
