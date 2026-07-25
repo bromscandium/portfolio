@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Next.js
+.next
+out
+next-env.d.ts
+.turbo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,3 +29,34 @@ dist-ssr
 *.sln
 *.sw?
 .vite
+design_handoff_terminal_portfolio
+
+# Claude Code / AI tooling
+.claude
+.claude/*
+CLAUDE.local.md
+.mcp.json
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*:Zone.Identifier
+
+# Build & cache
+.cache
+coverage
+*.tsbuildinfo
+.eslintcache
+
+# Misc
+*.local
+tmp
+temp

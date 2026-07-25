@@ -1,0 +1,170 @@
+'use client';
+
+import { Contact, Experience, Intro, Projects, Skills } from '@/components/sections';
+import { useTerminalEffects } from '@/hooks/useTerminalEffects';
+import { SHELL } from '@/lib/config';
+import { portfolio } from '@/lib/data';
+import { byCategory, openUrl } from '@/lib/helpers';
+import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
+import { splitCombo } from '@/lib/modes';
+import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
+import { useEffect, useMemo } from 'react';
+import { BootLoader } from './BootLoader';
+import { BootUnloader } from './BootUnloader';
+import { CommandLine } from './CommandLine';
+import { Sidebar } from './Sidebar';
+import { StatusBar } from './StatusBar';
+import { TabBar } from './TabBar';
+import { CloseConfirm, CommandPalette, HelpOverlay, ProfilePicker, ProjectModal } from './windows';
+
+export const Terminal = () => {
+  useTerminalEffects();
+  const t = useTerminal();
+
+  const human = t.mode === 'human';
+  const s = useMemo(() => getStrings(t.mode, t.lang), [t.mode, t.lang]);
+  const activeCombo = `${t.mode}-${t.lang}` as Combo;
+  const heroDone = human || t.typedN >= CMD.length;
+
+  const visible = useMemo(() => byCategory(t.cat), [t.cat]);
+  const modalP = t.expandedId !== null ? (portfolio.find((p) => p.id === t.expandedId) ?? null) : null;
+
+  useEffect(() => {
+    const name = s.navNames[t.active];
+    const uk = t.lang === 'uk';
+    let title: string;
+    if (t.phase === 'boot') title = uk ? 'завантаження… | portfolio' : 'booting… | portfolio';
+    else if (t.phase === 'unload') title = uk ? 'закриття сесії… | portfolio' : 'closing session… | portfolio';
+    else if (t.picker) title = uk ? 'вибір профілю | portfolio' : 'select profile | portfolio';
+    else title = human ? `portfolio | ${name}` : `~/${name} | ${SHELL}`;
+    document.title = title;
+  }, [t.phase, t.picker, t.active, t.lang, human, s]);
+
+  const overlayActive = t.paletteOpen || t.helpOpen || t.picker || t.closeConfirm || t.expandedId !== null;
+  useEffect(() => {
+    document.body.style.overflow = overlayActive ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [overlayActive]);
+
+  if (t.picker) return <ProfilePicker lang={t.lang} onPick={(m, l) => t.setCombo(m, l, true)} />;
+  if (t.phase === 'unload') return <BootUnloader onDone={t.unloadDone} />;
+  if (t.phase === 'boot') return <BootLoader onDone={t.bootDone} />;
+
+  return (
+    <div className="min-h-screen bg-bg font-mono">
+      <TabBar
+        tabsOpen={t.tabsOpen}
+        activeCombo={activeCombo}
+        onSelect={(c) => t.setCombo(...splitCombo(c))}
+        onClose={t.closeTab}
+        onMiddleClose={t.closeTab}
+        onDragStart={t.startDrag}
+        onDragOver={t.dragOver}
+        onDragEnd={t.endDrag}
+        plusOpen={t.plusOpen}
+        setPlusOpen={t.setPlusOpen}
+        plusItems={t.unopenedCombos()}
+        onOpenCombo={(c) => t.setCombo(...splitCombo(c))}
+        labelFor={(c) => comboLabel(c, false)}
+        shortLabelFor={(c) => comboLabel(c, true)}
+        onOpenPalette={t.openPalette}
+      />
+
+      <Sidebar navRoot={s.navRoot} names={s.navNames} active={t.active} onNav={t.goTo} />
+
+      <div className="fixed inset-x-0 top-9.5 z-[90] flex gap-1 overflow-x-auto border-b border-line-1 bg-bg px-3 py-1.5 md:hidden">
+        {s.navNames.map((n, i) => (
+          <button
+            key={n}
+            onClick={() => t.goTo(i)}
+            className="shrink-0 cursor-pointer whitespace-nowrap rounded-btn border-none bg-transparent px-2 py-1 font-mono text-[12px]"
+            style={{ color: t.active === i ? 'var(--color-orange)' : '#8a8a8a' }}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+
+      {t.helpOpen && <HelpOverlay onClose={t.closeHelp} />}
+
+      {t.paletteOpen && <CommandPalette />}
+
+      {t.closeConfirm && <CloseConfirm onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
+
+      {modalP && <ProjectModal project={modalP} closing={t.closingM} onClose={t.closeModal} />}
+
+      <StatusBar
+        activeIdx={t.active}
+        activeName={s.navNames[t.active]}
+        viewValue={s.viewValue(t.viewHover)}
+        viewHover={t.viewHover}
+        onViewEnter={() => t.setViewHover(true)}
+        onViewLeave={() => t.setViewHover(false)}
+        onViewClick={() => t.setCombo(human ? 'dev' : 'human', t.lang)}
+        langValue={s.langValue(t.langHover)}
+        langHover={t.langHover}
+        onLangEnter={() => t.setLangHover(true)}
+        onLangLeave={() => t.setLangHover(false)}
+        onLangClick={() => t.setCombo(t.mode, t.lang === 'uk' ? 'en' : 'uk')}
+      />
+
+      <main className="mt-19 ml-0 md:mt-9.5 md:ml-55" style={{ marginBottom: human ? 26 : 52 }}>
+        <Intro
+          ref={(el) => setSectionEl(0, el)}
+          typedCmd={CMD.slice(0, t.typedN)}
+          ghostCmd={heroDone ? '' : CMD.slice(t.typedN)}
+          heroDone={heroDone}
+          onWork={() => t.goTo(3)}
+          onContact={() => t.goTo(4)}
+        />
+        <Experience ref={(el) => setSectionEl(1, el)} />
+        <Skills ref={(el) => setSectionEl(2, el)} />
+        <Projects
+          ref={(el) => setSectionEl(3, el)}
+          projects={visible}
+          totalCount={portfolio.length}
+          cat={t.cat}
+          onCat={t.setCat}
+          hoverId={t.hoverId}
+          expandedId={t.expandedId}
+          onEnter={t.cardEnter}
+          onLeave={t.cardLeave}
+          onClick={t.cardClick}
+          dashSec={`${EXPAND_DELAY}s`}
+          searchOpen={t.searchOpen}
+          onCloseSearch={t.closeSearch}
+        />
+        <Contact ref={(el) => setSectionEl(4, el)} closed={!human && t.contactClosed} onCopyEmail={() => t.showToast('copied to clipboard')} />
+      </main>
+
+      {t.toast && (
+        <div
+          className="fixed bottom-15 left-1/2 z-[650] -translate-x-1/2 rounded-btn border border-line-5 bg-panel-6 px-4 py-2 font-mono text-[12px] text-green shadow-[0_10px_30px_rgba(0,0,0,.6)]"
+          style={{ animation: 'fadeUp .2s ease-out' }}
+        >
+          ✓ {t.toast}
+        </div>
+      )}
+
+      {!human && (
+        <CommandLine
+          open={t.cmdOpen}
+          onOpen={t.openCmd}
+          onClose={t.closeCmd}
+          actions={{
+            goTo: t.goTo,
+            goToPrev: t.goToPrev,
+            openProject: t.openProject,
+            openUrl,
+            openHelp: t.openHelp,
+            exitSession: t.confirmClose,
+            setContactClosed: t.setContactClosed,
+            requestClose: t.requestClose,
+          }}
+        />
+      )}
+    </div>
+  );
+};

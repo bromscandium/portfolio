@@ -1,0 +1,60 @@
+import { SITE_URL } from '@/lib/config';
+import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono, Jura } from 'next/font/google';
+import './globals.css';
+
+const jura = Jura({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-jura',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+});
+
+const DESCRIPTION =
+  'Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 17 shipped projects.';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: 'portfolio',
+  description: DESCRIPTION,
+  applicationName: 'bromscandium terminal',
+  authors: [{ name: 'Yaroslav Yeromenko', url: SITE_URL }],
+  creator: 'Yaroslav Yeromenko',
+  keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Engineer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
+  robots: { index: false, follow: false },
+  icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }] },
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: 'bromscandium',
+    title: 'Yaroslav Yeromenko | Full-Stack Engineer',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Yaroslav Yeromenko | Full-Stack Engineer',
+    description: DESCRIPTION,
+  },
+};
+
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <html lang="en" className={`${jura.variable} ${jetbrainsMono.variable}`}>
+      <body>{children}</body>
+    </html>
+  );
+};
+
+export default RootLayout;
