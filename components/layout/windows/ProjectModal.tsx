@@ -1,12 +1,12 @@
 import { projectLinks, type Project, type ProjectLink } from '@/lib/data';
-import { slugify, type Strings } from '@/lib/i18n';
+import { slugify } from '@/lib/i18n';
+import { useStrings } from '@/hooks/useStrings';
 import { Body, Heading } from '@/components/common/Typography';
 import { ProjectCover } from '@/components/sections/Projects/ProjectCover';
 
 interface Props {
   project: Project;
   closing: boolean;
-  strings: Strings;
   onClose: () => void;
 }
 
@@ -27,7 +27,8 @@ const ModalLink = ({ link }: { link: ProjectLink }) => (
   </a>
 );
 
-export const ProjectModal = ({ project, closing, strings, onClose }: Props) => {
+export const ProjectModal = ({ project, closing, onClose }: Props) => {
+  const strings = useStrings();
   const links = projectLinks(project);
   const path = strings.modalPath(project.title, slugify(project.title));
   const stop = (e: React.MouseEvent) => e.stopPropagation();

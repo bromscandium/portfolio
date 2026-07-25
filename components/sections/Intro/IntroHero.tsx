@@ -1,8 +1,8 @@
 import { counters, heroRole } from '@/lib/data';
 import { GITHUB_USER } from '@/lib/config';
 import { useContributions } from '@/hooks/useContributions';
+import { useStrings } from '@/hooks/useStrings';
 import { Heading } from '@/components/common/Typography';
-import type { Strings } from '@/lib/i18n';
 
 const Counter = ({ n, label, first }: { n: string; label: string; first: boolean }) => (
   <span>
@@ -12,12 +12,12 @@ const Counter = ({ n, label, first }: { n: string; label: string; first: boolean
 );
 
 interface Props {
-  strings: Strings;
   onWork: () => void;
   onContact: () => void;
 }
 
-export const IntroHero = ({ strings, onWork, onContact }: Props) => {
+export const IntroHero = ({ onWork, onContact }: Props) => {
+  const strings = useStrings();
   const liveContrib = useContributions(GITHUB_USER);
   const counterN = (key: string, fallback: string) => (key === 'contributions' && liveContrib ? liveContrib : fallback);
 

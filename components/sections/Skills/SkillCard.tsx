@@ -1,5 +1,5 @@
 import type { SkillRegion } from '@/lib/types';
-import type { Strings } from '@/lib/i18n';
+import { useHuman, useStrings } from '@/hooks/useStrings';
 
 const SkillRow = ({ name, yLabel, last }: { name: string; yLabel: string; last: boolean }) => (
   <div className="flex items-baseline gap-3 py-0.5 hover:bg-panel-4">
@@ -9,7 +9,9 @@ const SkillRow = ({ name, yLabel, last }: { name: string; yLabel: string; last: 
   </div>
 );
 
-export const SkillCard = ({ region, human, strings }: { region: SkillRegion; human: boolean; strings: Strings }) => {
+export const SkillCard = ({ region }: { region: SkillRegion }) => {
+  const human = useHuman();
+  const strings = useStrings();
   const maxY = Math.max(...region.items.map((s) => s.y));
   const slug = region.region.toLowerCase();
 

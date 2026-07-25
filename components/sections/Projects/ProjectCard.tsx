@@ -1,12 +1,11 @@
 import type { Project } from '@/lib/data';
 import { projectPath } from '@/lib/helpers';
+import { useHuman, useStrings } from '@/hooks/useStrings';
 import { Heading } from '@/components/common/Typography';
 import { ProjectCover } from './ProjectCover';
 
 interface Props {
   project: Project;
-  human: boolean;
-  catBadge: string;
   hovering: boolean;
   forceOrange: boolean;
   dashSec: string;
@@ -15,7 +14,9 @@ interface Props {
   onClick: (id: number) => void;
 }
 
-export const ProjectCard = ({ project, human, catBadge, hovering, forceOrange, dashSec, onEnter, onLeave, onClick }: Props) => {
+export const ProjectCard = ({ project, hovering, forceOrange, dashSec, onEnter, onLeave, onClick }: Props) => {
+  const human = useHuman();
+  const catBadge = useStrings().catBadge[project.category];
   const enter = () => onEnter(project.id);
   const leave = () => onLeave(project.id);
   const click = () => onClick(project.id);

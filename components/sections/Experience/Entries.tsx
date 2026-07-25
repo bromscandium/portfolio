@@ -1,5 +1,5 @@
 import type { Education, Hackathon, Job, ProjectLink } from '@/lib/types';
-import type { Strings } from '@/lib/i18n';
+import { useHuman, useStrings } from '@/hooks/useStrings';
 import { Body, Heading } from '@/components/common/Typography';
 
 const Point = ({ text }: { text: string }) => {
@@ -28,8 +28,9 @@ const RefLink = ({ link }: { link: ProjectLink }) => (
   </a>
 );
 
-export const JobEntry = ({ job, index, human, strings }: { job: Job; index: number; human: boolean; strings: Strings }) => {
-  const copy = strings.jobCopy(job.hash);
+export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
+  const human = useHuman();
+  const copy = useStrings().jobCopy(job.hash);
   return (
   <div className="grid grid-cols-[26px_1fr] gap-4.5">
     <div className="flex flex-col items-center">

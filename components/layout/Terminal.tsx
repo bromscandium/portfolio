@@ -12,18 +12,10 @@ import { TabBar } from './TabBar';
 import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
 import { CommandLine } from './CommandLine';
-import { ProfilePicker } from './windows/ProfilePicker';
-import { HelpOverlay } from './windows/HelpOverlay';
-import { ProjectModal } from './windows/ProjectModal';
-import { CommandPalette } from './windows/CommandPalette';
-import { CloseConfirm } from './windows/CloseConfirm';
+import { CloseConfirm, CommandPalette, HelpOverlay, ProfilePicker, ProjectModal } from './windows';
 import { BootLoader } from './BootLoader';
 import { BootUnloader } from './BootUnloader';
-import { Intro } from '@/components/sections/Intro/Intro';
-import { Experience } from '@/components/sections/Experience/Experience';
-import { Skills } from '@/components/sections/Skills/Skills';
-import { Projects } from '@/components/sections/Projects/Projects';
-import { Contact } from '@/components/sections/Contact/Contact';
+import { Contact, Experience, Intro, Projects, Skills } from '@/components/sections';
 
 export const Terminal = () => {
   useTerminalEffects();
@@ -99,9 +91,9 @@ export const Terminal = () => {
 
       {t.paletteOpen && <CommandPalette />}
 
-      {t.closeConfirm && <CloseConfirm human={human} uk={t.lang === 'uk'} onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
+      {t.closeConfirm && <CloseConfirm onConfirm={t.confirmClose} onCancel={t.cancelClose} />}
 
-      {modalP && <ProjectModal project={modalP} closing={t.closingM} strings={s} onClose={t.closeModal} />}
+      {modalP && <ProjectModal project={modalP} closing={t.closingM} onClose={t.closeModal} />}
 
       <StatusBar
         activeIdx={t.active}
@@ -121,20 +113,16 @@ export const Terminal = () => {
       <main className="mt-19 ml-0 md:mt-9.5 md:ml-55" style={{ marginBottom: human ? 26 : 52 }}>
         <Intro
           ref={(el) => setSectionEl(0, el)}
-          isDev={!human}
           typedCmd={CMD.slice(0, t.typedN)}
           ghostCmd={heroDone ? '' : CMD.slice(t.typedN)}
           heroDone={heroDone}
-          strings={s}
           onWork={() => t.goTo(3)}
           onContact={() => t.goTo(4)}
         />
-        <Experience ref={(el) => setSectionEl(1, el)} human={human} strings={s} />
-        <Skills ref={(el) => setSectionEl(2, el)} human={human} strings={s} />
+        <Experience ref={(el) => setSectionEl(1, el)} />
+        <Skills ref={(el) => setSectionEl(2, el)} />
         <Projects
           ref={(el) => setSectionEl(3, el)}
-          human={human}
-          strings={s}
           projects={visible}
           totalCount={portfolio.length}
           cat={t.cat}
@@ -148,7 +136,7 @@ export const Terminal = () => {
           searchOpen={t.searchOpen}
           onCloseSearch={t.closeSearch}
         />
-        <Contact ref={(el) => setSectionEl(4, el)} isDev={!human} closed={!human && t.contactClosed} strings={s} onCopyEmail={() => t.showToast('copied to clipboard')} />
+        <Contact ref={(el) => setSectionEl(4, el)} closed={!human && t.contactClosed} onCopyEmail={() => t.showToast('copied to clipboard')} />
       </main>
 
       {t.toast && (

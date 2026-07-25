@@ -3,14 +3,12 @@ import type { ContactLink } from '@/lib/types';
 import { Icon } from '@/components/common/Icon';
 import { CommandHeader } from '@/components/common/CommandHeader';
 import { Heading } from '@/components/common/Typography';
-import type { Strings } from '@/lib/i18n';
+import { useHuman, useStrings } from '@/hooks/useStrings';
 import type { Ref } from 'react';
 
 interface Props {
   ref?: Ref<HTMLElement>;
-  isDev: boolean;
   closed: boolean;
-  strings: Strings;
   onCopyEmail: (email: string) => void;
 }
 
@@ -28,7 +26,9 @@ const ContactButton = ({ link }: { link: ContactLink }) => (
   </a>
 );
 
-export const Contact = ({ ref, isDev, closed, strings, onCopyEmail }: Props) => {
+export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
+  const human = useHuman();
+  const strings = useStrings();
   const copyEmail = (e: React.MouseEvent) => {
     if (!navigator.clipboard) return;
     e.preventDefault();
@@ -58,7 +58,7 @@ export const Contact = ({ ref, isDev, closed, strings, onCopyEmail }: Props) => 
         </div>
       ) : (
         <>
-          <CommandHeader human={!isDev} command="contact --open" heading={strings.hContact} className="mb-2" />
+          <CommandHeader command="contact --open" heading={strings.hContact} className="mb-2" />
           <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
           <Heading variant="stroke" className="m-0 mb-9">
             LET&apos;S TALK
@@ -78,7 +78,7 @@ export const Contact = ({ ref, isDev, closed, strings, onCopyEmail }: Props) => 
         </>
       )}
       <div className="mt-17.5 text-[12px] text-fg-8">
-        {isDev && (
+        {!human && (
           <>
             <span className="text-orange">❯ </span>
             <span>exit 0&nbsp;&nbsp;·&nbsp;&nbsp;</span>

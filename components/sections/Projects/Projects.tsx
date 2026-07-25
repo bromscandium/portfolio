@@ -1,16 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type Category, type Project } from '@/lib/data';
 import { byCategory, fuzzy } from '@/lib/helpers';
-import type { Strings } from '@/lib/i18n';
 import type { Ref } from 'react';
+import { useStrings } from '@/hooks/useStrings';
 import { Section } from '@/components/common/Section';
 import { CommandHeader } from '@/components/common/CommandHeader';
 import { ProjectCard } from './ProjectCard';
 
 interface Props {
   ref?: Ref<HTMLElement>;
-  human: boolean;
-  strings: Strings;
   projects: Project[];
   totalCount: number;
   cat: Category | 'all';
@@ -44,8 +42,6 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
 
 export const Projects = ({
   ref,
-  human,
-  strings,
   projects,
   cat,
   onCat,
@@ -58,6 +54,7 @@ export const Projects = ({
   searchOpen,
   onCloseSearch,
 }: Props) => {
+  const strings = useStrings();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -95,7 +92,7 @@ export const Projects = ({
   return (
     <Section ref={ref} label="Projects">
       <div className="mb-7.5 flex flex-wrap items-baseline justify-between gap-3.5">
-        <CommandHeader human={human} command="ls ~/projects" args=" --group-directories-first" heading={strings.hWork} />
+        <CommandHeader command="ls ~/projects" args=" --group-directories-first" heading={strings.hWork} />
         <span className="text-[12px] text-fg-7">{strings.projCount(filtered.length)}</span>
       </div>
       {searchOpen && (
@@ -133,8 +130,6 @@ export const Projects = ({
             <ProjectCard
               key={p.id}
               project={p}
-              human={human}
-              catBadge={strings.catBadge[p.category]}
               hovering={hoverId === p.id && !expanded}
               forceOrange={expanded || selected}
               dashSec={dashSec}

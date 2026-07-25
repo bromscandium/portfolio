@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Modal } from '@/components/common/Modal';
 import { CLOSE_COPY } from '@/lib/i18n';
+import { useHuman } from '@/hooks/useStrings';
+import { useTerminal } from '@/store/terminal';
 
 interface Props {
-  human: boolean;
-  uk: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -56,13 +56,17 @@ const Body = ({ human, uk, onConfirm, cancel }: { human: boolean; uk: boolean; o
   );
 };
 
-export const CloseConfirm = ({ human, uk, onConfirm, onCancel }: Props) => (
-  <Modal
-    onClose={onCancel}
-    z={680}
-    escAllowed={() => !human}
-    panelClassName="w-[min(440px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
-  >
-    {(close) => <Body human={human} uk={uk} onConfirm={onConfirm} cancel={close} />}
-  </Modal>
-);
+export const CloseConfirm = ({ onConfirm, onCancel }: Props) => {
+  const human = useHuman();
+  const uk = useTerminal((s) => s.lang === 'uk');
+  return (
+    <Modal
+      onClose={onCancel}
+      z={680}
+      escAllowed={() => !human}
+      panelClassName="w-[min(440px,94vw)] overflow-hidden rounded-modal border border-line-5 bg-panel-1 shadow-[0_30px_80px_rgba(0,0,0,.7)]"
+    >
+      {(close) => <Body human={human} uk={uk} onConfirm={onConfirm} cancel={close} />}
+    </Modal>
+  );
+};

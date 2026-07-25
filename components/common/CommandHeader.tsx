@@ -1,7 +1,7 @@
 import { Heading } from './Typography';
+import { useHuman } from '@/hooks/useStrings';
 
 interface Props {
-  human: boolean;
   command: string;
   args?: string;
   heading: string;
@@ -9,7 +9,8 @@ interface Props {
   className?: string;
 }
 
-export const CommandHeader = ({ human, command, args, heading, variant = 'main', className = '' }: Props) => {
+export const CommandHeader = ({ command, args, heading, variant = 'main', className = '' }: Props) => {
+  const human = useHuman();
   if (human) {
     if (variant === 'sub') {
       return <div className={`text-[12px] uppercase tracking-[3px] text-fg-5 ${className}`}>{heading}</div>;
