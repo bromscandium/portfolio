@@ -6,7 +6,7 @@ export const experience: Job[] = [
     period: 'Jun 2026 — Present',
     role: 'Software Support Engineer',
     org: 'UVIK Software',
-    loc: 'Prague, Czech Republic (Remote)',
+    loc: 'Remote',
     points: [
       'System diagnostics and production issue resolution for a B2B E-commerce platform.',
       'Diagnosed and hotfixed anomalies in Django/Python services, tracing AWS CloudWatch logs to code-level issues.',
@@ -30,7 +30,7 @@ export const experience: Job[] = [
     period: 'Sep 2025 — Dec 2025',
     role: 'Full-Stack Engineer Intern',
     org: 'Meduzzen',
-    loc: 'Prague, Czech Republic (Remote)',
+    loc: 'Remote',
     points: [
       'Built a responsive multi-language UI in Next.js 16, Redux Toolkit and MUI with dynamic quiz workflows and Auth0.',
       'Architected a modular FastAPI service (PostgreSQL, Redis) with a Unit of Work pattern, Docker and AWS deploys via GitHub Actions.',
@@ -42,7 +42,7 @@ export const experience: Job[] = [
     period: 'Feb 2022 — Jul 2026',
     role: 'Software Engineer',
     org: 'Promote Ukraine NGO',
-    loc: 'Brussels (Remote)',
+    loc: 'Brussels, Belgium',
     points: [
       'Led end-to-end delivery of key platforms: Promote Ukraine portal, Ukrainian Civil Society Hub and the Ukrainian Business Incubator in Belgium.',
       'Contributed to the Preventia health initiative, driving continuous improvements and community adoption.',
