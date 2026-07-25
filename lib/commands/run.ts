@@ -214,9 +214,21 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
       return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];
 
-    case 'contact':
-      ctx.goTo(4);
-      return [ok('Connection established. Available for full-time · remote.', 'green')];
+    case 'contact': {
+      if (args.includes('--open')) {
+        ctx.goTo(4);
+        return [ok('Connection established. Available for full-time · remote.', 'green')];
+      }
+      if (args.includes('--close')) {
+        return [ok('Connection to recruiter closed. (nah — jk, hit me up 😉)', 'yellow')];
+      }
+      return [
+        ok(`email      ${LINKS.email.replace('mailto:', '')}`, 'cyan'),
+        ok(`github     ${LINKS.github.replace('https://', '')}`, 'cyan'),
+        ok(`linkedin   ${LINKS.linkedin.replace('https://', '')}`, 'cyan'),
+        ok('→ contact --open to jump to the section · --close to hang up', 'muted'),
+      ];
+    }
 
     case 'email':
       ctx.openUrl(LINKS.email);

@@ -29,7 +29,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'grep', usage: 'search projects & skills' },
   { name: 'git', usage: 'log | tag | status', options: () => opts(['log', 'tag', 'status', 'blame'], false) },
   { name: 'docker', usage: 'ps | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
-  { name: 'contact', usage: 'jump to contact' },
+  { name: 'contact', usage: 'list contacts · --open jumps to section · --close hangs up', options: () => opts(['--open', '--close'], false) },
   { name: 'whoami', usage: 'identity (-v for details)' },
   { name: 'neofetch', usage: 'system + stack summary' },
   { name: 'man', usage: 'keyboard shortcuts' },
