@@ -2,6 +2,7 @@ import { LINKS, SHELL } from '../config';
 import { education, experience, hackathons, portfolio, skillMap } from '../data';
 import { projectPath } from '../helpers';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
+import { BRANCH_TO_MODE, MODE_META, MODES } from '../modes';
 import { NEOFETCH } from './constants';
 import { children, displayPwd, resolvePath } from './fs';
 import { COMMANDS, findCommand } from './registry';
@@ -9,6 +10,27 @@ import type { CmdContext, CmdLine, Tone } from './types';
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
+};
+
+const pacman = (flags: string[]): CmdLine[] => {
+  const f = flags[0] ?? '';
+  if (!f.startsWith('-') || !/[Syu]/.test(f)) {
+    return [ok('error: no operation specified (use `sudo pacman -Syu`)', 'error')];
+  }
+  return [
+    ok(':: Synchronizing package databases...', 'cyan'),
+    ok(' core is up to date', 'muted'),
+    ok(' extra is up to date', 'muted'),
+    ok(' multilib is up to date', 'muted'),
+    ok(':: Starting full system upgrade...', 'cyan'),
+    ok('resolving dependencies...', 'muted'),
+    ok('looking for conflicting packages...', 'muted'),
+    ok(''),
+    ok('Packages (1) yaroslav-skills-4.0-1  ->  4.1-1'),
+    ok(''),
+    ok('(1/1) upgrading yaroslav-skills   [########################] 100%', 'green'),
+    ok(':: run `git log` to see what actually changed.', 'yellow'),
+  ];
 };
 
 const sizeOf = (p: { id: number; technologies: string[] }): string => {
@@ -206,18 +228,64 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok(`docker: '${sub}' is not a docker command`, 'error')];
     }
 
-    case 'git':
-      if (args[0] === 'log') {
+    case 'git': {
+      const sub = args[0];
+      const rest = args.slice(1);
+      const gitUsage = (): CmdLine[] => [
+        ok('usage: git <command> [<args>]', 'muted'),
+        ok('  log [--graph]   commit history (work experience)'),
+        ok('  tag -l <glob>   work/* · study/* · hackathons/*'),
+        ok('  branch          list branches (views)'),
+        ok('  checkout <br>   switch view (developer · human-being)'),
+        ok('  status          working tree status'),
+      ];
+      if (!sub || sub === '--help' || sub === 'help') return gitUsage();
+
+      if (sub === 'log' || sub === 'lg') {
         ctx.goTo(1);
+        const graph = sub === 'lg' || rest.includes('--graph');
         const out: CmdLine[] = [];
         experience.forEach((j, i) => {
           const jc = JOB_COPY[j.hash]?.en;
-          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${jc?.role ?? ''} — ${j.org}`, i === 0 ? 'accent' : 'default'));
-          out.push(ok(`|   ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
+          const g = graph ? '* ' : '';
+          out.push(ok(`${g}commit ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''}`, i === 0 ? 'accent' : 'yellow'));
+          out.push(ok(`${graph ? '| ' : ''}  ${jc?.role ?? ''} — ${j.org}`));
+          out.push(ok(`${graph ? '| ' : ''}  ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
+          if (graph && i < experience.length - 1) out.push(ok('|', 'muted'));
         });
         return out;
       }
-      if (args[0] === 'tag') {
+
+      if (sub === 'checkout' || sub === 'co') {
+        const target = (rest.find((a) => !a.startsWith('-')) ?? '').toLowerCase();
+        if (!target) return [ok('git checkout: missing branch (try: developer · human-being)', 'error')];
+        const mode = BRANCH_TO_MODE[target];
+        if (!mode) return [ok(`error: pathspec '${target}' did not match any file(s) known to git`, 'error')];
+        ctx.checkout(mode);
+        return [ok(`Switched to branch '${MODE_META[mode].branch}'`, 'green')];
+      }
+
+      if (sub === 'branch' || sub === 'br') {
+        return MODES.map((m) => ok(`${m === 'dev' ? '* ' : '  '}${MODE_META[m].branch}`, m === 'dev' ? 'green' : 'default'));
+      }
+
+      if (sub === 'status' || sub === 'st') return [ok('On branch developer · nothing to commit, working tree clean ✨', 'green')];
+      if (sub === 'blame') return [ok('me. always me. 🫠', 'yellow')];
+      if (sub === 'commit' && !rest.includes('-m')) return [ok('Aborting commit due to empty commit message.', 'error')];
+      if (sub === 'commit') return [ok('[developer 4a1f2e0] shipped something at 2am ☕', 'green')];
+      if (sub === 'push') {
+        if (rest.includes('--force') || rest.includes('-f')) return [ok('❯ force-pushed to origin/main. hope you knew what you were doing. 😅', 'yellow')];
+        return [ok('Everything up-to-date', 'muted')];
+      }
+      if (sub === 'pull') return [ok('Already up to date.', 'muted')];
+      if (sub === 'fetch') return [ok('remote: Enumerating objects: 0, done.', 'muted')];
+      if (sub === 'diff') return [ok('no changes staged — working tree clean ✨', 'muted')];
+      if (sub === 'stash') return [ok('Saved working directory (nothing worth stashing, honestly)', 'yellow')];
+      if (sub === 'reset') return [ok('HEAD is now at 4a1f2e0 — the past is gone. 🧹', 'yellow')];
+      if (sub === 'rebase') return [ok('do not rebase what you cannot force-push. 🔥', 'yellow')];
+      if (sub === 'remote') return [ok(`origin  ${LINKS.github}.git (fetch)`, 'cyan'), ok(`origin  ${LINKS.github}.git (push)`, 'cyan')];
+      if (sub === 'config') return [ok('user.name=yaroslav', 'muted'), ok('user.email=hidden 🙈', 'muted')];
+      if (sub === 'tag') {
         ctx.goTo(1);
         const tags: { name: string; line: CmdLine }[] = [
           ...experience.map((j) => {
@@ -240,9 +308,8 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         if (!shown.length) return [ok(`git tag: no tags matching '${pattern}'`, 'muted')];
         return shown.map((t) => t.line);
       }
-      if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
-      if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
-      return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];
+      return [ok(`git: '${sub}' is not a git command. See 'git --help'.`, 'error')];
+    }
 
     case 'contact': {
       if (args.includes('--open')) {
@@ -302,7 +369,15 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ctx.openUrl(`${LINKS.email}?subject=${encodeURIComponent("Let's work together")}&body=${encodeURIComponent('Hi Yaroslav,\n\n')}`);
         return [ok('[sudo] password for recruiter: ********', 'muted'), ok('✓ access granted. opening mail draft…', 'green')];
       }
+      if (args[0] === 'pacman') return pacman(args.slice(1));
       return [ok(`${args[0] ?? ''}: Permission denied (nice try)`, 'error')];
+
+    case 'pacman':
+      return [ok('error: you cannot perform this operation unless you are root. (try `sudo pacman -Syu`)', 'error')];
+
+    case 'yay':
+    case 'paru':
+      return [ok(`${cmd}: nothing to do — the AUR is already perfect here 🇦🇷`, 'muted')];
 
     case 'vim':
       return [ok("you're stuck in vim now. try :q! … just kidding. (Esc, then close)", 'yellow')];
@@ -310,6 +385,39 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     case 'rm':
       if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. 🙂', 'yellow')];
       return [ok('rm: missing operand', 'error')];
+
+    case 'mkdir':
+      if (!arg) return [ok('mkdir: missing operand', 'error')];
+      return [ok(`mkdir: cannot create directory '${args[0]}': Read-only filesystem (this portfolio is immutable 🗿)`, 'error')];
+
+    case 'touch':
+      if (!arg) return [ok('touch: missing file operand', 'error')];
+      return [ok(`touch: cannot touch '${args[0]}': Read-only filesystem (nice try 😌)`, 'error')];
+
+    case 'ps':
+      return [
+        ok('  PID TTY          TIME CMD', 'muted'),
+        ok(` 1337 pts/0    04:00:00 ${SHELL}`),
+        ok(' 2026 pts/0    00:04:20 portfolio'),
+        ok(' 9001 pts/0    00:00:01 coffee --refill'),
+      ];
+
+    case 'top':
+    case 'htop':
+      return [
+        ok('Tasks: 3 total, 1 running · load average: 0.19 0.42 0.69', 'muted'),
+        ok('  PID  %CPU  %MEM  COMMAND'),
+        ok(' 2026  4.0   1.4   portfolio'),
+        ok(' 9001  0.1   0.0   coffee'),
+        ok('  q to quit (or just Esc)', 'muted'),
+      ];
+
+    case 'ping':
+      return [ok(`PING ${args[0] ?? 'localhost'}: 64 bytes · time=0.42 ms · always reachable ✨`, 'green')];
+
+    case 'curl':
+    case 'wget':
+      return [ok(`${cmd}: try \`open <project> --live\` or \`github\` instead 🙂`, 'muted')];
 
     default:
       return [ok(`${SHELL}: command not found: ${cmd}`, 'error')];

@@ -22,6 +22,7 @@ export interface SessionSlice {
   closeTab: (t: Combo) => void;
   cycleTab: (dir: number) => void;
   openNewTab: () => void;
+  checkout: (m: Mode) => void;
   unopenedCombos: () => Combo[];
   requestClose: () => void;
   confirmClose: () => void;
@@ -112,6 +113,16 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       const [m, l] = splitCombo(un[0]);
       get().setCombo(m, l);
     }
+  },
+  checkout: (m) => {
+    const { mode, lang, tabsOpen } = get();
+    if (m === mode) return;
+    const from = `${mode}-${lang}` as Combo;
+    const to = `${m}-${lang}` as Combo;
+    const tabsOpen2 = tabsOpen.map((c) => (c === from ? to : c)).filter((c, i, a) => a.indexOf(c) === i);
+    set({ mode: m, tabsOpen: tabsOpen2, plusOpen: false });
+    persistTabs(tabsOpen2);
+    writeLS(STORAGE_KEYS.mode, m);
   },
   unopenedCombos: () => ALL_COMBOS.filter((c) => !get().tabsOpen.includes(c)),
 

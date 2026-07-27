@@ -2,6 +2,7 @@ import { useCommandLine } from '@/hooks/useCommandLine';
 import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
 import { CommandRow } from './CommandRow';
+import { MatrixRain } from './MatrixRain';
 import { PathLine } from './PathLine';
 import { TreeView } from './TreeView';
 
@@ -13,11 +14,8 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd } = useCommandLine(
-    open,
-    onClose,
-    actions,
-  );
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, matrixOpen, closeMatrix, onKeyDown, startResize, pwd } =
+    useCommandLine(open, onClose, actions);
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -57,7 +55,9 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           ✕
         </button>
       </div>
-      {treeOpen ? (
+      {matrixOpen ? (
+        <MatrixRain onExit={closeMatrix} />
+      ) : treeOpen ? (
         <div className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
           <TreeView actions={actions} onExit={closeTree} />
         </div>

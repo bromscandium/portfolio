@@ -1,3 +1,5 @@
+import type { Mode } from '../modes';
+
 export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
 
 export interface LsRow {
@@ -37,6 +39,7 @@ export interface CmdContext {
   exitSession: () => void;
   setContactClosed: (v: boolean) => void;
   requestClose: () => void;
+  checkout: (m: Mode) => void;
   pwd: Seg;
   setPwd: (p: Seg) => void;
 }

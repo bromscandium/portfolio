@@ -22,6 +22,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [treeOpen, setTreeOpen] = useState(false);
+  const [matrixOpen, setMatrixOpen] = useState(false);
   const [menu, setMenu] = useState<Menu | null>(null);
   const idRef = useRef(1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,13 +62,17 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       return;
     }
 
+    const head = cmd.split(/\s+/)[0];
     const echo: Row = { id: nextId(), text: cmd, prompt: true, path: displayPwd(pwd) };
-    if (cmd === 'clear') {
+    if (head === 'clear') {
       setRows([]);
-    } else if (cmd === 'tree') {
+    } else if (head === 'tree') {
       append([echo]);
       setTreeOpen(true);
-    } else if (cmd === 'history') {
+    } else if (head === 'cmatrix') {
+      append([echo]);
+      setMatrixOpen(true);
+    } else if (head === 'history') {
       append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {
       const ctx: CmdContext = { ...actions, clear: () => setRows([]), close: onClose, pwd, setPwd };
@@ -75,8 +80,9 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     }
 
     setHistory((h) => {
-      const nh = [...h, cmd];
-      writeLS(STORAGE_KEYS.history, JSON.stringify(nh.slice(-100)));
+      if (h[h.length - 1] === cmd) return h;
+      const nh = [...h, cmd].slice(-100);
+      writeLS(STORAGE_KEYS.history, JSON.stringify(nh));
       return nh;
     });
     setHistIdx(-1);
@@ -177,5 +183,27 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  return { rows, input, setInput, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd };
+  const closeMatrix = () => {
+    setMatrixOpen(false);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  return {
+    rows,
+    input,
+    setInput,
+    onInputChange,
+    height,
+    inputRef,
+    bodyRef,
+    suggestion,
+    menu,
+    treeOpen,
+    closeTree,
+    matrixOpen,
+    closeMatrix,
+    onKeyDown,
+    startResize,
+    pwd,
+  };
 };

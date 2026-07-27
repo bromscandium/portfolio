@@ -161,6 +161,12 @@ input:focus-visible {
   }
 }
 
+@keyframes archShimmer {
+  to {
+    background-position: 200% 0;
+  }
+}
+
 @keyframes overlayIn {
   from {
     opacity: 0;

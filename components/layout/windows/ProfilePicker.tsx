@@ -1,5 +1,5 @@
 import { PICKER_COPY, type Lang, type Mode } from '@/lib/i18n';
-import { LANGS, LOCALE_LABEL } from '@/lib/modes';
+import { LANGS, LOCALE_LABEL, MODES, MODE_META } from '@/lib/modes';
 import { useState } from 'react';
 
 interface Props {
@@ -8,6 +8,24 @@ interface Props {
 }
 
 const LOCALES = LANGS.map((key) => ({ key, label: LOCALE_LABEL[key] }));
+
+const ModeButton = ({ mode, lang, onPick }: { mode: Mode; lang: Lang; onPick: (m: Mode) => void }) => {
+  const meta = MODE_META[mode];
+  return (
+    <button
+      onClick={() => onPick(mode)}
+      className={
+        meta.primary
+          ? 'cursor-pointer rounded-card border-none bg-orange px-4.5 py-4 text-left transition-colors duration-300 hover:bg-orange-dark'
+          : 'cursor-pointer rounded-card border border-line-6 bg-transparent px-4.5 py-4 text-left transition-colors duration-300 hover:border-orange'
+      }
+    >
+      <span className={meta.primary ? 'text-[13px] font-bold text-black' : 'text-[13px] font-bold text-fg'}>{meta.label[lang]}</span>
+      <br />
+      <span className={meta.primary ? 'text-[11px] text-black/[.65]' : 'text-[11px] text-fg-5'}>{meta.desc[lang]}</span>
+    </button>
+  );
+};
 
 export const ProfilePicker = ({ lang, onPick }: Props) => {
   const [sel, setSel] = useState<Lang>(lang);
@@ -22,22 +40,9 @@ export const ProfilePicker = ({ lang, onPick }: Props) => {
             <span className="font-bold text-orange">❯ </span>
             <span className="text-[#eee]">{c.who}</span>
           </div>
-          <button
-            onClick={() => onPick('dev', sel)}
-            className="cursor-pointer rounded-card border-none bg-orange px-4.5 py-4 text-left transition-colors duration-300 hover:bg-orange-dark"
-          >
-            <span className="text-[13px] font-bold text-black">{c.dev}</span>
-            <br />
-            <span className="text-[11px] text-black/[.65]">{c.devDesc}</span>
-          </button>
-          <button
-            onClick={() => onPick('human', sel)}
-            className="cursor-pointer rounded-card border border-line-6 bg-transparent px-4.5 py-4 text-left transition-colors duration-300 hover:border-orange"
-          >
-            <span className="text-[13px] font-bold text-fg">{c.human}</span>
-            <br />
-            <span className="text-[11px] text-fg-5">{c.humanDesc}</span>
-          </button>
+          {MODES.map((m) => (
+            <ModeButton key={m} mode={m} lang={sel} onPick={(mode) => onPick(mode, sel)} />
+          ))}
           <div className="flex items-center gap-3 pt-1">
             <span className="text-[11px] text-fg-6">{c.locale}</span>
             <div className="flex gap-1">

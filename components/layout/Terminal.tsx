@@ -162,6 +162,7 @@ export const Terminal = () => {
             exitSession: t.confirmClose,
             setContactClosed: t.setContactClosed,
             requestClose: t.requestClose,
+            checkout: t.checkout,
           }}
         />
       )}

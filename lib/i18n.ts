@@ -1,7 +1,7 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
-import { LOCALE_LABEL } from './modes';
+import { LOCALE_LABEL, MODE_META, MODES } from './modes';
 import type { JobCopy, Option } from './types';
 
 export type { Combo, Lang, Mode } from './modes';
@@ -153,8 +153,10 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       const date = d.toLocaleDateString(uk ? 'uk-UA' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
       return `${uk ? 'оновлено' : 'updated'} ${date}`;
     },
-    viewValue: (hovering: boolean) =>
-      hovering ? (human ? (uk ? 'розробник' : 'developer') : uk ? 'людина' : 'human') : human ? (uk ? 'людина' : 'human') : uk ? 'розробник' : 'developer',
+    viewValue: (hovering: boolean) => {
+      const other = MODES.find((m) => m !== mode) ?? mode;
+      return MODE_META[hovering ? other : mode].label[lang];
+    },
   };
 };
 
@@ -472,27 +474,16 @@ export const CLOSE_COPY: Record<Lang, { title: string; q: string; desc: string; 
   },
 };
 
-export const PICKER_COPY: Record<
-  Lang,
-  { title: string; who: string; dev: string; devDesc: string; human: string; humanDesc: string; locale: string; note: string }
-> = {
+export const PICKER_COPY: Record<Lang, { title: string; who: string; locale: string; note: string }> = {
   en: {
     title: 'select session profile',
     who: 'who are you?',
-    dev: 'developer',
-    devDesc: 'full terminal UI — commands, containers, git log',
-    human: 'visitor',
-    humanDesc: 'plain language, no commands — same content',
     locale: 'locale',
     note: '// switch anytime with + in the tab bar',
   },
   uk: {
     title: 'вибір профілю сесії',
     who: 'хто ти?',
-    dev: 'розробник',
-    devDesc: 'повний термінал — команди, контейнери, git log',
-    human: 'відвідувач',
-    humanDesc: 'проста мова, без команд — той самий контент',
     locale: 'локаль',
     note: '// змінити будь-коли через + у таб-барі',
   },

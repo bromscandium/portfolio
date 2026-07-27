@@ -2,6 +2,7 @@ import { Modal } from '@/components/common/Modal';
 import { LINKS, SECTION_LABELS } from '@/lib/config';
 import { portfolio } from '@/lib/data';
 import { fuzzy, openUrl } from '@/lib/helpers';
+import { MODES, MODE_META } from '@/lib/modes';
 import { useTerminal } from '@/store/terminal';
 import { useMemo, useRef, useState } from 'react';
 
@@ -43,8 +44,12 @@ const PaletteBody = ({ close }: { close: () => void }) => {
   const actions = useMemo<Action[]>(
     () => [
       ...SECTION_LABELS.map((name, i) => ({ id: `go-${i}`, label: `Go to ${name}`, hint: 'section', shortcut: `${i + 1}`, run: () => goTo(i) })),
-      { id: 'view-dev', label: 'Switch view: developer', hint: 'view', run: () => setCombo('dev', lang) },
-      { id: 'view-human', label: 'Switch view: human', hint: 'view', run: () => setCombo('human', lang) },
+      ...MODES.filter((m) => m !== mode).map((m) => ({
+        id: `view-${m}`,
+        label: `Switch view: ${MODE_META[m].label[lang]}`,
+        hint: 'view',
+        run: () => setCombo(m, lang),
+      })),
       { id: 'lang-en', label: 'Language: English', hint: 'lang', run: () => setCombo(mode, 'en') },
       { id: 'lang-uk', label: 'Language: Українська', hint: 'lang', run: () => setCombo(mode, 'uk') },
       ...portfolio.map((p) => ({
