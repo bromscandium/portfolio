@@ -14,8 +14,24 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, matrixOpen, closeMatrix, onKeyDown, startResize, pwd } =
-    useCommandLine(open, onClose, actions);
+  const {
+    rows,
+    input,
+    onInputChange,
+    height,
+    inputRef,
+    bodyRef,
+    suggestion,
+    menu,
+    treeOpen,
+    closeTree,
+    matrixOpen,
+    closeMatrix,
+    busy,
+    onKeyDown,
+    startResize,
+    pwd,
+  } = useCommandLine(open, onClose, actions);
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
 
   if (!open) {
@@ -66,7 +82,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           {rows.map((r) => (
             <CommandRow key={r.id} row={r} />
           ))}
-          <div className="mt-2">
+          <div className="mt-2" style={{ display: busy ? 'none' : undefined }}>
             <PathLine path={displayPwd(pwd)} />
             <div className="flex items-center gap-2">
               <span className="text-orange">❯</span>

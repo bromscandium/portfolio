@@ -26,6 +26,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const [histIdx, setHistIdx] = useState(-1);
   const [treeOpen, setTreeOpen] = useState(false);
   const [matrixOpen, setMatrixOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [menu, setMenu] = useState<Menu | null>(null);
   const idRef = useRef(1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,8 +77,9 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     } else if (head === 'cmatrix') {
       append([echo]);
       setMatrixOpen(true);
-    } else if (head === 'sudo' && parts[1] === 'hire-me') {
+    } else if (head === 'sudo' && parts[1] === 'reject-me') {
       append([echo]);
+      setBusy(true);
       const c = HIRE_COPY[actions.lang];
       const baited = useTerminal.getState().baited;
       let delay = 300;
@@ -87,8 +89,11 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       };
       line('[sudo] password for recruiter: ********', 'muted', 500);
       c.steps.forEach((s, i) => line(s, i === c.steps.length - 1 ? 'error' : 'muted', 650));
-      if (baited) line(c.baited, 'yellow', 900);
-      setTimeout(() => openUrl(mailto(baited ? 'sudo hire-me (baited)' : 'sudo hire-me', actions.lang)), delay);
+      if (baited) c.baited.forEach((s) => line(s, 'yellow', 700));
+      setTimeout(() => {
+        openUrl(mailto(baited ? 'reject-me (baited)' : 'reject-me', actions.lang));
+        setBusy(false);
+      }, delay);
     } else if (head === 'history') {
       append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {
@@ -219,6 +224,7 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     closeTree,
     matrixOpen,
     closeMatrix,
+    busy,
     onKeyDown,
     startResize,
     pwd,

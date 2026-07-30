@@ -372,6 +372,9 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       if (args[0] === 'pacman') return pacman(args.slice(1));
       return [ok(`${args[0] ?? ''}: Permission denied (nice try)`, 'error')];
 
+    case 'reject-me':
+      return [ok('reject-me: permission denied. try with sudo (sudo reject-me)', 'error')];
+
     case 'pacman':
       return [ok('error: you cannot perform this operation unless you are root. (try `sudo pacman -Syu`)', 'error')];
 

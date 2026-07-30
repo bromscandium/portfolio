@@ -59,7 +59,7 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
           <>
             <CommandHeader command="contact --open" heading={strings.hContact} className="mb-2" />
             <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
-            <div className={`grid gap-12 ${human ? 'xl:grid-cols-2 xl:items-center' : ''}`}>
+            <div className="grid gap-12 xl:grid-cols-2 xl:items-stretch">
               <div className="flex flex-col items-start">
                 <Heading variant="stroke" className="m-0 mb-9">
                   LET&apos;S TALK
@@ -77,7 +77,7 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
                   ))}
                 </div>
               </div>
-              {human && <HireCheck />}
+              <HireCheck />
             </div>
           </>
         )}

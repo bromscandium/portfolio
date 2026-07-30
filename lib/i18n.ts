@@ -487,24 +487,29 @@ export const MAILTO_COPY: Record<Lang, { subject: string; greeting: string; trac
   },
 };
 
-export const HIRE_COPY: Record<Lang, { prompt: string; sub: string; yes: string; no: string; cancelNote: string; steps: string[]; baited: string }> = {
+export const HIRE_COPY: Record<
+  Lang,
+  { prompt: string; sub: string; yes: string; no: string; cancelHuman: string; cancelDev: string; steps: string[]; baited: string[] }
+> = {
   en: {
-    prompt: 'Are you sure you want to hire me?',
-    sub: 'One of these buttons is easier to press than the other.',
-    yes: 'Hire me',
+    prompt: 'Sure you want to hire me?',
+    sub: 'Think twice, weigh your decision.',
+    yes: 'Yes',
     no: 'No',
-    cancelNote: 'to cancel the hire, switch to terminal mode (if not already) and type `sudo hire-me` (sounds weird, but that is the way)',
-    steps: ['authenticating…', 'verifying credentials…', 'contacting HR daemon…', 'access denied.'],
-    baited: 'nicely baited — well played 😄 opening mail draft anyway…',
+    cancelHuman: 'to cancel, switch to terminal mode and run `sudo reject-me`',
+    cancelDev: 'to cancel, open the terminal and run `sudo reject-me`',
+    steps: ['processing rejection…', 'reject-me: operation not permitted.'],
+    baited: ['heh, the bait worked.', 'opening the draft…'],
   },
   uk: {
     prompt: 'Точно хочеш найняти мене?',
-    sub: 'Одну з цих кнопок натиснути легше, ніж іншу.',
-    yes: 'Найняти',
+    sub: 'Подумайте двічі, зважте рішення.',
+    yes: 'Так',
     no: 'Ні',
-    cancelNote: 'щоб відмінити hire, перейди в термінальний режим (якщо ще не в ньому) і пропиши `sudo hire-me` (звучить дивно, але саме так)',
-    steps: ['автентифікація…', 'перевірка облікових даних…', 'звʼязок з HR-демоном…', 'у доступі відмовлено.'],
-    baited: 'добре забайтилися ви 😄 усе одно відкриваю чернетку листа…',
+    cancelHuman: 'щоб відмінити, перейди в термінальний режим і пропиши `sudo reject-me`',
+    cancelDev: 'щоб відмінити, відкрий термінал і пропиши `sudo reject-me`',
+    steps: ['опрацювання відмови…', 'reject-me: операцію не дозволено.'],
+    baited: ['хах, байт працював.', 'відкриваю чернетку…'],
   },
 };
 
