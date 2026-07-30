@@ -1,5 +1,8 @@
 import { autocomplete, displayPwd, runCommand, type CmdContext, type CmdLine, type CompletionOption, type Seg } from '@/lib/commands';
+import { mailto, openUrl } from '@/lib/helpers';
+import { HIRE_COPY } from '@/lib/i18n';
 import { STORAGE_KEYS, readLS, writeLS } from '@/lib/storage';
+import { useTerminal } from '@/store/terminal';
 import { useEffect, useRef, useState } from 'react';
 
 interface Menu {
@@ -62,7 +65,8 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       return;
     }
 
-    const head = cmd.split(/\s+/)[0];
+    const parts = cmd.split(/\s+/);
+    const head = parts[0];
     const echo: Row = { id: nextId(), text: cmd, prompt: true, path: displayPwd(pwd) };
     if (head === 'clear') {
       setRows([]);
@@ -72,6 +76,19 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     } else if (head === 'cmatrix') {
       append([echo]);
       setMatrixOpen(true);
+    } else if (head === 'sudo' && parts[1] === 'hire-me') {
+      append([echo]);
+      const c = HIRE_COPY[actions.lang];
+      const baited = useTerminal.getState().baited;
+      let delay = 300;
+      const line = (text: string, tone: CmdLine['tone'], gap: number) => {
+        setTimeout(() => append([{ id: nextId(), text, tone }]), delay);
+        delay += gap;
+      };
+      line('[sudo] password for recruiter: ********', 'muted', 500);
+      c.steps.forEach((s, i) => line(s, i === c.steps.length - 1 ? 'error' : 'muted', 650));
+      if (baited) line(c.baited, 'yellow', 900);
+      setTimeout(() => openUrl(mailto(baited ? 'sudo hire-me (baited)' : 'sudo hire-me', actions.lang)), delay);
     } else if (head === 'history') {
       append([echo, ...history.map((h, i) => ({ id: nextId(), text: `${String(i + 1).padStart(3, ' ')}  ${h}` }))]);
     } else {

@@ -2,7 +2,7 @@ import { SECTION_LABELS } from '@/lib/config';
 import { arrowDirection } from '@/lib/keys';
 import { splitCombo } from '@/lib/modes';
 import { ALL_COMBOS } from '@/store/constants';
-import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
+import { activeFromViewport, CMD, getScrollEl, useTerminal } from '@/store/terminal';
 import { useEffect } from 'react';
 
 const LAST_SECTION = SECTION_LABELS.length - 1;
@@ -37,11 +37,13 @@ export const useTerminalEffects = () => {
 
   useEffect(() => {
     if (!running) return;
+    const el = getScrollEl();
+    if (!el) return;
     const { setActive } = useTerminal.getState();
     const onScroll = () => setActive(activeFromViewport());
-    window.addEventListener('scroll', onScroll, { passive: true });
+    el.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => el.removeEventListener('scroll', onScroll);
   }, [running]);
 
   useEffect(() => {
@@ -81,6 +83,13 @@ export const useTerminalEffects = () => {
         return;
       }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen?.();
+        else document.documentElement.requestFullscreen?.();
+        return;
+      }
 
       const dir = arrowDirection(e.key);
       if (dir) {

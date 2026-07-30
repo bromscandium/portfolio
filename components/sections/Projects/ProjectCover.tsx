@@ -24,7 +24,7 @@ const LogLine = ({ hash, verb, tech }: { hash: string; verb: string; tech: strin
   </div>
 );
 
-const CoverFallback = ({ project }: { project: Project }) => {
+const CoverFallback = ({ project, errorFile }: { project: Project; errorFile?: string }) => {
   const seed = seedOf(project.title);
   const angle = 15 + (seed % 30);
   const lines = project.technologies.slice(0, 3).map((tech, i) => ({
@@ -49,6 +49,7 @@ const CoverFallback = ({ project }: { project: Project }) => {
       {lines.map((l) => (
         <LogLine key={l.hash} hash={l.hash} verb={l.verb} tech={l.tech} />
       ))}
+      {errorFile && <div className="text-[#e06c75]">error: {errorFile} not loaded</div>}
       <div className="flex items-center gap-1 text-fg-8">
         <span>$</span>
         <span className="blink inline-block h-[1em] w-1.5 bg-orange/70" aria-hidden="true" />
@@ -57,17 +58,42 @@ const CoverFallback = ({ project }: { project: Project }) => {
   );
 };
 
+const Spinner = () => (
+  <svg
+    className="h-6 w-6 animate-spin text-fg-7"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+  </svg>
+);
+
 export const ProjectCover = ({ project, width, height }: { project: Project; width: number; height: number }) => {
   const [errored, setErrored] = useState(false);
-  if (errored) return <CoverFallback project={project} />;
+  const [loaded, setLoaded] = useState(false);
+  if (errored) return <CoverFallback project={project} errorFile={project.image.split('/').pop()} />;
+  if (!project.image) return <CoverFallback project={project} />;
   return (
-    <Image
-      src={project.image}
-      alt={project.title}
-      width={width}
-      height={height}
-      onError={() => setErrored(true)}
-      className="block aspect-[16/10] w-full object-cover brightness-[.82]"
-    />
+    <div className="relative aspect-[16/10] w-full overflow-hidden bg-panel-1">
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Spinner />
+        </div>
+      )}
+      <Image
+        src={project.image}
+        alt={project.title}
+        width={width}
+        height={height}
+        onError={() => setErrored(true)}
+        onLoad={() => setLoaded(true)}
+        className="block h-full w-full object-cover brightness-[.82] transition-opacity duration-500"
+        style={{ opacity: loaded ? 1 : 0 }}
+      />
+    </div>
   );
 };

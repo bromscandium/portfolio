@@ -474,6 +474,40 @@ export const CLOSE_COPY: Record<Lang, { title: string; q: string; desc: string; 
   },
 };
 
+export const MAILTO_COPY: Record<Lang, { subject: string; greeting: string; track: (source: string) => string }> = {
+  en: {
+    subject: "Let's work together",
+    greeting: 'Hi Yaroslav,\n\n',
+    track: (source) => `\n\n— sent from: ${source} (please keep this line — I like tracking where hires come from) —`,
+  },
+  uk: {
+    subject: 'Попрацюймо разом',
+    greeting: 'Привіт, Ярославе,\n\n',
+    track: (source) => `\n\n— надіслано з: ${source} (лиши цей рядок — цікаво відстежувати, звідки приходять) —`,
+  },
+};
+
+export const HIRE_COPY: Record<Lang, { prompt: string; sub: string; yes: string; no: string; cancelNote: string; steps: string[]; baited: string }> = {
+  en: {
+    prompt: 'Are you sure you want to hire me?',
+    sub: 'One of these buttons is easier to press than the other.',
+    yes: 'Hire me',
+    no: 'No',
+    cancelNote: 'to cancel the hire, switch to terminal mode (if not already) and type `sudo hire-me` (sounds weird, but that is the way)',
+    steps: ['authenticating…', 'verifying credentials…', 'contacting HR daemon…', 'access denied.'],
+    baited: 'nicely baited — well played 😄 opening mail draft anyway…',
+  },
+  uk: {
+    prompt: 'Точно хочеш найняти мене?',
+    sub: 'Одну з цих кнопок натиснути легше, ніж іншу.',
+    yes: 'Найняти',
+    no: 'Ні',
+    cancelNote: 'щоб відмінити hire, перейди в термінальний режим (якщо ще не в ньому) і пропиши `sudo hire-me` (звучить дивно, але саме так)',
+    steps: ['автентифікація…', 'перевірка облікових даних…', 'звʼязок з HR-демоном…', 'у доступі відмовлено.'],
+    baited: 'добре забайтилися ви 😄 усе одно відкриваю чернетку листа…',
+  },
+};
+
 export const PICKER_COPY: Record<Lang, { title: string; who: string; locale: string; note: string }> = {
   en: {
     title: 'select session profile',

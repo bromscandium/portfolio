@@ -7,7 +7,7 @@ import { portfolio } from '@/lib/data';
 import { byCategory, openUrl } from '@/lib/helpers';
 import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
 import { splitCombo } from '@/lib/modes';
-import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
+import { CMD, EXPAND_DELAY, setScrollEl, setSectionEl, useTerminal } from '@/store/terminal';
 import { useEffect, useMemo } from 'react';
 import { BootLoader } from './BootLoader';
 import { BootUnloader } from './BootUnloader';
@@ -52,8 +52,10 @@ export const Terminal = () => {
   if (t.phase === 'unload') return <BootUnloader onDone={t.unloadDone} />;
   if (t.phase === 'boot') return <BootLoader onDone={t.bootDone} />;
 
+  const scrollLocked = !human && t.typedN < CMD.length;
+
   return (
-    <div className="min-h-screen bg-bg font-mono">
+    <div className="fixed inset-0 overflow-hidden bg-bg font-mono">
       <TabBar
         tabsOpen={t.tabsOpen}
         activeCombo={activeCombo}
@@ -110,7 +112,11 @@ export const Terminal = () => {
         onLangClick={() => t.setCombo(t.mode, t.lang === 'uk' ? 'en' : 'uk')}
       />
 
-      <main className="mt-19 ml-0 md:mt-9.5 md:ml-55" style={{ marginBottom: human ? 26 : 52 }}>
+      <main
+        ref={setScrollEl}
+        className={`fixed inset-x-0 top-19 md:left-55 md:top-9.5 ${scrollLocked ? 'overflow-hidden' : 'overflow-x-hidden overflow-y-auto'}`}
+        style={{ bottom: human ? 26 : 52 }}
+      >
         <Intro
           ref={(el) => setSectionEl(0, el)}
           typedCmd={CMD.slice(0, t.typedN)}
@@ -163,6 +169,7 @@ export const Terminal = () => {
             setContactClosed: t.setContactClosed,
             requestClose: t.requestClose,
             checkout: t.checkout,
+            lang: t.lang,
           }}
         />
       )}

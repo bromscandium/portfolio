@@ -16,7 +16,7 @@ export const Experience = ({ ref }: { ref?: Ref<HTMLElement> }) => {
           <JobEntry key={j.hash} job={j} index={i} />
         ))}
       </div>
-      <div className="mt-10 grid grid-cols-1 gap-15 md:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-15 xl:grid-cols-2">
         <div>
           <CommandHeader variant="sub" command="git tag -l study/*" heading={strings.hEdu} className="mb-5" />
           <Panel>

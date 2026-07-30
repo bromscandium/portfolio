@@ -6,6 +6,7 @@ import { LINKS } from '@/lib/config';
 import { contacts } from '@/lib/data';
 import type { ContactLink } from '@/lib/types';
 import type { Ref } from 'react';
+import { HireCheck } from './HireCheck';
 
 interface Props {
   ref?: Ref<HTMLElement>;
@@ -42,7 +43,7 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
   };
 
   return (
-    <section ref={ref} data-screen-label="Contact" className="box-border flex min-h-[70dvh] flex-col border-t border-line-0 px-[6vw] pb-17.5 pt-22.5">
+    <section ref={ref} data-screen-label="Contact" className="box-border flex min-h-full flex-col border-t border-line-0 px-[6vw] pb-6 pt-22.5">
       <div className="flex flex-1 flex-col justify-center">
         {closed ? (
           <div className="text-[13px] leading-[1.8] text-fg-6">
@@ -58,20 +59,25 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
           <>
             <CommandHeader command="contact --open" heading={strings.hContact} className="mb-2" />
             <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
-            <Heading variant="stroke" className="m-0 mb-9">
-              LET&apos;S TALK
-            </Heading>
-            <a
-              href={`mailto:${EMAIL}`}
-              onClick={copyEmail}
-              className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all duration-300 hover:border-orange hover:!text-orange"
-            >
-              {EMAIL}
-            </a>
-            <div className="mt-12 flex gap-5">
-              {contacts.map((c) => (
-                <ContactButton key={c.icon} link={c} />
-              ))}
+            <div className={`grid gap-12 ${human ? 'xl:grid-cols-2 xl:items-center' : ''}`}>
+              <div className="flex flex-col items-start">
+                <Heading variant="stroke" className="m-0 mb-9">
+                  LET&apos;S TALK
+                </Heading>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  onClick={copyEmail}
+                  className="cursor-pointer self-start border-b border-line-6 pb-2 text-[clamp(17px,2.2vw,26px)] text-fg transition-all duration-300 hover:border-orange hover:!text-orange"
+                >
+                  {EMAIL}
+                </a>
+                <div className="mt-12 flex gap-5">
+                  {contacts.map((c) => (
+                    <ContactButton key={c.icon} link={c} />
+                  ))}
+                </div>
+              </div>
+              {human && <HireCheck />}
             </div>
           </>
         )}

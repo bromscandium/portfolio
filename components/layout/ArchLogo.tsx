@@ -1,5 +1,5 @@
 import { ARCH_LOGO } from '@/lib/config';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const PHRASE = 'i use Arch btw';
@@ -40,15 +40,16 @@ const Overlay = ({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const rect = icon.getBoundingClientRect();
-    const startX = rect.right;
-    const baseY = rect.top + rect.height / 2;
     const font = '600 14px monospace';
     ctx.font = font;
     const totalW = ctx.measureText(PHRASE).width;
+    const clipX = rect.right;
+    const homeX = clipX - totalW;
+    const baseY = rect.top + rect.height / 2;
     const floorY = H - 8;
 
     let phase: 'flying' | 'shatter' | 'dying' = 'flying';
-    let x = startX;
+    let x = homeX;
     let t = 0;
     let deathStart = 0;
     let particles: Particle[] = [];
@@ -80,17 +81,15 @@ const Overlay = ({
 
       if (phase === 'flying') {
         const dir = hoverRef.current ? 1 : -1;
-        x += (dir === 1 ? 2 : 3.5) * dir;
-        const appear = Math.max(0, Math.min(1, (x - startX) / 40));
+        x += dir === 1 ? 1 : -1.75;
         const grad = ctx.createLinearGradient(x, 0, x + totalW, 0);
         grad.addColorStop(0, ORANGE);
         grad.addColorStop(1, CYAN);
         ctx.save();
         ctx.beginPath();
-        ctx.rect(startX, 0, W - startX, H);
+        ctx.rect(clipX, 0, W - clipX, H);
         ctx.clip();
         ctx.fillStyle = grad;
-        ctx.globalAlpha = appear;
         let cx = x;
         for (const ch of PHRASE) {
           const y = baseY + Math.sin(cx * 0.012 + t * WAVE) * 12;
@@ -99,7 +98,7 @@ const Overlay = ({
         }
         ctx.restore();
         if (x + totalW >= W - 4) shatter();
-        else if (dir === -1 && x <= startX) return done();
+        else if (dir === -1 && x <= homeX) return done();
       } else if (phase === 'shatter') {
         for (const p of particles) {
           if (!p.settled) {
@@ -120,8 +119,8 @@ const Overlay = ({
         }
       } else {
         const sec = (t - deathStart) / 60;
-        if (sec >= 6) return done();
-        const period = sec < 3 ? 18 : 6;
+        if (sec >= 3) return done();
+        const period = sec < 2 ? 18 : 6;
         if (Math.floor(t / period) % 2 === 0) {
           ctx.fillStyle = ORANGE;
           for (const p of particles) ctx.fillText(p.ch, p.x, p.y);
@@ -153,6 +152,8 @@ export const ArchLogo = () => {
     return () => clearTimeout(timer);
   }, [hover, active]);
 
+  const handleDone = useCallback(() => setActive(false), []);
+
   const enter = () => {
     hoverRef.current = true;
     setHover(true);
@@ -164,20 +165,17 @@ export const ArchLogo = () => {
 
   return (
     <div
-      className="absolute bottom-15 left-4 h-24 w-32 cursor-default transition-transform duration-500 ease-out"
-      style={{ transform: hover ? 'scale(1.08)' : 'scale(1)' }}
+      className="absolute bottom-15 left-5.5 w-fit cursor-default transition-transform duration-500 ease-out"
+      style={{ transform: hover ? 'scale(1.08)' : 'scale(1)', transformOrigin: 'left center' }}
       onMouseEnter={enter}
       onMouseLeave={leave}
     >
-      <pre
-        className="m-0 flex h-full select-none items-center justify-center font-mono text-[10px] font-normal leading-[1.25] transition-opacity duration-500 ease-out"
-        style={{ color: 'var(--color-fg-11)', opacity: hover ? 0 : 1 }}
-      >
+      <pre className="m-0 select-none font-mono text-[10px] font-normal leading-[1.25]" style={{ color: 'var(--color-fg-11)' }}>
         {ARCH_LOGO}
       </pre>
       <pre
         ref={iconRef}
-        className="absolute inset-0 m-0 flex h-full select-none items-center justify-center font-mono text-[10px] font-bold leading-[1.25] transition-opacity duration-500 ease-out"
+        className="absolute inset-0 m-0 select-none font-mono text-[10px] font-bold leading-[1.25] transition-opacity duration-500 ease-out"
         style={{
           opacity: hover ? 1 : 0,
           background: `linear-gradient(90deg, ${ORANGE}, ${CYAN}, ${ORANGE})`,
@@ -190,7 +188,7 @@ export const ArchLogo = () => {
       >
         {ARCH_LOGO}
       </pre>
-      {mounted && active && createPortal(<Overlay iconRef={iconRef} hoverRef={hoverRef} onDone={() => setActive(false)} />, document.body)}
+      {mounted && active && createPortal(<Overlay iconRef={iconRef} hoverRef={hoverRef} onDone={handleDone} />, document.body)}
     </div>
   );
 };

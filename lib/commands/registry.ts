@@ -1,5 +1,6 @@
 import { portfolio } from '../data';
 import { slugify } from '../i18n';
+import { MODES, MODE_META } from '../modes';
 import type { CompletionOption } from './types';
 
 export const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
@@ -36,7 +37,16 @@ export const COMMANDS: CommandSpec[] = [
     usage: 'log [--graph] · tag -l work/*|study/*|hackathons/* · branch · checkout <view> · status',
     options: () =>
       opts(
-        ['log', 'log --graph', 'tag -l work/*', 'tag -l study/*', 'tag -l hackathons/*', 'branch', 'checkout developer', 'checkout human-being', 'status'],
+        [
+          'log',
+          'log --graph',
+          'tag -l work/*',
+          'tag -l study/*',
+          'tag -l hackathons/*',
+          'branch',
+          ...MODES.map((m) => `checkout ${MODE_META[m].branch}`),
+          'status',
+        ],
         false,
       ),
   },

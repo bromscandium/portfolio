@@ -1,6 +1,6 @@
 import { LINKS, SHELL } from '../config';
 import { education, experience, hackathons, portfolio, skillMap } from '../data';
-import { projectPath } from '../helpers';
+import { mailto, projectPath } from '../helpers';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
 import { BRANCH_TO_MODE, MODE_META, MODES } from '../modes';
 import { NEOFETCH } from './constants';
@@ -236,7 +236,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ok('  log [--graph]   commit history (work experience)'),
         ok('  tag -l <glob>   work/* · study/* · hackathons/*'),
         ok('  branch          list branches (views)'),
-        ok('  checkout <br>   switch view (developer · human-being)'),
+        ok(`  checkout <br>   switch view (${MODES.map((m) => MODE_META[m].branch).join(' · ')})`),
         ok('  status          working tree status'),
       ];
       if (!sub || sub === '--help' || sub === 'help') return gitUsage();
@@ -258,7 +258,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
       if (sub === 'checkout' || sub === 'co') {
         const target = (rest.find((a) => !a.startsWith('-')) ?? '').toLowerCase();
-        if (!target) return [ok('git checkout: missing branch (try: developer · human-being)', 'error')];
+        if (!target) return [ok(`git checkout: missing branch (try: ${MODES.map((m) => MODE_META[m].branch).join(' · ')})`, 'error')];
         const mode = BRANCH_TO_MODE[target];
         if (!mode) return [ok(`error: pathspec '${target}' did not match any file(s) known to git`, 'error')];
         ctx.checkout(mode);
@@ -269,10 +269,10 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         return MODES.map((m) => ok(`${m === 'dev' ? '* ' : '  '}${MODE_META[m].branch}`, m === 'dev' ? 'green' : 'default'));
       }
 
-      if (sub === 'status' || sub === 'st') return [ok('On branch developer · nothing to commit, working tree clean ✨', 'green')];
+      if (sub === 'status' || sub === 'st') return [ok(`On branch ${MODE_META.dev.branch} · nothing to commit, working tree clean ✨`, 'green')];
       if (sub === 'blame') return [ok('me. always me. 🫠', 'yellow')];
       if (sub === 'commit' && !rest.includes('-m')) return [ok('Aborting commit due to empty commit message.', 'error')];
-      if (sub === 'commit') return [ok('[developer 4a1f2e0] shipped something at 2am ☕', 'green')];
+      if (sub === 'commit') return [ok(`[${MODE_META.dev.branch} 4a1f2e0] shipped something at 2am ☕`, 'green')];
       if (sub === 'push') {
         if (rest.includes('--force') || rest.includes('-f')) return [ok('❯ force-pushed to origin/main. hope you knew what you were doing. 😅', 'yellow')];
         return [ok('Everything up-to-date', 'muted')];
@@ -330,7 +330,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     }
 
     case 'email':
-      ctx.openUrl(LINKS.email);
+      ctx.openUrl(mailto('terminal · email', ctx.lang));
       return [ok('opening mail client…', 'cyan')];
 
     case 'github':
@@ -366,7 +366,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'sudo':
       if (arg.startsWith('hire')) {
-        ctx.openUrl(`${LINKS.email}?subject=${encodeURIComponent("Let's work together")}&body=${encodeURIComponent('Hi Yaroslav,\n\n')}`);
+        ctx.openUrl(mailto('terminal · sudo hire', ctx.lang));
         return [ok('[sudo] password for recruiter: ********', 'muted'), ok('✓ access granted. opening mail draft…', 'green')];
       }
       if (args[0] === 'pacman') return pacman(args.slice(1));

@@ -1,7 +1,7 @@
 import { Modal } from '@/components/common/Modal';
 import { LINKS, SECTION_LABELS } from '@/lib/config';
 import { portfolio } from '@/lib/data';
-import { fuzzy, openUrl } from '@/lib/helpers';
+import { fuzzy, mailto, openUrl } from '@/lib/helpers';
 import { MODES, MODE_META } from '@/lib/modes';
 import { useTerminal } from '@/store/terminal';
 import { useMemo, useRef, useState } from 'react';
@@ -61,7 +61,7 @@ const PaletteBody = ({ close }: { close: () => void }) => {
           openProject(p.id);
         },
       })),
-      { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(LINKS.email) },
+      { id: 'email', label: 'Email me', hint: 'link', run: () => openUrl(mailto('command palette', lang)) },
       { id: 'github', label: 'Open GitHub', hint: 'link', run: () => openUrl(LINKS.github) },
       { id: 'linkedin', label: 'Open LinkedIn', hint: 'link', run: () => openUrl(LINKS.linkedin) },
       { id: 'help', label: 'Show keyboard shortcuts', hint: 'help', shortcut: '?', run: () => toggleHelp() },
