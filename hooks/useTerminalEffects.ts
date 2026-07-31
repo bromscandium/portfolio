@@ -2,7 +2,7 @@ import { SECTION_LABELS } from '@/lib/config';
 import { arrowDirection } from '@/lib/keys';
 import { splitCombo } from '@/lib/modes';
 import { ALL_COMBOS } from '@/store/constants';
-import { activeFromViewport, CMD, useTerminal } from '@/store/terminal';
+import { activeFromViewport, CMD, getScrollEl, useTerminal } from '@/store/terminal';
 import { useEffect } from 'react';
 
 const LAST_SECTION = SECTION_LABELS.length - 1;
@@ -37,11 +37,13 @@ export const useTerminalEffects = () => {
 
   useEffect(() => {
     if (!running) return;
+    const el = getScrollEl();
+    if (!el) return;
     const { setActive } = useTerminal.getState();
     const onScroll = () => setActive(activeFromViewport());
-    window.addEventListener('scroll', onScroll, { passive: true });
+    el.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => el.removeEventListener('scroll', onScroll);
   }, [running]);
 
   useEffect(() => {
@@ -56,31 +58,39 @@ export const useTerminalEffects = () => {
       }
       // Modal-based overlays own their own keys (Esc/close animate themselves)
       if (st.closeConfirm || st.helpOpen || st.paletteOpen || st.picker) return;
+      // Escape closes the topmost lightweight overlay first (project modal / search / plus menu),
+      // even while the terminal is open. The terminal's own animated Esc-close is owned by CommandLine.
+      if (e.key === 'Escape') {
+        if (st.expandedId !== null) {
+          e.preventDefault();
+          return st.closeModal();
+        }
+        if (st.searchOpen) return st.closeSearch();
+        if (st.plusOpen) return st.setPlusOpen(false);
+        return;
+      }
+      // while a project modal / search / plus menu is open, other keys don't act behind it
+      if (st.expandedId !== null || st.searchOpen || st.plusOpen) return;
       if (e.key === '`' && st.mode !== 'human') {
         e.preventDefault();
         return st.toggleCmd();
       }
-      // command line (input + tree) owns the keyboard while open
-      if (st.cmdOpen) {
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          return st.closeCmd();
-        }
-        return;
-      }
+      // command line (input + tree) owns the rest of the keyboard while open
+      if (st.cmdOpen) return;
 
       if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
         e.preventDefault();
         const [m, l] = splitCombo(ALL_COMBOS[Number(e.code.slice(5)) - 1]);
         return st.setCombo(m, l);
       }
-      if (e.key === 'Escape') {
-        if (st.searchOpen) return st.closeSearch();
-        if (st.expandedId !== null) return st.closeModal();
-        if (st.plusOpen) return st.setPlusOpen(false);
+      if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen?.();
+        else document.documentElement.requestFullscreen?.();
         return;
       }
-      if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
 
       const dir = arrowDirection(e.key);
       if (dir) {

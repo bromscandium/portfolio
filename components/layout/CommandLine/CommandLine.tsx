@@ -1,6 +1,8 @@
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
+import { useTerminal } from '@/store/terminal';
+import { useEffect, useRef, useState } from 'react';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
 import { TreeView } from './TreeView';
@@ -13,12 +15,42 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, onKeyDown, startResize, pwd } = useCommandLine(
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, busy, onKeyDown, startResize, pwd } = useCommandLine(
     open,
     onClose,
     actions,
   );
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
+  const [closing, setClosing] = useState(false);
+  const closeT = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const requestClose = () => {
+    if (closeT.current) return;
+    setClosing(true);
+    closeT.current = setTimeout(() => {
+      closeT.current = null;
+      setClosing(false);
+      onClose();
+    }, 230);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      const st = useTerminal.getState();
+      if (st.matrixOn) return; // cmatrix owns the keyboard
+      if (e.key !== 'Escape' && e.key !== '`') return;
+      if (treeOpen) return; // the tree view owns Esc/q while open
+      // an overlay above the terminal owns Esc/` — let it handle the key first
+      if (st.expandedId !== null || st.paletteOpen || st.helpOpen || st.closeConfirm || st.searchOpen || st.plusOpen) return;
+      e.preventDefault();
+      e.stopPropagation();
+      requestClose();
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, treeOpen]);
 
   if (!open) {
     return (
@@ -34,14 +66,17 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-[#0a0a0a]" style={{ height }}>
+    <div
+      className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-[#0a0a0a]"
+      style={{ height, animation: closing ? 'termOut .22s ease-in forwards' : 'termIn .26s ease-out' }}
+    >
       <div
         onPointerDown={startResize}
         className="flex h-6 shrink-0 cursor-ns-resize items-center gap-2 border-b border-line-2 bg-panel-5 px-3 text-[11px] text-fg-6"
       >
         <span className="text-orange">❯</span>
         <span
-          onClick={onClose}
+          onClick={requestClose}
           onPointerDown={(e) => e.stopPropagation()}
           className="cursor-pointer transition-colors hover:text-orange"
           title="click to close"
@@ -50,7 +85,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button
-          onClick={onClose}
+          onClick={requestClose}
           className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange"
           aria-label="close terminal"
         >
@@ -66,7 +101,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
           {rows.map((r) => (
             <CommandRow key={r.id} row={r} />
           ))}
-          <div className="mt-2">
+          <div className="mt-2" style={{ display: busy ? 'none' : undefined }}>
             <PathLine path={displayPwd(pwd)} />
             <div className="flex items-center gap-2">
               <span className="text-orange">❯</span>

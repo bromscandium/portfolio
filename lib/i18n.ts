@@ -1,7 +1,7 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
-import { LOCALE_LABEL } from './modes';
+import { LOCALE_LABEL, MODE_META, MODES } from './modes';
 import type { JobCopy, Option } from './types';
 
 export type { Combo, Lang, Mode } from './modes';
@@ -99,18 +99,18 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
         ? 'Числа = роки практичного досвіду'
         : 'Numbers = years of hands-on use'
       : uk
-        ? `${skillMap.length} контейнерів запущено · STATUS = роки практичного досвіду`
-        : `${skillMap.length} containers running · STATUS = years of hands-on use`,
+        ? `${skillMap.length} контейнерів запущено`
+        : `${skillMap.length} containers running`,
     contactNote:
       (human ? '' : uk ? 'Зʼєднання встановлено. ' : 'Connection established. ') +
       (uk ? 'Відкритий до full-time · remote.' : 'Available for full-time · remote.'),
     privateNote: uk ? '// приватний проєкт — без публічних лінків' : '// private build — no public links',
     workHint: human
       ? uk
-        ? 'наведи курсор на вікно — воно відкриється'
+        ? 'наведіть курсор на вікно — воно відкриється'
         : 'hover a window to view more'
       : uk
-        ? '// наведи курсор на вікно й потримай — воно відкриється'
+        ? '// наведіть курсор на вікно й потримайте — воно відкриється'
         : '// hover a window to view more',
     catLabels: human
       ? uk
@@ -153,8 +153,10 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       const date = d.toLocaleDateString(uk ? 'uk-UA' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
       return `${uk ? 'оновлено' : 'updated'} ${date}`;
     },
-    viewValue: (hovering: boolean) =>
-      hovering ? (human ? (uk ? 'розробник' : 'developer') : uk ? 'людина' : 'human') : human ? (uk ? 'людина' : 'human') : uk ? 'розробник' : 'developer',
+    viewValue: (hovering: boolean) => {
+      const other = MODES.find((m) => m !== mode) ?? mode;
+      return MODE_META[hovering ? other : mode].label[lang];
+    },
   };
 };
 
@@ -472,27 +474,73 @@ export const CLOSE_COPY: Record<Lang, { title: string; q: string; desc: string; 
   },
 };
 
-export const PICKER_COPY: Record<
+export const MAILTO_COPY: Record<Lang, { subject: string; greeting: string; track: (source: string) => string }> = {
+  en: {
+    subject: "Let's work together",
+    greeting: 'Hi Yaroslav,\n\n',
+    track: (source) => `\n\n— sent from: ${source} (please keep this line — I like tracking where hires come from) —`,
+  },
+  uk: {
+    subject: 'Попрацюймо разом',
+    greeting: 'Привіт, Ярославе,\n\n',
+    track: (source) => `\n\n— надіслано з: ${source} (лишіть цей рядок — цікаво відстежувати, звідки приходять) —`,
+  },
+};
+
+export const HIRE_COPY: Record<
   Lang,
-  { title: string; who: string; dev: string; devDesc: string; human: string; humanDesc: string; locale: string; note: string }
+  {
+    title: string;
+    prompt: string;
+    sub: string;
+    yes: string;
+    noLabels: string[];
+    attempts: (n: number) => string;
+    cancelHuman: string;
+    cancelDev: string;
+    clickTaunt: string;
+    steps: string[];
+    baited: string[];
+  }
 > = {
+  en: {
+    title: 'hire_check.sh',
+    prompt: 'Sure you want to hire me?',
+    sub: 'Think it through, weigh the role, the timezone, the coffee budget. This decision is final, and one of the buttons below really means it.',
+    yes: 'Yes',
+    noLabels: ['No', 'Nope', 'Really?', "C'mon", 'Stop it', '…'],
+    attempts: (n) => `rejection attempts: ${n}`,
+    cancelHuman: 'to cancel, switch to terminal mode and run `sudo reject-me`',
+    cancelDev: 'to cancel, open the terminal and run `sudo reject-me`',
+    clickTaunt: 'think you outsmarted it? i know dev mode too ;)',
+    steps: ['processing rejection…', 'reject-me: operation not permitted.'],
+    baited: ['heh, the bait worked.', 'opening the draft…'],
+  },
+  uk: {
+    title: 'hire_check.sh',
+    prompt: 'Точно хочете найняти мене?',
+    sub: 'Зважте все: роль, часовий пояс, бюджет на каву. Рішення остаточне, і одна з кнопок унизу справді це підтверджує.',
+    yes: 'Так',
+    noLabels: ['Ні', 'Ні-ні', 'Серйозно?', 'Ну куди ви', 'Годі', '…'],
+    attempts: (n) => `спроб відмовитись: ${n}`,
+    cancelHuman: 'щоб відмінити, перейдіть у термінальний режим і пропишіть `sudo reject-me`',
+    cancelDev: 'щоб відмінити, відкрийте термінал і пропишіть `sudo reject-me`',
+    clickTaunt: 'думаєте, що такі розумні? я теж шарю за dev mode ;)',
+    steps: ['опрацювання відмови…', 'reject-me: операцію не дозволено.'],
+    baited: ['хах, байт працював.', 'відкриваю чернетку…'],
+  },
+};
+
+export const PICKER_COPY: Record<Lang, { title: string; who: string; locale: string; note: string }> = {
   en: {
     title: 'select session profile',
     who: 'who are you?',
-    dev: 'developer',
-    devDesc: 'full terminal UI — commands, containers, git log',
-    human: 'visitor',
-    humanDesc: 'plain language, no commands — same content',
     locale: 'locale',
     note: '// switch anytime with + in the tab bar',
   },
   uk: {
     title: 'вибір профілю сесії',
-    who: 'хто ти?',
-    dev: 'розробник',
-    devDesc: 'повний термінал — команди, контейнери, git log',
-    human: 'відвідувач',
-    humanDesc: 'проста мова, без команд — той самий контент',
+    who: 'хто ви?',
     locale: 'локаль',
     note: '// змінити будь-коли через + у таб-барі',
   },

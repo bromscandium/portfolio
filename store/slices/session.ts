@@ -20,8 +20,11 @@ export interface SessionSlice {
   dragOver: (t: Combo) => void;
   endDrag: () => void;
   closeTab: (t: Combo) => void;
+  activateNeighbor: (t: Combo) => void;
+  removeTab: (t: Combo) => void;
   cycleTab: (dir: number) => void;
   openNewTab: () => void;
+  checkout: (m: Mode) => void;
   unopenedCombos: () => Combo[];
   requestClose: () => void;
   confirmClose: () => void;
@@ -39,6 +42,9 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       const m = readLS(STORAGE_KEYS.mode);
       const l = readLS(STORAGE_KEYS.lang);
       const savedLang: Lang = l === 'uk' || l === 'en' ? l : 'en';
+      if (readLS(STORAGE_KEYS.crt) === '1') set({ crtOn: true });
+      const attempts = Number(readLS(STORAGE_KEYS.hireAttempts) || 0);
+      if (attempts > 0) set({ hireAttempts: attempts, baited: true });
       if (m === 'dev' || m === 'human') {
         const combo = `${m}-${savedLang}` as Combo;
         const saved = JSON.parse(readLS(STORAGE_KEYS.tabs) || 'null');
@@ -100,6 +106,21 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       setCombo(m, l);
     }
   },
+  activateNeighbor: (t) => {
+    const { tabsOpen, mode, lang, setCombo } = get();
+    if (`${mode}-${lang}` !== t) return;
+    const i = tabsOpen.indexOf(t);
+    const neighbor = tabsOpen[i - 1] ?? tabsOpen[i + 1];
+    if (neighbor) {
+      const [m, l] = splitCombo(neighbor);
+      setCombo(m, l);
+    }
+  },
+  removeTab: (t) => {
+    const left = get().tabsOpen.filter((x) => x !== t);
+    set({ tabsOpen: left });
+    persistTabs(left);
+  },
   cycleTab: (dir) => {
     const { tabsOpen, mode, lang, setCombo } = get();
     const i = tabsOpen.indexOf(`${mode}-${lang}` as Combo);
@@ -112,6 +133,16 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       const [m, l] = splitCombo(un[0]);
       get().setCombo(m, l);
     }
+  },
+  checkout: (m) => {
+    const { mode, lang, tabsOpen } = get();
+    if (m === mode) return;
+    const from = `${mode}-${lang}` as Combo;
+    const to = `${m}-${lang}` as Combo;
+    const tabsOpen2 = tabsOpen.map((c) => (c === from ? to : c)).filter((c, i, a) => a.indexOf(c) === i);
+    set({ mode: m, tabsOpen: tabsOpen2, plusOpen: false });
+    persistTabs(tabsOpen2);
+    writeLS(STORAGE_KEYS.mode, m);
   },
   unopenedCombos: () => ALL_COMBOS.filter((c) => !get().tabsOpen.includes(c)),
 

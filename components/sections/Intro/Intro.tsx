@@ -15,7 +15,7 @@ interface Props {
 export const Intro = ({ ref, typedCmd, ghostCmd, heroDone, onWork, onContact }: Props) => {
   const human = useHuman();
   return (
-    <section ref={ref} data-screen-label="Intro" className="box-border flex min-h-[calc(100vh-64px)] flex-col justify-center px-[6vw] pb-20 pt-15">
+    <section ref={ref} data-screen-label="Intro" className="box-border flex min-h-full flex-col justify-center px-[6vw] pb-20 pt-15">
       {!human && <IntroPrompt typedCmd={typedCmd} ghostCmd={ghostCmd} />}
       {heroDone && <IntroHero onWork={onWork} onContact={onContact} />}
     </section>

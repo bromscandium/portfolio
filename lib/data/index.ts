@@ -9,3 +9,4 @@ export * from './hackathons';
 export * from './hero';
 export * from './portfolio';
 export * from './skills';
+export * from './skillTokens';

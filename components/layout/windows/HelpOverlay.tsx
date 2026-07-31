@@ -18,27 +18,27 @@ const GROUPS: { title: string; rows: [string, string][] }[] = [
     rows: [
       ['h / l · ← / → · [ / ]', 'previous / next tab'],
       ['⌥1 … ⌥4', 'open a specific tab'],
-      ['t', 'open new tab'],
-      ['w', 'close current tab'],
+      ['t / w', 'open / close tab'],
     ],
   },
   {
-    title: 'commands',
+    title: 'global',
     rows: [
       ['⌃K / ⌘K', 'command palette'],
-      ['` (backtick)', 'toggle command line'],
-      ['/', 'search projects'],
-      ['? ', 'toggle this help'],
-      ['Esc', 'close overlay / modal'],
+      ['f', 'toggle fullscreen'],
+      ['/', 'search projects (jumps there)'],
+      ['?', 'toggle this help'],
+      ['Esc', 'close the topmost overlay / modal'],
     ],
   },
   {
-    title: 'terminal · dev',
+    title: 'command line · dev',
     rows: [
-      ['cd <dir> · ls', 'browse the filesystem'],
-      ['open <project>', 'open a project window'],
-      ['git log · git tag', 'work · study · hackathons'],
-      ['./close.sh', 'close the terminal (from ~)'],
+      ['` (backtick)', 'open / close the command line'],
+      ['Tab', 'autocomplete (cycles the menu)'],
+      ['↑ / ↓', 'command history'],
+      ['→ / End', 'accept the ghost suggestion'],
+      ['⌃C', 'interrupt (^C)'],
       ['help', 'full command list'],
     ],
   },
@@ -77,7 +77,7 @@ export const HelpOverlay = ({ onClose }: Props) => (
           {GROUPS.map((g) => (
             <HelpGroup key={g.title} title={g.title} rows={g.rows} />
           ))}
-          <div className="text-[10px] text-fg-7">{'// shortcuts are disabled while typing in an input'}</div>
+          <div className="text-[10px] text-fg-7">{'// nav/tab keys pause while typing or while the command line is open — Esc, ⌃K/⌘K and ` still work'}</div>
         </div>
       </>
     )}

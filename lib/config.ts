@@ -8,6 +8,15 @@ export const HOST = 'bromscandium.com';
 
 export const SITE_URL = `https://${HOST}`;
 
+export const MACHINE = {
+  os: 'Arch Linux',
+  cpu: 'AMD Ryzen 7 250',
+  threads: 16,
+  gpu: 'NVIDIA RTX 5060 Laptop',
+  vram: '8 GB',
+  ram: '24 GiB DDR5',
+};
+
 export const LINKS = {
   email: 'mailto:kkmshbiu@protonmail.com',
   github: `https://github.com/${GITHUB_USER}`,

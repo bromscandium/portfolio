@@ -14,4 +14,4 @@ export const useTerminal = create<TerminalState>()((...a) => ({
 }));
 
 export { CMD, EXPAND_DELAY, PRE_DELAY } from './constants';
-export { activeFromViewport, setSectionEl } from './slices/navigation';
+export { activeFromViewport, getScrollEl, setScrollEl, setSectionEl } from './slices/navigation';

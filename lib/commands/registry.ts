@@ -1,5 +1,6 @@
 import { portfolio } from '../data';
 import { slugify } from '../i18n';
+import { MODES, MODE_META } from '../modes';
 import type { CompletionOption } from './types';
 
 export const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
@@ -18,25 +19,40 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'cd', usage: 'change directory (cd <dir> · .. · ~)' },
   { name: 'ls', usage: 'list directory contents' },
   { name: './close.sh', usage: 'close the terminal (from ~)' },
+  { name: './hire-me', usage: 'launch the hire check' },
   { name: 'pwd', usage: 'print working directory' },
-  { name: 'cat', usage: 'cat cat.txt 🐱', options: () => opts(['cat.txt'], false) },
+  { name: 'cat', usage: 'cat cat.txt =^.^=', options: () => opts(['cat.txt'], false) },
   {
     name: 'open',
     usage: 'open a project window [--live]',
     options: () =>
       opts(
         portfolio.map((p) => slugify(p.title)),
-        true,
+        false,
       ),
   },
   { name: 'tree', usage: 'interactive site tree' },
   { name: 'grep', usage: 'search projects & skills' },
   {
     name: 'git',
-    usage: 'log · tag -l work/* | study/* | hackathons/* · status',
-    options: () => opts(['log', 'tag', 'tag -l work/*', 'tag -l study/*', 'tag -l hackathons/*', 'status', 'blame'], false),
+    usage:
+      'log [--graph] · tag -l <glob> · branch · checkout <view> · status · commit · push · pull · fetch · diff · stash · reset · rebase · remote · config · blame',
+    options: () =>
+      opts(
+        [
+          'log',
+          'log --graph',
+          'tag -l work/*',
+          'tag -l study/*',
+          'tag -l hackathons/*',
+          'branch',
+          ...MODES.map((m) => `checkout ${MODE_META[m].branch}`),
+          'status',
+        ],
+        false,
+      ),
   },
-  { name: 'docker', usage: 'ps | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
+  { name: 'docker', usage: 'ps [--filter label=<region>] | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
   { name: 'contact', usage: 'list contacts · --open jumps to section · --close hangs up', options: () => opts(['--open', '--close'], false) },
   { name: 'whoami', usage: 'identity (-v for details)' },
   { name: 'neofetch', usage: 'system + stack summary' },
@@ -45,15 +61,30 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'uname', usage: 'system info' },
   { name: 'uptime', usage: 'session uptime' },
   { name: 'history', usage: 'command history' },
+  { name: 'cmatrix', usage: 'enter the matrix (any key exits)' },
+  { name: 'crt', usage: 'toggle retro CRT mode' },
   { name: 'echo', usage: 'print text ($USER, $SHELL…)' },
   { name: 'email', usage: 'open email' },
   { name: 'github', usage: 'open GitHub' },
   { name: 'linkedin', usage: 'open LinkedIn' },
   { name: 'clear', usage: 'clear the screen' },
   { name: 'exit', usage: 'log out — back to profile picker (:q closes the panel)' },
+  { name: ':q', usage: 'quit the command line (:q · :q! · :wq)', hidden: true },
   { name: 'sudo', usage: '', hidden: true },
+  { name: 'reject-me', usage: '', hidden: true },
+  { name: 'pacman', usage: '', hidden: true },
+  { name: 'yay', usage: '', hidden: true },
+  { name: 'paru', usage: '', hidden: true },
   { name: 'vim', usage: '', hidden: true },
   { name: 'rm', usage: '', hidden: true },
+  { name: 'mkdir', usage: '', hidden: true },
+  { name: 'touch', usage: '', hidden: true },
+  { name: 'ps', usage: '', hidden: true },
+  { name: 'top', usage: '', hidden: true },
+  { name: 'htop', usage: '', hidden: true },
+  { name: 'ping', usage: '', hidden: true },
+  { name: 'curl', usage: '', hidden: true },
+  { name: 'wget', usage: '', hidden: true },
   { name: 'l', usage: '', hidden: true },
   { name: 'la', usage: '', hidden: true },
   { name: 'll', usage: '', hidden: true },

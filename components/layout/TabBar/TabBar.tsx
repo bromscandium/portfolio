@@ -7,14 +7,16 @@ interface Props {
   tabsOpen: Combo[];
   activeCombo: Combo;
   onSelect: (t: Combo) => void;
-  onClose: (t: Combo) => void;
-  onMiddleClose: (t: Combo) => void;
+  onConfirmClose: (t: Combo) => void;
+  onActivateNeighbor: (t: Combo) => void;
+  onRemove: (t: Combo) => void;
   onDragStart: (t: Combo) => void;
   onDragOver: (t: Combo) => void;
   onDragEnd: () => void;
   plusOpen: boolean;
   setPlusOpen: (v: boolean) => void;
   plusItems: Combo[];
+  onNewTab: () => void;
   onOpenCombo: (c: Combo) => void;
   labelFor: (c: Combo) => string;
   shortLabelFor: (c: Combo) => string;
@@ -25,14 +27,16 @@ export const TabBar = ({
   tabsOpen,
   activeCombo,
   onSelect,
-  onClose,
-  onMiddleClose,
+  onConfirmClose,
+  onActivateNeighbor,
+  onRemove,
   onDragStart,
   onDragOver,
   onDragEnd,
   plusOpen,
   setPlusOpen,
   plusItems,
+  onNewTab,
   onOpenCombo,
   labelFor,
   shortLabelFor,
@@ -62,22 +66,43 @@ export const TabBar = ({
           combo={t}
           active={t === activeCombo}
           label={labelFor(t)}
+          isLast={tabsOpen.length === 1}
           onSelect={onSelect}
-          onClose={onClose}
-          onMiddleClose={onMiddleClose}
+          onConfirmClose={onConfirmClose}
+          onActivateNeighbor={onActivateNeighbor}
+          onRemove={onRemove}
           onDragStart={onDragStart}
           onDragOver={onDragOver}
           onDragEnd={onDragEnd}
         />
       ))}
       {plusItems.length > 0 && (
-        <div ref={plusRef} className="relative flex items-center gap-3.5 px-3.5 text-[13px] text-fg-6">
+        <div ref={plusRef} className="relative flex items-center gap-2.5 px-3.5 text-[13px] text-fg-6">
           <button
-            onClick={togglePlus}
-            title="open new tab / command palette"
+            onClick={onNewTab}
+            title="open a new tab"
             className="cursor-pointer border-none bg-transparent p-0 font-mono text-[15px] text-fg-6 transition-colors hover:text-orange"
           >
             +
+          </button>
+          <button
+            onClick={togglePlus}
+            title="choose a tab to open"
+            className="flex cursor-pointer items-center border-none bg-transparent p-0 text-fg-6 transition-colors hover:text-orange"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.7}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6.5l4 4 4-4" />
+            </svg>
           </button>
           {plusOpen && (
             <div className="absolute left-0 top-9 z-[700] flex min-w-47.5 flex-col rounded-card border border-line-5 bg-panel-6 p-1.5 shadow-[0_14px_40px_rgba(0,0,0,.6)]">

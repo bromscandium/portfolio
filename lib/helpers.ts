@@ -1,5 +1,7 @@
+import { LINKS } from './config';
 import { portfolio } from './data/portfolio';
-import { slugify } from './i18n';
+import { MAILTO_COPY, slugify } from './i18n';
+import type { Lang } from './modes';
 import type { Category, Project, ProjectLink } from './types';
 
 export const projectLinks = (p: Project): ProjectLink[] => {
@@ -25,6 +27,11 @@ export const fuzzy = (q: string, text: string): boolean => {
 export const openUrl = (url: string): void => {
   if (url.startsWith('mailto:')) window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');
+};
+
+export const mailto = (source: string, lang: Lang): string => {
+  const c = MAILTO_COPY[lang];
+  return `${LINKS.email}?subject=${encodeURIComponent(c.subject)}&body=${encodeURIComponent(c.greeting + c.track(source))}`;
 };
 
 export const projectPath = (title: string): string => `~/projects/${slugify(title)}`;

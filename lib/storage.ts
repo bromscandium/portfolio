@@ -3,6 +3,8 @@ export const STORAGE_KEYS = {
   lang: 'brom_lang',
   tabs: 'brom_tabs',
   history: 'brom_history',
+  crt: 'brom_crt',
+  hireAttempts: 'brom_hire_attempts',
 } as const;
 
 export const readLS = (key: string): string | null => {

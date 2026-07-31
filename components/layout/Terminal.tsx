@@ -7,11 +7,12 @@ import { portfolio } from '@/lib/data';
 import { byCategory, openUrl } from '@/lib/helpers';
 import { comboLabel, getStrings, type Combo } from '@/lib/i18n';
 import { splitCombo } from '@/lib/modes';
-import { CMD, EXPAND_DELAY, setSectionEl, useTerminal } from '@/store/terminal';
+import { CMD, EXPAND_DELAY, setScrollEl, setSectionEl, useTerminal } from '@/store/terminal';
 import { useEffect, useMemo } from 'react';
 import { BootLoader } from './BootLoader';
 import { BootUnloader } from './BootUnloader';
 import { CommandLine } from './CommandLine';
+import { MatrixOverlay } from './MatrixOverlay';
 import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
 import { TabBar } from './TabBar';
@@ -52,20 +53,24 @@ export const Terminal = () => {
   if (t.phase === 'unload') return <BootUnloader onDone={t.unloadDone} />;
   if (t.phase === 'boot') return <BootLoader onDone={t.bootDone} />;
 
+  const scrollLocked = !human && t.typedN < CMD.length;
+
   return (
-    <div className="min-h-screen bg-bg font-mono">
+    <div className={`fixed inset-0 overflow-hidden bg-bg font-mono ${t.crtOn ? 'crt' : ''}`}>
       <TabBar
         tabsOpen={t.tabsOpen}
         activeCombo={activeCombo}
         onSelect={(c) => t.setCombo(...splitCombo(c))}
-        onClose={t.closeTab}
-        onMiddleClose={t.closeTab}
+        onConfirmClose={t.closeTab}
+        onActivateNeighbor={t.activateNeighbor}
+        onRemove={t.removeTab}
         onDragStart={t.startDrag}
         onDragOver={t.dragOver}
         onDragEnd={t.endDrag}
         plusOpen={t.plusOpen}
         setPlusOpen={t.setPlusOpen}
         plusItems={t.unopenedCombos()}
+        onNewTab={t.openNewTab}
         onOpenCombo={(c) => t.setCombo(...splitCombo(c))}
         labelFor={(c) => comboLabel(c, false)}
         shortLabelFor={(c) => comboLabel(c, true)}
@@ -110,7 +115,11 @@ export const Terminal = () => {
         onLangClick={() => t.setCombo(t.mode, t.lang === 'uk' ? 'en' : 'uk')}
       />
 
-      <main className="mt-19 ml-0 md:mt-9.5 md:ml-55" style={{ marginBottom: human ? 26 : 52 }}>
+      <main
+        ref={setScrollEl}
+        className={`fixed inset-x-0 top-19 md:left-55 md:top-9.5 ${scrollLocked ? 'overflow-hidden' : 'overflow-x-hidden overflow-y-auto'}`}
+        style={{ bottom: human ? 26 : 52 }}
+      >
         <Intro
           ref={(el) => setSectionEl(0, el)}
           typedCmd={CMD.slice(0, t.typedN)}
@@ -162,9 +171,22 @@ export const Terminal = () => {
             exitSession: t.confirmClose,
             setContactClosed: t.setContactClosed,
             requestClose: t.requestClose,
+            checkout: t.checkout,
+            lang: t.lang,
           }}
         />
       )}
+
+      <div
+        className="crt-overlay"
+        aria-hidden
+        style={{
+          opacity: t.crtOn ? 1 : 0,
+          transform: t.crtOn ? 'translate3d(0,0,0)' : 'translate3d(0,-24px,0)',
+          transition: 'opacity .45s ease, transform .45s ease',
+        }}
+      />
+      {t.matrixOn && <MatrixOverlay onExit={() => t.setMatrix(false)} />}
     </div>
   );
 };

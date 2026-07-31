@@ -6,7 +6,7 @@ const PromptSegment = ({ tool }: { tool: PromptTool }) => (
   <span>
     <span className="text-fg-6"> via </span>
     <span className={tool.color}>
-      {tool.icon} {tool.name} {tool.version}
+      <span style={{ fontVariantEmoji: 'text' }}>{tool.icon}</span> {tool.name} {tool.version}
     </span>
   </span>
 );

@@ -1,7 +1,8 @@
 import { LINKS, SHELL } from '../config';
 import { education, experience, hackathons, portfolio, skillMap } from '../data';
-import { projectPath } from '../helpers';
+import { mailto, projectPath } from '../helpers';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
+import { BRANCH_TO_MODE, MODE_META, MODES } from '../modes';
 import { NEOFETCH } from './constants';
 import { children, displayPwd, resolvePath } from './fs';
 import { COMMANDS, findCommand } from './registry';
@@ -9,6 +10,35 @@ import type { CmdContext, CmdLine, Tone } from './types';
 
 const ok = (text: string, tone: Tone = 'default'): CmdLine => {
   return { text, tone };
+};
+
+// ignore-with-warning: a muted line naming any flags/args the command didn't understand.
+// `allowed` = flags the command accepts; `maxPos` = how many positional args are meaningful.
+const warnArgs = (args: string[], allowed: string[] = [], maxPos = 0): CmdLine[] => {
+  const extra = [...args.filter((a) => a.startsWith('-') && !allowed.includes(a)), ...args.filter((a) => !a.startsWith('-')).slice(maxPos)];
+  if (!extra.length) return [];
+  return [ok(`warning: ignoring unknown ${extra.length > 1 ? 'arguments' : 'argument'} ${extra.map((t) => `'${t}'`).join(', ')}`, 'muted')];
+};
+
+const pacman = (flags: string[]): CmdLine[] => {
+  const f = flags[0] ?? '';
+  if (!f.startsWith('-') || !/[Syu]/.test(f)) {
+    return [ok('error: no operation specified (use `sudo pacman -Syu`)', 'error')];
+  }
+  return [
+    ok(':: Synchronizing package databases...', 'cyan'),
+    ok(' core is up to date', 'muted'),
+    ok(' extra is up to date', 'muted'),
+    ok(' multilib is up to date', 'muted'),
+    ok(':: Starting full system upgrade...', 'cyan'),
+    ok('resolving dependencies...', 'muted'),
+    ok('looking for conflicting packages...', 'muted'),
+    ok(''),
+    ok('Packages (1) yaroslav-skills-4.0-1  ->  4.1-1'),
+    ok(''),
+    ok('(1/1) upgrading yaroslav-skills   [########################] 100%', 'green'),
+    ok(':: run `git log` to see what actually changed.', 'yellow'),
+  ];
 };
 
 const sizeOf = (p: { id: number; technologies: string[] }): string => {
@@ -30,12 +60,17 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     ctx.requestClose();
     return [ok('❯ closing terminal…', 'yellow')];
   }
+  if (script === 'hire-me' || script.endsWith('/hire-me')) {
+    ctx.setContactClosed(false);
+    ctx.goTo(4);
+    return [ok('❯ redirecting to hire_check.exe…', 'cyan')];
+  }
 
   switch (cmd) {
     case 'help': {
       if (arg) {
-        const spec = findCommand(arg);
-        return spec && !spec.hidden ? [ok(`${spec.name.padEnd(10)} ${spec.usage}`)] : [ok(`help: no such command: ${arg}`, 'error')];
+        const spec = findCommand(args[0]);
+        return spec ? [ok(`${spec.name.padEnd(10)} ${spec.usage || '(easter egg — just try it)'}`)] : [ok(`help: no such command: ${args[0]}`, 'error')];
       }
       return [
         ok('available commands:', 'muted'),
@@ -59,10 +94,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [];
 
     case 'cd': {
-      const dest = resolvePath(ctx.pwd, arg.trim() || '~');
-      if (!dest) return [ok(`cd: no such file or directory: ${arg}`, 'error')];
+      const path = args.find((a) => !a.startsWith('-')) ?? '~';
+      const dest = resolvePath(ctx.pwd, path);
+      if (!dest) return [ok(`cd: no such file or directory: ${path}`, 'error')];
       ctx.setPwd(dest);
-      return [ok(`❯ ${displayPwd(dest)}`, 'cyan')];
+      return [...warnArgs(args, [], 1), ok(`❯ ${displayPwd(dest)}`, 'cyan')];
     }
 
     case 'ls':
@@ -72,6 +108,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       const raw = args.find((a) => !a.startsWith('-')) ?? '';
       const dir = resolvePath(ctx.pwd, raw || '.');
       if (!dir) return [ok(`ls: cannot access '${raw}': no such directory`, 'error')];
+      const warn = warnArgs(args, ['-l', '-a', '-la', '-al', '-lah', '-A', '-R', '-h', '-t'], 1);
       const entries = children(dir);
       if (!entries.length) return [ok('total 0', 'muted')];
       const inProjects = dir.length === 2 && dir[0] === 'portfolio' && dir[1] === 'projects';
@@ -86,11 +123,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           },
         };
       });
-      return [head, ...rows];
+      return [...warn, head, ...rows];
     }
 
     case 'pwd':
-      return [ok(`/home/yaroslav${ctx.pwd.length ? '/' + ctx.pwd.join('/') : ''}`)];
+      return [...warnArgs(args), ok(`/home/yaroslav${ctx.pwd.length ? '/' + ctx.pwd.join('/') : ''}`)];
 
     case 'cat': {
       const f = arg.replace(/\.txt$/, '');
@@ -106,27 +143,32 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     }
 
     case 'open': {
+      const warn = warnArgs(args, ['--live'], Infinity);
       const live = args.includes('--live');
       const q = args
         .filter((a) => !a.startsWith('-'))
         .join(' ')
         .toLowerCase();
-      if (!q) return [ok('usage: open [--live] <project>', 'muted')];
+      if (!q) return [...warn, ok('usage: open [--live] <project>', 'muted')];
       const p = portfolio.find((x) => slugify(x.title) === q || x.title.toLowerCase() === q) ?? portfolio.find((x) => slugify(x.title).includes(q));
       if (!p) return [ok(`open: project not found: ${q}`, 'error')];
       if (live) {
         if (!p.live) return [ok(`open: ${p.title} has no live URL`, 'error')];
         ctx.openUrl(p.live);
-        return [ok(`opening ${p.title} (live)…`, 'cyan')];
+        return [...warn, ok(`opening ${p.title} (live)…`, 'cyan')];
       }
       ctx.goTo(3);
       ctx.openProject(p.id);
-      return [ok(`opening ${p.title}…`, 'cyan')];
+      return [...warn, ok(`opening ${p.title}…`, 'cyan')];
     }
 
     case 'grep': {
-      if (!arg) return [ok('usage: grep <term>', 'muted')];
-      const term = arg;
+      const warn = warnArgs(args, [], Infinity);
+      const term = args
+        .filter((a) => !a.startsWith('-'))
+        .join(' ')
+        .toLowerCase();
+      if (!term) return [...warn, ok('usage: grep <term>', 'muted')];
       const hits: CmdLine[] = [];
       portfolio.forEach((p) => {
         if (`${p.title} ${p.technologies.join(' ')} ${p.category} ${PROJECT_DESC[p.id]?.en.join(' ') ?? ''}`.toLowerCase().includes(term)) {
@@ -137,17 +179,17 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         const m = r.items.filter((s) => s.name.toLowerCase().includes(term));
         if (m.length) hits.push(ok(`stack/${r.region.toLowerCase()}: ${m.map((s) => s.name).join(', ')}`, 'cyan'));
       });
-      return hits.length ? hits : [ok(`grep: no matches for "${term}"`, 'muted')];
+      return hits.length ? [...warn, ...hits] : [...warn, ok(`grep: no matches for "${term}"`, 'muted')];
     }
 
     case 'date':
-      return [ok(new Date().toString())];
+      return [...warnArgs(args), ok(new Date().toString())];
 
     case 'uname':
-      return [ok('Linux bromscandium 6.6.0-arch x86_64 GNU/Linux')];
+      return [...warnArgs(args, ['-a', '-r', '-s', '-m', '-n']), ok('Linux bromscandium 6.6.0-arch x86_64 GNU/Linux')];
 
     case 'uptime':
-      return [ok('up 4+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
+      return [...warnArgs(args), ok('up 4+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
 
     case 'docker': {
       const sub = args[0];
@@ -163,6 +205,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         ctx.goTo(2);
         const maxY = Math.max(...r.items.map((s) => s.y));
         return [
+          ...warnArgs(args.slice(1), [], 1),
           ok(`stack/${r.region.toLowerCase()}:latest`, 'cyan'),
           ok(`  Id:      ${r.cid}`, 'muted'),
           ok(`  Status:  Up ${maxY} years`, 'muted'),
@@ -185,7 +228,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           return [ok(`docker: no containers matching label "${label}" (try: ${skillMap.map((r) => r.region.toLowerCase()).join(', ')})`, 'error')];
         }
         ctx.goTo(2);
-        const out: CmdLine[] = [ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted')];
+        const psExtra = args.filter((t, i) => i !== 0 && i !== fi && i !== fi + 1);
+        const out: CmdLine[] = [
+          ...warnArgs(psExtra, ['-a', '-q', '-l', '-n', '-s', '--all', '--quiet']),
+          ok('CONTAINER ID   IMAGE                          STATUS          NAMES', 'muted'),
+        ];
         regions.forEach((r) => {
           const maxY = Math.max(...r.items.map((s) => s.y));
           const image = `stack/${r.region.toLowerCase()}:latest`;
@@ -196,7 +243,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
       if (sub === 'images') {
         ctx.goTo(2);
-        const out: CmdLine[] = [ok('REPOSITORY            TAG       IMAGE ID       SIZE', 'muted')];
+        const out: CmdLine[] = [...warnArgs(args.slice(1)), ok('REPOSITORY            TAG       IMAGE ID       SIZE', 'muted')];
         skillMap.forEach((r) => {
           out.push(ok(`${`stack/${r.region.toLowerCase()}`.padEnd(21)} ${'latest'.padEnd(9)} ${r.cid.slice(0, 12)}   ${r.items.length * 37}MB`));
         });
@@ -206,18 +253,68 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [ok(`docker: '${sub}' is not a docker command`, 'error')];
     }
 
-    case 'git':
-      if (args[0] === 'log') {
+    case 'git': {
+      const sub = args[0];
+      const rest = args.slice(1);
+      const gitUsage = (): CmdLine[] => [
+        ok('usage: git <command> [<args>]', 'muted'),
+        ok('  log [--graph]   commit history (work experience)'),
+        ok('  tag -l <glob>   work/* · study/* · hackathons/*'),
+        ok('  branch          list branches (views)'),
+        ok(`  checkout <br>   switch view (${MODES.map((m) => MODE_META[m].branch).join(' · ')})`),
+        ok('  status          working tree status'),
+      ];
+      if (!sub || sub === '--help' || sub === 'help') return gitUsage();
+
+      if (sub === 'log' || sub === 'lg') {
         ctx.goTo(1);
-        const out: CmdLine[] = [];
+        const graph = sub === 'lg' || rest.includes('--graph');
+        const out: CmdLine[] = warnArgs(rest, ['--graph'], 0);
         experience.forEach((j, i) => {
           const jc = JOB_COPY[j.hash]?.en;
-          out.push(ok(`* ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''} ${jc?.role ?? ''} — ${j.org}`, i === 0 ? 'accent' : 'default'));
-          out.push(ok(`|   ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
+          const g = graph ? '* ' : '';
+          out.push(ok(`${g}commit ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''}`, i === 0 ? 'accent' : 'yellow'));
+          out.push(ok(`${graph ? '| ' : ''}  ${jc?.role ?? ''} — ${j.org}`));
+          out.push(ok(`${graph ? '| ' : ''}  ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
+          if (graph && i < experience.length - 1) out.push(ok('|', 'muted'));
         });
         return out;
       }
-      if (args[0] === 'tag') {
+
+      if (sub === 'checkout' || sub === 'co') {
+        const target = (rest.find((a) => !a.startsWith('-')) ?? '').toLowerCase();
+        if (!target) return [ok(`git checkout: missing branch (try: ${MODES.map((m) => MODE_META[m].branch).join(' · ')})`, 'error')];
+        const mode = BRANCH_TO_MODE[target];
+        if (!mode) return [ok(`error: pathspec '${target}' did not match any file(s) known to git`, 'error')];
+        ctx.checkout(mode);
+        return [...warnArgs(rest, [], 1), ok(`Switched to branch '${MODE_META[mode].branch}'`, 'green')];
+      }
+
+      if (sub === 'branch' || sub === 'br') {
+        return [...warnArgs(rest), ...MODES.map((m) => ok(`${m === 'dev' ? '* ' : '  '}${MODE_META[m].branch}`, m === 'dev' ? 'green' : 'default'))];
+      }
+
+      if (sub === 'status' || sub === 'st')
+        return [...warnArgs(rest), ok(`On branch ${MODE_META.dev.branch} · nothing to commit, working tree clean`, 'green')];
+      if (sub === 'blame') return [...warnArgs(rest), ok('me. always me. -_-', 'yellow')];
+      if (sub === 'commit' && !rest.includes('-m')) return [ok('Aborting commit due to empty commit message.', 'error')];
+      if (sub === 'commit') return [...warnArgs(rest, ['-m'], Infinity), ok(`[${MODE_META.dev.branch} 4a1f2e0] shipped something at 2am`, 'green')];
+      if (sub === 'push') {
+        const w = warnArgs(rest, ['--force', '-f'], Infinity);
+        if (rest.includes('--force') || rest.includes('-f'))
+          return [...w, ok('❯ force-pushed to origin/main. hope you knew what you were doing. ^^"', 'yellow')];
+        return [...w, ok('Everything up-to-date', 'muted')];
+      }
+      if (sub === 'pull') return [...warnArgs(rest), ok('Already up to date.', 'muted')];
+      if (sub === 'fetch') return [...warnArgs(rest), ok('remote: Enumerating objects: 0, done.', 'muted')];
+      if (sub === 'diff') return [...warnArgs(rest), ok('no changes staged — working tree clean', 'muted')];
+      if (sub === 'stash') return [...warnArgs(rest), ok('Saved working directory (nothing worth stashing, honestly)', 'yellow')];
+      if (sub === 'reset') return [...warnArgs(rest, ['--hard', '--soft', '--mixed'], Infinity), ok('HEAD is now at 4a1f2e0 — the past is gone.', 'yellow')];
+      if (sub === 'rebase') return [...warnArgs(rest, [], Infinity), ok('do not rebase what you cannot force-push.', 'yellow')];
+      if (sub === 'remote')
+        return [...warnArgs(rest, ['-v'], 1), ok(`origin  ${LINKS.github}.git (fetch)`, 'cyan'), ok(`origin  ${LINKS.github}.git (push)`, 'cyan')];
+      if (sub === 'config') return [...warnArgs(rest, [], Infinity), ok('user.name=yaroslav', 'muted'), ok('user.email=hidden', 'muted')];
+      if (sub === 'tag') {
         ctx.goTo(1);
         const tags: { name: string; line: CmdLine }[] = [
           ...experience.map((j) => {
@@ -234,27 +331,29 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
             return { name, line: ok(`${name}   ${h.project}${h.win ? ' (WINNER)' : ''} · ${h.place}`, h.win ? 'green' : 'default') };
           }),
         ];
-        const pattern = args.slice(1).find((a) => !a.startsWith('-'));
+        const warn = warnArgs(rest, ['-l'], 1);
+        const pattern = rest.find((a) => !a.startsWith('-'));
         const rx = pattern ? new RegExp(`^${pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`) : null;
         const shown = rx ? tags.filter((t) => rx.test(t.name)) : tags;
-        if (!shown.length) return [ok(`git tag: no tags matching '${pattern}'`, 'muted')];
-        return shown.map((t) => t.line);
+        if (!shown.length) return [...warn, ok(`git tag: no tags matching '${pattern}'`, 'muted')];
+        return [...warn, ...shown.map((t) => t.line)];
       }
-      if (args[0] === 'blame') return [ok('me. always me. 🫠', 'yellow')];
-      if (args[0] === 'status') return [ok('On branch main · nothing to commit, working tree clean ✨', 'green')];
-      return [ok(`git: '${args[0] ?? ''}' is not a git command`, 'error')];
+      return [ok(`git: '${sub}' is not a git command. See 'git --help'.`, 'error')];
+    }
 
     case 'contact': {
+      const warn = warnArgs(args, ['--open', '--close']);
       if (args.includes('--open')) {
         ctx.setContactClosed(false);
         ctx.goTo(4);
-        return [ok('Connection established. Available for full-time · remote.', 'green')];
+        return [...warn, ok('Connection established. Available for full-time · remote.', 'green')];
       }
       if (args.includes('--close')) {
         ctx.setContactClosed(true);
-        return [ok('Connection closed — contact section unmounted. (run `contact --open` to reconnect)', 'yellow')];
+        return [...warn, ok('Connection closed — contact section unmounted. (run `contact --open` to reconnect)', 'yellow')];
       }
       return [
+        ...warn,
         ok(`email      ${LINKS.email.replace('mailto:', '')}`, 'cyan'),
         ok(`github     ${LINKS.github.replace('https://', '')}`, 'cyan'),
         ok(`linkedin   ${LINKS.linkedin.replace('https://', '')}`, 'cyan'),
@@ -263,34 +362,37 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     }
 
     case 'email':
-      ctx.openUrl(LINKS.email);
-      return [ok('opening mail client…', 'cyan')];
+      ctx.openUrl(mailto('terminal · email', ctx.lang));
+      return [...warnArgs(args), ok('opening mail client…', 'cyan')];
 
     case 'github':
       ctx.openUrl(LINKS.github);
-      return [ok('opening github.com/bromscandium…', 'cyan')];
+      return [...warnArgs(args), ok('opening github.com/bromscandium…', 'cyan')];
 
     case 'linkedin':
       ctx.openUrl(LINKS.linkedin);
-      return [ok('opening linkedin.com/in/yaroslav-yeromenko…', 'cyan')];
+      return [...warnArgs(args), ok('opening linkedin.com/in/yaroslav-yeromenko…', 'cyan')];
 
     case 'man':
       ctx.openHelp();
-      return [ok('opening keybindings…', 'cyan')];
+      return [...warnArgs(args), ok('opening keybindings…', 'cyan')];
 
-    case 'whoami':
+    case 'whoami': {
+      const warn = warnArgs(args, ['-v', '--verbose']);
       if (args.includes('--verbose') || args.includes('-v')) {
         return [
+          ...warn,
           ok('yaroslav yeromenko · full-stack engineer'),
           ok('prague · remote · open to full-time', 'muted'),
           ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
           ok('4+ yrs · 17 projects · 10+ hackathons · 1.5k+ commits', 'muted'),
         ];
       }
-      return [ok('yaroslav')];
+      return [...warn, ok('yaroslav')];
+    }
 
     case 'neofetch':
-      return NEOFETCH.map((t) => ok(t, 'accent'));
+      return [...warnArgs(args), ...NEOFETCH.map((t) => ok(t, 'accent'))];
 
     case 'echo': {
       const vars: Record<string, string> = { $USER: 'yaroslav', $SHELL: `/bin/${SHELL}`, $HOME: '/home/yaroslav', $PWD: '/home/yaroslav/portfolio' };
@@ -299,17 +401,70 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'sudo':
       if (arg.startsWith('hire')) {
-        ctx.openUrl(`${LINKS.email}?subject=${encodeURIComponent("Let's work together")}&body=${encodeURIComponent('Hi Yaroslav,\n\n')}`);
+        ctx.openUrl(mailto('terminal · sudo hire', ctx.lang));
         return [ok('[sudo] password for recruiter: ********', 'muted'), ok('✓ access granted. opening mail draft…', 'green')];
       }
+      if (args[0] === 'pacman') return pacman(args.slice(1));
       return [ok(`${args[0] ?? ''}: Permission denied (nice try)`, 'error')];
+
+    case 'reject-me':
+      return [ok('reject-me: permission denied. try with sudo (sudo reject-me)', 'error')];
+
+    case 'pacman':
+      return [ok('error: you cannot perform this operation unless you are root. (try `sudo pacman -Syu`)', 'error')];
+
+    case 'yay':
+    case 'paru':
+      return [...warnArgs(args), ok(`${cmd}: nothing to do — the AUR is already perfect here`, 'muted')];
 
     case 'vim':
       return [ok("you're stuck in vim now. try :q! … just kidding. (Esc, then close)", 'yellow')];
 
     case 'rm':
-      if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. 🙂', 'yellow')];
+      if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. :)', 'yellow')];
       return [ok('rm: missing operand', 'error')];
+
+    case 'mkdir': {
+      const name = args.find((a) => !a.startsWith('-'));
+      if (!name) return [ok('mkdir: missing operand', 'error')];
+      return [...warnArgs(args, ['-p'], Infinity), ok(`mkdir: cannot create directory '${name}': Read-only filesystem (this portfolio is immutable)`, 'error')];
+    }
+
+    case 'touch': {
+      const name = args.find((a) => !a.startsWith('-'));
+      if (!name) return [ok('touch: missing file operand', 'error')];
+      return [...warnArgs(args, [], Infinity), ok(`touch: cannot touch '${name}': Read-only filesystem (nice try :))`, 'error')];
+    }
+
+    case 'ps':
+      return [
+        ...warnArgs(args, ['-e', '-f', '-a', '-u', '-x', '-ef', '-aux']),
+        ok('  PID TTY          TIME CMD', 'muted'),
+        ok(` 1337 pts/0    04:00:00 ${SHELL}`),
+        ok(' 2026 pts/0    00:04:20 portfolio'),
+        ok(' 9001 pts/0    00:00:01 coffee --refill'),
+      ];
+
+    case 'top':
+    case 'htop':
+      return [
+        ...warnArgs(args),
+        ok('Tasks: 3 total, 1 running · load average: 0.19 0.42 0.69', 'muted'),
+        ok('  PID  %CPU  %MEM  COMMAND'),
+        ok(' 2026  4.0   1.4   portfolio'),
+        ok(' 9001  0.1   0.0   coffee'),
+        ok('  q to quit (or just Esc)', 'muted'),
+      ];
+
+    case 'ping': {
+      const positional = args.filter((a) => !a.startsWith('-'));
+      const host = positional[positional.length - 1] ?? 'localhost';
+      return [...warnArgs(args, ['-c', '-i', '-t', '-4', '-6'], Infinity), ok(`PING ${host}: 64 bytes · time=0.42 ms · always reachable`, 'green')];
+    }
+
+    case 'curl':
+    case 'wget':
+      return [ok(`${cmd}: try \`open <project> --live\` or \`github\` instead :)`, 'muted')];
 
     default:
       return [ok(`${SHELL}: command not found: ${cmd}`, 'error')];

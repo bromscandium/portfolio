@@ -1,15 +1,7 @@
+import { Counters } from '@/components/common/Counters';
 import { Heading } from '@/components/common/Typography';
-import { useContributions } from '@/hooks/useContributions';
 import { useStrings } from '@/hooks/useStrings';
-import { GITHUB_USER } from '@/lib/config';
-import { counters, heroRole } from '@/lib/data';
-
-const Counter = ({ n, label, first }: { n: string; label: string; first: boolean }) => (
-  <span>
-    {!first && <>&nbsp;&nbsp;·&nbsp;&nbsp;</>}
-    <span className="font-semibold text-orange">{n}</span> {label}
-  </span>
-);
+import { heroRole } from '@/lib/data';
 
 interface Props {
   onWork: () => void;
@@ -18,8 +10,6 @@ interface Props {
 
 export const IntroHero = ({ onWork, onContact }: Props) => {
   const strings = useStrings();
-  const liveContrib = useContributions(GITHUB_USER);
-  const counterN = (key: string, fallback: string) => (key === 'contributions' && liveContrib ? liveContrib : fallback);
 
   return (
     <div className="fade-up mt-9">
@@ -35,11 +25,7 @@ export const IntroHero = ({ onWork, onContact }: Props) => {
       <div className="max-w-155 text-[14px] leading-[1.7]" style={{ color: strings.stmtColor }}>
         {strings.statement}
       </div>
-      <div className="mt-7.5 text-[14px] tracking-[1px] text-fg-5">
-        {counters.map((c, i) => (
-          <Counter key={c.key} n={counterN(c.key, c.n)} label={strings.counterLabels[c.key]} first={i === 0} />
-        ))}
-      </div>
+      <Counters className="mt-7.5 text-[14px] tracking-[1px] text-fg-5" />
       <div className="mt-10 flex flex-wrap gap-4">
         <button
           onClick={onWork}

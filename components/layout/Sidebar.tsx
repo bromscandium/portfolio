@@ -1,4 +1,4 @@
-import { ARCH_LOGO } from '@/lib/config';
+import { ArchLogo } from './ArchLogo';
 
 interface Props {
   navRoot: string;
@@ -28,7 +28,7 @@ export const Sidebar = ({ navRoot, names, active, onNav }: Props) => {
           <NavItem key={label} label={label} branch={i === names.length - 1 ? '└─' : '├─'} active={active === i} onClick={() => onNav(i)} />
         ))}
       </div>
-      <pre className="pointer-events-none absolute bottom-16 left-5.5 m-0 select-none font-mono text-[10px] leading-[1.25] text-fg-11">{ARCH_LOGO}</pre>
+      <ArchLogo />
       <div className="absolute bottom-8 left-5.5 text-[10px] tracking-[1px] text-fg-8">© 2026 · bromscandium</div>
     </nav>
   );

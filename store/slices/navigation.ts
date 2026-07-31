@@ -3,13 +3,21 @@ import type { StateCreator } from 'zustand';
 import type { TerminalState } from '../terminal';
 
 const sectionEls: (HTMLElement | null)[] = SECTION_LABELS.map(() => null);
+let scrollEl: HTMLElement | null = null;
 
 export const setSectionEl = (i: number, el: HTMLElement | null) => {
   sectionEls[i] = el;
 };
 
+export const setScrollEl = (el: HTMLElement | null) => {
+  scrollEl = el;
+};
+
+export const getScrollEl = (): HTMLElement | null => scrollEl;
+
 export const activeFromViewport = (): number => {
-  const mid = window.innerHeight * 0.4;
+  const top = scrollEl ? scrollEl.getBoundingClientRect().top : 0;
+  const mid = top + (window.innerHeight - top) * 0.35;
   let act = 0;
   sectionEls.forEach((el, i) => {
     if (el && el.getBoundingClientRect().top <= mid) act = i;
@@ -31,10 +39,10 @@ export const createNavSlice: StateCreator<TerminalState, [], [], NavSlice> = (se
   setActive: (i) => set((st) => (st.active !== i ? { active: i } : {})),
   goTo: (i) => {
     const el = sectionEls[i];
-    if (!el) return;
+    if (!el || !scrollEl) return;
     prevSection = get().active;
-    const extra = window.matchMedia('(min-width: 768px)').matches ? 0 : 44;
-    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 38 - extra, behavior: 'smooth' });
+    const top = scrollEl.scrollTop + el.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top - 12;
+    scrollEl.scrollTo({ top, behavior: 'smooth' });
   },
   goToPrev: () => get().goTo(prevSection),
 });

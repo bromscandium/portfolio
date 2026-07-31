@@ -12,7 +12,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 19,
-    image: '/covers/bromiumjs.webp',
+    image: '',
     title: 'BromiumJS',
     technologies: ['TypeScript', 'Vite', 'JSX', 'Virtual DOM'],
     live: null,
@@ -32,7 +32,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 3,
-    image: '/covers/bot_cover.webp',
+    image: '',
     title: 'Jan Diddy',
     technologies: ['Python', 'python-telegram-bot', 'FastAPI', 'PostgreSQL', 'Tortoise ORM', 'Redis', 'PyTorch', 'QLoRA', 'ORPO', 'Docker'],
     live: null,
@@ -54,7 +54,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 18,
-    image: '/covers/scrollix.webp',
+    image: '',
     title: 'Scrollix',
     technologies: ['Godot 4.6', 'GDScript', 'Android'],
     live: null,
@@ -63,7 +63,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 21,
-    image: '/covers/quizapp.webp',
+    image: '',
     title: 'Quiz App',
     technologies: ['Next.js', 'Redux Toolkit', 'MUI', 'Auth0', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker'],
     live: null,
@@ -94,7 +94,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 13,
-    image: '/covers/sparrowai.webp',
+    image: '',
     title: 'Sparrow AI Builder',
     technologies: ['Next.js', 'Python', 'FastAPI', 'Docker', 'OpenAI API', 'PostgreSQL'],
     live: null,
@@ -139,7 +139,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 5,
-    image: '/covers/valli_cover.webp',
+    image: '',
     title: 'Valli',
     technologies: ['React', 'SASS', 'Python', 'Docker', 'OpenAI API', 'Django', 'FastAPI'],
     live: null,

@@ -1,13 +1,12 @@
 import type { Job } from '../types';
 
 export const experience: Job[] = [
-  // UVIK Software — temporarily hidden; uncomment to re-enable (JOB_COPY 'b6e2c11' stays in i18n)
-  // {
-  //   hash: 'b6e2c11',
-  //   period: 'Jun 2026 — Present',
-  //   org: 'UVIK Software',
-  //   orgLink: 'https://www.linkedin.com/company/uvik-software/',
-  // },
+  {
+    hash: 'b6e2c11',
+    period: 'Jun 2026 — Present',
+    org: 'UVIK Software',
+    orgLink: 'https://www.linkedin.com/company/uvik-software/',
+  },
   {
     hash: 'f8ad40e',
     period: 'May 2025 — Present',
