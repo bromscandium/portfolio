@@ -504,7 +504,7 @@ export const HIRE_COPY: Record<
   }
 > = {
   en: {
-    title: 'hire_check.exe',
+    title: 'hire_check.sh',
     prompt: 'Sure you want to hire me?',
     sub: 'Think it through, weigh the role, the timezone, the coffee budget. This decision is final, and one of the buttons below really means it.',
     yes: 'Yes',
@@ -517,7 +517,7 @@ export const HIRE_COPY: Record<
     baited: ['heh, the bait worked.', 'opening the draft…'],
   },
   uk: {
-    title: 'hire_check.exe',
+    title: 'hire_check.sh',
     prompt: 'Точно хочете найняти мене?',
     sub: 'Зважте все: роль, часовий пояс, бюджет на каву. Рішення остаточне, і одна з кнопок унизу справді це підтверджує.',
     yes: 'Так',

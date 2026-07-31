@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "bun test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "predeploy": "bun run build && touch out/.nojekyll && cp public/CNAME out/",
