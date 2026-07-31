@@ -28,14 +28,15 @@ export const COMMANDS: CommandSpec[] = [
     options: () =>
       opts(
         portfolio.map((p) => slugify(p.title)),
-        true,
+        false,
       ),
   },
   { name: 'tree', usage: 'interactive site tree' },
   { name: 'grep', usage: 'search projects & skills' },
   {
     name: 'git',
-    usage: 'log [--graph] · tag -l work/*|study/*|hackathons/* · branch · checkout <view> · status',
+    usage:
+      'log [--graph] · tag -l <glob> · branch · checkout <view> · status · commit · push · pull · fetch · diff · stash · reset · rebase · remote · config · blame',
     options: () =>
       opts(
         [
@@ -51,7 +52,7 @@ export const COMMANDS: CommandSpec[] = [
         false,
       ),
   },
-  { name: 'docker', usage: 'ps | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
+  { name: 'docker', usage: 'ps [--filter label=<region>] | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
   { name: 'contact', usage: 'list contacts · --open jumps to section · --close hangs up', options: () => opts(['--open', '--close'], false) },
   { name: 'whoami', usage: 'identity (-v for details)' },
   { name: 'neofetch', usage: 'system + stack summary' },
@@ -68,6 +69,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'linkedin', usage: 'open LinkedIn' },
   { name: 'clear', usage: 'clear the screen' },
   { name: 'exit', usage: 'log out — back to profile picker (:q closes the panel)' },
+  { name: ':q', usage: 'quit the command line (:q · :q! · :wq)', hidden: true },
   { name: 'sudo', usage: '', hidden: true },
   { name: 'reject-me', usage: '', hidden: true },
   { name: 'pacman', usage: '', hidden: true },

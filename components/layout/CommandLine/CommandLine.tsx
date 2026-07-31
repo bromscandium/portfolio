@@ -37,17 +37,20 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (useTerminal.getState().matrixOn) return; // cmatrix owns the keyboard
-      if (e.key === 'Escape' || e.key === '`') {
-        e.preventDefault();
-        e.stopPropagation();
-        requestClose();
-      }
+      const st = useTerminal.getState();
+      if (st.matrixOn) return; // cmatrix owns the keyboard
+      if (e.key !== 'Escape' && e.key !== '`') return;
+      if (treeOpen) return; // the tree view owns Esc/q while open
+      // an overlay above the terminal owns Esc/` — let it handle the key first
+      if (st.expandedId !== null || st.paletteOpen || st.helpOpen || st.closeConfirm || st.searchOpen || st.plusOpen) return;
+      e.preventDefault();
+      e.stopPropagation();
+      requestClose();
     };
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, treeOpen]);
 
   if (!open) {
     return (

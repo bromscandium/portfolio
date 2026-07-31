@@ -58,29 +58,30 @@ export const useTerminalEffects = () => {
       }
       // Modal-based overlays own their own keys (Esc/close animate themselves)
       if (st.closeConfirm || st.helpOpen || st.paletteOpen || st.picker) return;
+      // Escape closes the topmost lightweight overlay first (project modal / search / plus menu),
+      // even while the terminal is open. The terminal's own animated Esc-close is owned by CommandLine.
+      if (e.key === 'Escape') {
+        if (st.expandedId !== null) {
+          e.preventDefault();
+          return st.closeModal();
+        }
+        if (st.searchOpen) return st.closeSearch();
+        if (st.plusOpen) return st.setPlusOpen(false);
+        return;
+      }
+      // while a project modal / search / plus menu is open, other keys don't act behind it
+      if (st.expandedId !== null || st.searchOpen || st.plusOpen) return;
       if (e.key === '`' && st.mode !== 'human') {
         e.preventDefault();
         return st.toggleCmd();
       }
-      // command line (input + tree) owns the keyboard while open
-      if (st.cmdOpen) {
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          return st.closeCmd();
-        }
-        return;
-      }
+      // command line (input + tree) owns the rest of the keyboard while open
+      if (st.cmdOpen) return;
 
       if (e.altKey && /^Digit[1-4]$/.test(e.code)) {
         e.preventDefault();
         const [m, l] = splitCombo(ALL_COMBOS[Number(e.code.slice(5)) - 1]);
         return st.setCombo(m, l);
-      }
-      if (e.key === 'Escape') {
-        if (st.searchOpen) return st.closeSearch();
-        if (st.expandedId !== null) return st.closeModal();
-        if (st.plusOpen) return st.setPlusOpen(false);
-        return;
       }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
 

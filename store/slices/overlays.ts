@@ -90,8 +90,8 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   setPlusOpen: (v) => set({ plusOpen: v }),
   setLangHover: (v) => set({ langHover: v }),
   setViewHover: (v) => set({ viewHover: v }),
-  toggleHelp: () => set((st) => ({ helpOpen: !st.helpOpen })),
-  openHelp: () => set({ helpOpen: true }),
+  toggleHelp: () => set((st) => ({ helpOpen: !st.helpOpen, paletteOpen: false })),
+  openHelp: () => set({ helpOpen: true, paletteOpen: false }),
   closeHelp: () => set({ helpOpen: false }),
   openSearch: () => set({ searchOpen: true }),
   closeSearch: () => set({ searchOpen: false }),
@@ -103,9 +103,9 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
     if (toastT) clearTimeout(toastT);
     toastT = setTimeout(() => set({ toast: null }), 1800);
   },
-  openPalette: () => set({ paletteOpen: true, plusOpen: false }),
+  openPalette: () => set({ paletteOpen: true, plusOpen: false, helpOpen: false }),
   closePalette: () => set({ paletteOpen: false }),
-  togglePalette: () => set((st) => ({ paletteOpen: !st.paletteOpen })),
+  togglePalette: () => set((st) => ({ paletteOpen: !st.paletteOpen, helpOpen: false })),
   bootDone: () => set({ phase: 'run' }),
   unloadDone: () => set({ phase: 'run', picker: true }),
 });
