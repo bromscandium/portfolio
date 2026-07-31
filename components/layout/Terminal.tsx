@@ -182,7 +182,7 @@ export const Terminal = () => {
         aria-hidden
         style={{
           opacity: t.crtOn ? 1 : 0,
-          transform: t.crtOn ? 'translateY(0)' : 'translateY(-24px)',
+          transform: t.crtOn ? 'translate3d(0,0,0)' : 'translate3d(0,-24px,0)',
           transition: 'opacity .45s ease, transform .45s ease',
         }}
       />

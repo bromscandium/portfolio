@@ -1,5 +1,6 @@
 'use client';
 
+import { Counters } from '@/components/common/Counters';
 import { mailto, openUrl } from '@/lib/helpers';
 import { HIRE_COPY } from '@/lib/i18n';
 import { useTerminal } from '@/store/terminal';
@@ -8,7 +9,7 @@ import { useRef, useState } from 'react';
 const CHIPS = ['Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD'];
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
-const Chip = ({ label }: { label: string }) => <span className="border border-green/30 px-2 py-0.5 text-[10px] tracking-[0.03em] text-green">{label}</span>;
+const Chip = ({ label }: { label: string }) => <span className="border border-line-6 px-2 py-0.5 text-[10px] tracking-[0.03em] text-fg-5">{label}</span>;
 
 export const HireCheck = () => {
   const lang = useTerminal((s) => s.lang);
@@ -77,16 +78,14 @@ export const HireCheck = () => {
         <div className="border-b border-line-3 bg-panel-6 px-4 py-3 text-[11px] tracking-[0.06em] text-fg-6">{c.title}</div>
 
         <div className="flex flex-1 flex-col px-6 py-5">
-          <div className="text-[11px] text-fg-6">{c.stats}</div>
+          <Counters className="text-[11px] leading-[1.8] text-fg-6" />
           <div className="mt-3 flex flex-wrap gap-1.5">
             {CHIPS.map((chip) => (
               <Chip key={chip} label={chip} />
             ))}
           </div>
 
-          <div className="mt-6 text-[14px] text-fg">
-            <span className="text-green">❯</span> {c.prompt}
-          </div>
+          <div className="mt-6 text-[14px] text-fg">{c.prompt}</div>
           <div className="mt-1 text-[12px] leading-[1.6] text-fg-6">{c.sub}</div>
           {clicked && <div className="mt-3 text-[12px] leading-[1.6] text-[#e06c75]">{c.clickTaunt}</div>}
 

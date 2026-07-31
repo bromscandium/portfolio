@@ -217,7 +217,8 @@ input:focus-visible {
   inset: 0;
   z-index: 700;
   pointer-events: none;
-  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
   background:
     repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.13) 0, rgba(255, 255, 255, 0.13) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 2.5px),
     radial-gradient(ellipse at center, rgba(248, 173, 64, 0.06) 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.42) 100%);

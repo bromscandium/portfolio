@@ -3,6 +3,7 @@ import { Section } from '@/components/common/Section';
 import { useStrings } from '@/hooks/useStrings';
 import { skillMap } from '@/lib/data';
 import type { Ref } from 'react';
+import { HostFooter } from './HostFooter';
 import { SkillCard } from './SkillCard';
 
 export const Skills = ({ ref }: { ref?: Ref<HTMLElement> }) => {
@@ -16,6 +17,7 @@ export const Skills = ({ ref }: { ref?: Ref<HTMLElement> }) => {
           <SkillCard key={r.region} region={r} />
         ))}
       </div>
+      <HostFooter />
     </Section>
   );
 };

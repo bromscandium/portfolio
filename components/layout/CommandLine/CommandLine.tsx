@@ -1,6 +1,7 @@
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
+import { useTerminal } from '@/store/terminal';
 import { useEffect, useRef, useState } from 'react';
 import { CommandRow } from './CommandRow';
 import { PathLine } from './PathLine';
@@ -36,6 +37,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
+      if (useTerminal.getState().matrixOn) return; // cmatrix owns the keyboard
       if (e.key === 'Escape' || e.key === '`') {
         e.preventDefault();
         e.stopPropagation();

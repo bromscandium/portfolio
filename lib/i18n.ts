@@ -1,5 +1,4 @@
 import { SHELL, TERMINAL_ROOT } from './config';
-import { portfolio } from './data/portfolio';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
 import { LOCALE_LABEL, MODE_META, MODES } from './modes';
@@ -100,8 +99,8 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
         ? 'Числа = роки практичного досвіду'
         : 'Numbers = years of hands-on use'
       : uk
-        ? `${skillMap.length} контейнерів запущено · STATUS = роки практичного досвіду`
-        : `${skillMap.length} containers running · STATUS = years of hands-on use`,
+        ? `${skillMap.length} контейнерів запущено`
+        : `${skillMap.length} containers running`,
     contactNote:
       (human ? '' : uk ? 'Зʼєднання встановлено. ' : 'Connection established. ') +
       (uk ? 'Відкритий до full-time · remote.' : 'Available for full-time · remote.'),
@@ -492,7 +491,6 @@ export const HIRE_COPY: Record<
   Lang,
   {
     title: string;
-    stats: string;
     prompt: string;
     sub: string;
     yes: string;
@@ -507,9 +505,8 @@ export const HIRE_COPY: Record<
 > = {
   en: {
     title: 'hire_check.exe',
-    stats: `projects: ${portfolio.length} · exp: 4+ yrs`,
     prompt: 'Sure you want to hire me?',
-    sub: 'Think it through — weigh the role, the timezone, the coffee budget. This decision is final and one of the buttons below really means it.',
+    sub: 'Think it through, weigh the role, the timezone, the coffee budget. This decision is final, and one of the buttons below really means it.',
     yes: 'Yes',
     noLabels: ['No', 'Nope', 'Really?', "C'mon", 'Stop it', '…'],
     attempts: (n) => `rejection attempts: ${n}`,
@@ -521,9 +518,8 @@ export const HIRE_COPY: Record<
   },
   uk: {
     title: 'hire_check.exe',
-    stats: `проєктів: ${portfolio.length} · досвід: 4+ р`,
     prompt: 'Точно хочете найняти мене?',
-    sub: 'Подумайте двічі, зважте рішення.',
+    sub: 'Зважте все: роль, часовий пояс, бюджет на каву. Рішення остаточне, і одна з кнопок унизу справді це підтверджує.',
     yes: 'Так',
     noLabels: ['Ні', 'Ні-ні', 'Серйозно?', 'Ну куди ви', 'Годі', '…'],
     attempts: (n) => `спроб відмовитись: ${n}`,

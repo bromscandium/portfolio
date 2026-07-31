@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 const CHARS = 'ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ0123456789:."=*+-<>¦｜╌';
 const WORDS = ['HIRE ME', 'bromscandium', 'yaroslav', 'fullstack', 'i use arch btw', 'ukraine', 'swe', 'development', 'terminal'];
 const COLORS = ['#f8ad40', '#56b6c2', '#98c379', '#e5c07b'];
-const FONT = 18;
+const FONT = 15;
 
 const rand = (s: string) => s[Math.floor(Math.random() * s.length)];
 const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
@@ -84,7 +84,7 @@ export const MatrixOverlay = ({ onExit }: { onExit: () => void }) => {
       if (t - last < 50) return;
       last = t;
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.055)';
       ctx.fillRect(0, 0, w, h);
       ctx.font = `${FONT}px monospace`;
 
@@ -116,7 +116,7 @@ export const MatrixOverlay = ({ onExit }: { onExit: () => void }) => {
 
         if (py > h) {
           if (draining) continue;
-          if (Math.random() > 0.975) spawn(i);
+          if (Math.random() > 0.93) spawn(i);
           else y[i] += speeds[i];
         } else y[i] += speeds[i];
       }
