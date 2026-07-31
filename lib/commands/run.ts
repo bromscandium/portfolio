@@ -52,6 +52,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
     ctx.requestClose();
     return [ok('❯ closing terminal…', 'yellow')];
   }
+  if (script === 'hire-me' || script.endsWith('/hire-me')) {
+    ctx.setContactClosed(false);
+    ctx.goTo(4);
+    return [ok('❯ redirecting to hire_check.exe…', 'cyan')];
+  }
 
   switch (cmd) {
     case 'help': {
@@ -269,22 +274,22 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         return MODES.map((m) => ok(`${m === 'dev' ? '* ' : '  '}${MODE_META[m].branch}`, m === 'dev' ? 'green' : 'default'));
       }
 
-      if (sub === 'status' || sub === 'st') return [ok(`On branch ${MODE_META.dev.branch} · nothing to commit, working tree clean ✨`, 'green')];
-      if (sub === 'blame') return [ok('me. always me. 🫠', 'yellow')];
+      if (sub === 'status' || sub === 'st') return [ok(`On branch ${MODE_META.dev.branch} · nothing to commit, working tree clean`, 'green')];
+      if (sub === 'blame') return [ok('me. always me. -_-', 'yellow')];
       if (sub === 'commit' && !rest.includes('-m')) return [ok('Aborting commit due to empty commit message.', 'error')];
-      if (sub === 'commit') return [ok(`[${MODE_META.dev.branch} 4a1f2e0] shipped something at 2am ☕`, 'green')];
+      if (sub === 'commit') return [ok(`[${MODE_META.dev.branch} 4a1f2e0] shipped something at 2am`, 'green')];
       if (sub === 'push') {
-        if (rest.includes('--force') || rest.includes('-f')) return [ok('❯ force-pushed to origin/main. hope you knew what you were doing. 😅', 'yellow')];
+        if (rest.includes('--force') || rest.includes('-f')) return [ok('❯ force-pushed to origin/main. hope you knew what you were doing. ^^"', 'yellow')];
         return [ok('Everything up-to-date', 'muted')];
       }
       if (sub === 'pull') return [ok('Already up to date.', 'muted')];
       if (sub === 'fetch') return [ok('remote: Enumerating objects: 0, done.', 'muted')];
-      if (sub === 'diff') return [ok('no changes staged — working tree clean ✨', 'muted')];
+      if (sub === 'diff') return [ok('no changes staged — working tree clean', 'muted')];
       if (sub === 'stash') return [ok('Saved working directory (nothing worth stashing, honestly)', 'yellow')];
-      if (sub === 'reset') return [ok('HEAD is now at 4a1f2e0 — the past is gone. 🧹', 'yellow')];
-      if (sub === 'rebase') return [ok('do not rebase what you cannot force-push. 🔥', 'yellow')];
+      if (sub === 'reset') return [ok('HEAD is now at 4a1f2e0 — the past is gone.', 'yellow')];
+      if (sub === 'rebase') return [ok('do not rebase what you cannot force-push.', 'yellow')];
       if (sub === 'remote') return [ok(`origin  ${LINKS.github}.git (fetch)`, 'cyan'), ok(`origin  ${LINKS.github}.git (push)`, 'cyan')];
-      if (sub === 'config') return [ok('user.name=yaroslav', 'muted'), ok('user.email=hidden 🙈', 'muted')];
+      if (sub === 'config') return [ok('user.name=yaroslav', 'muted'), ok('user.email=hidden', 'muted')];
       if (sub === 'tag') {
         ctx.goTo(1);
         const tags: { name: string; line: CmdLine }[] = [
@@ -380,22 +385,22 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'yay':
     case 'paru':
-      return [ok(`${cmd}: nothing to do — the AUR is already perfect here 🇦🇷`, 'muted')];
+      return [ok(`${cmd}: nothing to do — the AUR is already perfect here`, 'muted')];
 
     case 'vim':
       return [ok("you're stuck in vim now. try :q! … just kidding. (Esc, then close)", 'yellow')];
 
     case 'rm':
-      if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. 🙂', 'yellow')];
+      if (arg.includes('-rf') && arg.includes('/')) return [ok('rm: it is a good day to NOT delete everything. :)', 'yellow')];
       return [ok('rm: missing operand', 'error')];
 
     case 'mkdir':
       if (!arg) return [ok('mkdir: missing operand', 'error')];
-      return [ok(`mkdir: cannot create directory '${args[0]}': Read-only filesystem (this portfolio is immutable 🗿)`, 'error')];
+      return [ok(`mkdir: cannot create directory '${args[0]}': Read-only filesystem (this portfolio is immutable)`, 'error')];
 
     case 'touch':
       if (!arg) return [ok('touch: missing file operand', 'error')];
-      return [ok(`touch: cannot touch '${args[0]}': Read-only filesystem (nice try 😌)`, 'error')];
+      return [ok(`touch: cannot touch '${args[0]}': Read-only filesystem (nice try :))`, 'error')];
 
     case 'ps':
       return [
@@ -416,11 +421,11 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       ];
 
     case 'ping':
-      return [ok(`PING ${args[0] ?? 'localhost'}: 64 bytes · time=0.42 ms · always reachable ✨`, 'green')];
+      return [ok(`PING ${args[0] ?? 'localhost'}: 64 bytes · time=0.42 ms · always reachable`, 'green')];
 
     case 'curl':
     case 'wget':
-      return [ok(`${cmd}: try \`open <project> --live\` or \`github\` instead 🙂`, 'muted')];
+      return [ok(`${cmd}: try \`open <project> --live\` or \`github\` instead :)`, 'muted')];
 
     default:
       return [ok(`${SHELL}: command not found: ${cmd}`, 'error')];

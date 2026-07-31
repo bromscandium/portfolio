@@ -57,10 +57,10 @@ export const Contact = ({ ref, closed, onCopyEmail }: Props) => {
           </div>
         ) : (
           <>
-            <CommandHeader command="contact --open" heading={strings.hContact} className="mb-2" />
-            <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
             <div className="grid gap-12 xl:grid-cols-2 xl:items-stretch">
               <div className="flex flex-col items-start">
+                <CommandHeader command="contact --open" heading={strings.hContact} className="mb-2" />
+                <div className="mb-10 text-[13px] text-green">{strings.contactNote}</div>
                 <Heading variant="stroke" className="m-0 mb-9">
                   LET&apos;S TALK
                 </Heading>

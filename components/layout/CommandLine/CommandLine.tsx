@@ -1,8 +1,8 @@
 import { useCommandLine } from '@/hooks/useCommandLine';
 import { displayPwd, type CmdContext } from '@/lib/commands';
 import { SHELL, TERMINAL_ROOT } from '@/lib/config';
+import { useEffect, useRef, useState } from 'react';
 import { CommandRow } from './CommandRow';
-import { MatrixRain } from './MatrixRain';
 import { PathLine } from './PathLine';
 import { TreeView } from './TreeView';
 
@@ -14,25 +14,38 @@ interface Props {
 }
 
 export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
-  const {
-    rows,
-    input,
-    onInputChange,
-    height,
-    inputRef,
-    bodyRef,
-    suggestion,
-    menu,
-    treeOpen,
-    closeTree,
-    matrixOpen,
-    closeMatrix,
-    busy,
-    onKeyDown,
-    startResize,
-    pwd,
-  } = useCommandLine(open, onClose, actions);
+  const { rows, input, onInputChange, height, inputRef, bodyRef, suggestion, menu, treeOpen, closeTree, busy, onKeyDown, startResize, pwd } = useCommandLine(
+    open,
+    onClose,
+    actions,
+  );
   const ghost = suggestion && suggestion.startsWith(input) ? suggestion.slice(input.length) : '';
+  const [closing, setClosing] = useState(false);
+  const closeT = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const requestClose = () => {
+    if (closeT.current) return;
+    setClosing(true);
+    closeT.current = setTimeout(() => {
+      closeT.current = null;
+      setClosing(false);
+      onClose();
+    }, 230);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === '`') {
+        e.preventDefault();
+        e.stopPropagation();
+        requestClose();
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) {
     return (
@@ -48,14 +61,17 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-[#0a0a0a]" style={{ height }}>
+    <div
+      className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-[#0a0a0a]"
+      style={{ height, animation: closing ? 'termOut .22s ease-in forwards' : 'termIn .26s ease-out' }}
+    >
       <div
         onPointerDown={startResize}
         className="flex h-6 shrink-0 cursor-ns-resize items-center gap-2 border-b border-line-2 bg-panel-5 px-3 text-[11px] text-fg-6"
       >
         <span className="text-orange">❯</span>
         <span
-          onClick={onClose}
+          onClick={requestClose}
           onPointerDown={(e) => e.stopPropagation()}
           className="cursor-pointer transition-colors hover:text-orange"
           title="click to close"
@@ -64,16 +80,14 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
         </span>
         <span className="mx-auto text-fg-9">⠿ drag to resize</span>
         <button
-          onClick={onClose}
+          onClick={requestClose}
           className="cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange"
           aria-label="close terminal"
         >
           ✕
         </button>
       </div>
-      {matrixOpen ? (
-        <MatrixRain onExit={closeMatrix} />
-      ) : treeOpen ? (
+      {treeOpen ? (
         <div className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-[1.55]">
           <TreeView actions={actions} onExit={closeTree} />
         </div>

@@ -25,7 +25,6 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [treeOpen, setTreeOpen] = useState(false);
-  const [matrixOpen, setMatrixOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [menu, setMenu] = useState<Menu | null>(null);
   const idRef = useRef(1);
@@ -76,18 +75,23 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
       setTreeOpen(true);
     } else if (head === 'cmatrix') {
       append([echo]);
-      setMatrixOpen(true);
+      useTerminal.getState().setMatrix(true);
+    } else if (head === 'crt') {
+      const on = !useTerminal.getState().crtOn;
+      useTerminal.getState().setCrt(on);
+      append([echo, { id: nextId(), text: on ? 'CRT mode on — retro phosphor engaged' : 'CRT mode off', tone: on ? 'green' : 'muted' }]);
     } else if (head === 'sudo' && parts[1] === 'reject-me') {
       append([echo]);
       setBusy(true);
       const c = HIRE_COPY[actions.lang];
-      const baited = useTerminal.getState().baited;
+      const { baited, hireAttempts } = useTerminal.getState();
       let delay = 300;
       const line = (text: string, tone: CmdLine['tone'], gap: number) => {
         setTimeout(() => append([{ id: nextId(), text, tone }]), delay);
         delay += gap;
       };
       line('[sudo] password for recruiter: ********', 'muted', 500);
+      if (hireAttempts > 0) line(`${c.attempts(hireAttempts)} logged.`, 'muted', 550);
       c.steps.forEach((s, i) => line(s, i === c.steps.length - 1 ? 'error' : 'muted', 650));
       if (baited) c.baited.forEach((s) => line(s, 'yellow', 700));
       setTimeout(() => {
@@ -205,11 +209,6 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  const closeMatrix = () => {
-    setMatrixOpen(false);
-    setTimeout(() => inputRef.current?.focus(), 0);
-  };
-
   return {
     rows,
     input,
@@ -222,8 +221,6 @@ export const useCommandLine = (open: boolean, onClose: () => void, actions: Omit
     menu,
     treeOpen,
     closeTree,
-    matrixOpen,
-    closeMatrix,
     busy,
     onKeyDown,
     startResize,

@@ -163,6 +163,66 @@ input:focus-visible {
   }
 }
 
+@keyframes tabIn {
+  from {
+    max-width: 0;
+    opacity: 0.4;
+  }
+  to {
+    max-width: 14rem;
+    opacity: 1;
+  }
+}
+
+@keyframes tabOut {
+  from {
+    max-width: 14rem;
+    opacity: 1;
+  }
+  to {
+    max-width: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes tabLabelIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes termIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes termOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  pointer-events: none;
+  transform: translateZ(0);
+  background:
+    repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.13) 0, rgba(255, 255, 255, 0.13) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 2.5px),
+    radial-gradient(ellipse at center, rgba(248, 173, 64, 0.06) 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.42) 100%);
+}
+
 @keyframes overlayIn {
   from {
     opacity: 0;

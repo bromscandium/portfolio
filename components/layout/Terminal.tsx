@@ -12,6 +12,7 @@ import { useEffect, useMemo } from 'react';
 import { BootLoader } from './BootLoader';
 import { BootUnloader } from './BootUnloader';
 import { CommandLine } from './CommandLine';
+import { MatrixOverlay } from './MatrixOverlay';
 import { Sidebar } from './Sidebar';
 import { StatusBar } from './StatusBar';
 import { TabBar } from './TabBar';
@@ -55,19 +56,21 @@ export const Terminal = () => {
   const scrollLocked = !human && t.typedN < CMD.length;
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-bg font-mono">
+    <div className={`fixed inset-0 overflow-hidden bg-bg font-mono ${t.crtOn ? 'crt' : ''}`}>
       <TabBar
         tabsOpen={t.tabsOpen}
         activeCombo={activeCombo}
         onSelect={(c) => t.setCombo(...splitCombo(c))}
-        onClose={t.closeTab}
-        onMiddleClose={t.closeTab}
+        onConfirmClose={t.closeTab}
+        onActivateNeighbor={t.activateNeighbor}
+        onRemove={t.removeTab}
         onDragStart={t.startDrag}
         onDragOver={t.dragOver}
         onDragEnd={t.endDrag}
         plusOpen={t.plusOpen}
         setPlusOpen={t.setPlusOpen}
         plusItems={t.unopenedCombos()}
+        onNewTab={t.openNewTab}
         onOpenCombo={(c) => t.setCombo(...splitCombo(c))}
         labelFor={(c) => comboLabel(c, false)}
         shortLabelFor={(c) => comboLabel(c, true)}
@@ -173,6 +176,17 @@ export const Terminal = () => {
           }}
         />
       )}
+
+      <div
+        className="crt-overlay"
+        aria-hidden
+        style={{
+          opacity: t.crtOn ? 1 : 0,
+          transform: t.crtOn ? 'translateY(0)' : 'translateY(-24px)',
+          transition: 'opacity .45s ease, transform .45s ease',
+        }}
+      />
+      {t.matrixOn && <MatrixOverlay onExit={() => t.setMatrix(false)} />}
     </div>
   );
 };

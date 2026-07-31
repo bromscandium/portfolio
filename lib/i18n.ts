@@ -1,4 +1,5 @@
 import { SHELL, TERMINAL_ROOT } from './config';
+import { portfolio } from './data/portfolio';
 import { skillMap } from './data/skills';
 import type { Lang, Mode } from './modes';
 import { LOCALE_LABEL, MODE_META, MODES } from './modes';
@@ -107,10 +108,10 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     privateNote: uk ? '// приватний проєкт — без публічних лінків' : '// private build — no public links',
     workHint: human
       ? uk
-        ? 'наведи курсор на вікно — воно відкриється'
+        ? 'наведіть курсор на вікно — воно відкриється'
         : 'hover a window to view more'
       : uk
-        ? '// наведи курсор на вікно й потримай — воно відкриється'
+        ? '// наведіть курсор на вікно й потримайте — воно відкриється'
         : '// hover a window to view more',
     catLabels: human
       ? uk
@@ -483,31 +484,52 @@ export const MAILTO_COPY: Record<Lang, { subject: string; greeting: string; trac
   uk: {
     subject: 'Попрацюймо разом',
     greeting: 'Привіт, Ярославе,\n\n',
-    track: (source) => `\n\n— надіслано з: ${source} (лиши цей рядок — цікаво відстежувати, звідки приходять) —`,
+    track: (source) => `\n\n— надіслано з: ${source} (лишіть цей рядок — цікаво відстежувати, звідки приходять) —`,
   },
 };
 
 export const HIRE_COPY: Record<
   Lang,
-  { prompt: string; sub: string; yes: string; no: string; cancelHuman: string; cancelDev: string; steps: string[]; baited: string[] }
+  {
+    title: string;
+    stats: string;
+    prompt: string;
+    sub: string;
+    yes: string;
+    noLabels: string[];
+    attempts: (n: number) => string;
+    cancelHuman: string;
+    cancelDev: string;
+    clickTaunt: string;
+    steps: string[];
+    baited: string[];
+  }
 > = {
   en: {
+    title: 'hire_check.exe',
+    stats: `projects: ${portfolio.length} · exp: 4+ yrs`,
     prompt: 'Sure you want to hire me?',
-    sub: 'Think twice, weigh your decision.',
+    sub: 'Think it through — weigh the role, the timezone, the coffee budget. This decision is final and one of the buttons below really means it.',
     yes: 'Yes',
-    no: 'No',
+    noLabels: ['No', 'Nope', 'Really?', "C'mon", 'Stop it', '…'],
+    attempts: (n) => `rejection attempts: ${n}`,
     cancelHuman: 'to cancel, switch to terminal mode and run `sudo reject-me`',
     cancelDev: 'to cancel, open the terminal and run `sudo reject-me`',
+    clickTaunt: 'think you outsmarted it? i know dev mode too ;)',
     steps: ['processing rejection…', 'reject-me: operation not permitted.'],
     baited: ['heh, the bait worked.', 'opening the draft…'],
   },
   uk: {
-    prompt: 'Точно хочеш найняти мене?',
+    title: 'hire_check.exe',
+    stats: `проєктів: ${portfolio.length} · досвід: 4+ р`,
+    prompt: 'Точно хочете найняти мене?',
     sub: 'Подумайте двічі, зважте рішення.',
     yes: 'Так',
-    no: 'Ні',
-    cancelHuman: 'щоб відмінити, перейди в термінальний режим і пропиши `sudo reject-me`',
-    cancelDev: 'щоб відмінити, відкрий термінал і пропиши `sudo reject-me`',
+    noLabels: ['Ні', 'Ні-ні', 'Серйозно?', 'Ну куди ви', 'Годі', '…'],
+    attempts: (n) => `спроб відмовитись: ${n}`,
+    cancelHuman: 'щоб відмінити, перейдіть у термінальний режим і пропишіть `sudo reject-me`',
+    cancelDev: 'щоб відмінити, відкрийте термінал і пропишіть `sudo reject-me`',
+    clickTaunt: 'думаєте, що такі розумні? я теж шарю за dev mode ;)',
     steps: ['опрацювання відмови…', 'reject-me: операцію не дозволено.'],
     baited: ['хах, байт працював.', 'відкриваю чернетку…'],
   },
@@ -522,7 +544,7 @@ export const PICKER_COPY: Record<Lang, { title: string; who: string; locale: str
   },
   uk: {
     title: 'вибір профілю сесії',
-    who: 'хто ти?',
+    who: 'хто ви?',
     locale: 'локаль',
     note: '// змінити будь-коли через + у таб-барі',
   },

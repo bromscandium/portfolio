@@ -19,8 +19,9 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'cd', usage: 'change directory (cd <dir> · .. · ~)' },
   { name: 'ls', usage: 'list directory contents' },
   { name: './close.sh', usage: 'close the terminal (from ~)' },
+  { name: './hire-me', usage: 'launch the hire check' },
   { name: 'pwd', usage: 'print working directory' },
-  { name: 'cat', usage: 'cat cat.txt 🐱', options: () => opts(['cat.txt'], false) },
+  { name: 'cat', usage: 'cat cat.txt =^.^=', options: () => opts(['cat.txt'], false) },
   {
     name: 'open',
     usage: 'open a project window [--live]',
@@ -60,6 +61,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'uptime', usage: 'session uptime' },
   { name: 'history', usage: 'command history' },
   { name: 'cmatrix', usage: 'enter the matrix (any key exits)' },
+  { name: 'crt', usage: 'toggle retro CRT mode' },
   { name: 'echo', usage: 'print text ($USER, $SHELL…)' },
   { name: 'email', usage: 'open email' },
   { name: 'github', usage: 'open GitHub' },
