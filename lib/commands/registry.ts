@@ -70,6 +70,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'clear', usage: 'clear the screen' },
   { name: 'exit', usage: 'log out — back to profile picker (:q closes the panel)' },
   { name: ':q', usage: 'quit the command line (:q · :q! · :wq)', hidden: true },
+  { name: 'flag', usage: '', hidden: true },
   { name: 'sudo', usage: '', hidden: true },
   { name: 'reject-me', usage: '', hidden: true },
   { name: 'pacman', usage: '', hidden: true },

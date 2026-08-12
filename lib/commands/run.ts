@@ -1,4 +1,4 @@
-import { LINKS, SHELL } from '../config';
+import { CTF_BEACON, CTF_DECOY, CTF_FLAG, LINKS, SHELL } from '../config';
 import { education, experience, hackathons, portfolio, skillMap } from '../data';
 import { mailto, projectPath } from '../helpers';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
@@ -123,6 +123,8 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           },
         };
       });
+      const showHidden = args.some((a) => /^-[a-z]*a/i.test(a));
+      if (showHidden && dir.length === 0) rows.unshift({ row: { perms: '-rw-------', size: '0.1k', name: '.flag' } });
       return [...warn, head, ...rows];
     }
 
@@ -130,6 +132,14 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [...warnArgs(args), ok(`/home/yaroslav${ctx.pwd.length ? '/' + ctx.pwd.join('/') : ''}`)];
 
     case 'cat': {
+      if (arg === '.flag' || arg.endsWith('/.flag')) {
+        return [
+          ok(CTF_DECOY, 'green'),
+          ok('# too easy, right? that one is bait.', 'muted'),
+          ok('# the real flag never sits in a file. secrets live in the environment —', 'muted'),
+          ok('# have you tried to `echo` one?', 'muted'),
+        ];
+      }
       const f = arg.replace(/\.txt$/, '');
       if (f === 'cat') {
         return [
@@ -395,8 +405,29 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       return [...warnArgs(args), ...NEOFETCH.map((t) => ok(t, 'accent'))];
 
     case 'echo': {
+      if (args.length === 1 && args[0] === '$FLAG') {
+        return [ok(CTF_BEACON, 'green'), ok('# encoded — peel the layers: base64, then rot13.', 'muted')];
+      }
       const vars: Record<string, string> = { $USER: 'yaroslav', $SHELL: `/bin/${SHELL}`, $HOME: '/home/yaroslav', $PWD: '/home/yaroslav/portfolio' };
       return [ok(args.map((a) => vars[a] ?? a).join(' '))];
+    }
+
+    case 'flag': {
+      const guess = args.join(' ').trim();
+      if (!guess) return [ok('flag: missing operand', 'error')];
+      if (guess.toLowerCase() === CTF_DECOY.toLowerCase()) {
+        return [ok('flag: that is the bait. 🐟 too easy — the real one is not a file you can `cat`. keep digging.', 'yellow')];
+      }
+      if (guess.toLowerCase() === CTF_FLAG.toLowerCase()) {
+        return [
+          ok('  ┌────────────────────────────────┐', 'green'),
+          ok('  │  ✓ flag captured — well played.  │', 'green'),
+          ok('  └────────────────────────────────┘', 'green'),
+          ok('reading between the lines is exactly what I hire for.', 'muted'),
+          ok('mention "arch wizard" in your message and you have my attention → `sudo hire`.', 'yellow'),
+        ];
+      }
+      return [ok(`flag: nope — "${guess}" is not it. keep digging.`, 'error')];
     }
 
     case 'sudo':

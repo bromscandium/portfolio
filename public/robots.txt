@@ -1,0 +1,6 @@
+# bromscandium.com
+User-agent: *
+Disallow:
+
+# reading a robots.txt for fun? then you already know there's a flag here. 🚩
+Disallow: /flag/

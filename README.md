@@ -54,3 +54,7 @@ Dev/ngrok origins go in `.env` as `ALLOWED_ORIGINS` (comma-separated) → `allow
 
 - **[CV.md](./CV.md)** — about the person behind it.
 - **[CONSOLE.md](./CONSOLE.md)** — how to drive the terminal.
+
+## Credits
+
+- Logo (the `BS` mark) by [Nik Suhak](https://www.linkedin.com/in/nik-suhak-b09092378/).

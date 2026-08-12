@@ -8,6 +8,10 @@ export const HOST = 'bromscandium.com';
 
 export const SITE_URL = `https://${HOST}`;
 
+export const CTF_FLAG = 'flag{arch_wizard_hire_me}';
+export const CTF_DECOY = 'flag{th1s_1s_ba1t_keep_digging}';
+export const CTF_BEACON = 'c3ludHtuZXB1X2p2bW5lcV91dmVyX3pyfQ==';
+
 export const MACHINE = {
   os: 'Arch Linux',
   cpu: 'AMD Ryzen 7 250',

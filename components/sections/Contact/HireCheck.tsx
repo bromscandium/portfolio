@@ -56,10 +56,12 @@ export const HireCheck = () => {
 
   const hire = () => openUrl(mailto('hire form', lang));
   const reject = () => {
+    const accept = hireRef.current;
+    const acceptVisible = !!accept && accept.offsetParent !== null;
     setActive(true);
-    setClicked(true);
     useTerminal.getState().bumpHireAttempts();
     useTerminal.getState().setBaited(true);
+    if (acceptVisible) setClicked(true);
   };
   const noLabel = c.noLabels[Math.min(attempts, c.noLabels.length - 1)];
 
