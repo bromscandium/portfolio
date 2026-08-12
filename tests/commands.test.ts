@@ -2,6 +2,12 @@ import { beforeEach, describe, expect, test } from 'bun:test';
 import { COMMANDS } from '../lib/commands/registry';
 import { runCommand } from '../lib/commands/run';
 import type { CmdContext, CmdLine } from '../lib/commands/types';
+import { CTF_BEACON, CTF_DECOY, CTF_FLAG } from '../lib/config';
+
+const rot13 = (s: string) =>
+  s
+    .replace(/[a-z]/g, (c) => String.fromCharCode(((c.charCodeAt(0) - 97 + 13) % 26) + 97))
+    .replace(/[A-Z]/g, (c) => String.fromCharCode(((c.charCodeAt(0) - 65 + 13) % 26) + 65));
 
 type Calls = Record<string, unknown[][]>;
 
@@ -347,6 +353,45 @@ describe('easter eggs', () => {
       expect(run(c), c).not.toBe('');
     }
     expect(run('ping -c 4 localhost')).not.toContain(WARN);
+  });
+});
+
+// ─────────────────────────────────────────────── ctf flag hunt
+describe('ctf flag hunt', () => {
+  test('flag no-arg errors without revealing the game', () => {
+    const out = run('flag');
+    expect(out).toContain('missing operand');
+    expect(out.toLowerCase()).not.toContain('cmatrix');
+    expect(out.toLowerCase()).not.toContain('capture');
+  });
+  test('ls -a at ~ reveals hidden .flag; plain ls does not', () => {
+    const hidden = runCommand('ls -a ~', ctx).map((l) => l.row?.name);
+    expect(hidden).toContain('.flag');
+    const plain = runCommand('ls ~', ctx).map((l) => l.row?.name);
+    expect(plain).not.toContain('.flag');
+  });
+  test('cat .flag is the decoy + points to the environment', () => {
+    const out = run('cat .flag');
+    expect(out).toContain(CTF_DECOY);
+    expect(out.toLowerCase()).toContain('bait');
+    expect(out.toLowerCase()).toContain('echo');
+  });
+  test('echo $FLAG emits the encoded beacon', () => {
+    expect(run('echo $FLAG')).toContain(CTF_BEACON);
+    expect(run('echo hello')).not.toContain(CTF_BEACON);
+  });
+  test('beacon decodes (base64 → rot13) to the real flag', () => {
+    expect(rot13(Buffer.from(CTF_BEACON, 'base64').toString('utf8'))).toBe(CTF_FLAG);
+  });
+  test('submitting the decoy is called out as bait, not accepted', () => {
+    expect(run(`flag ${CTF_DECOY}`).toLowerCase()).toContain('bait');
+  });
+  test('submitting the real flag wins (case-insensitive)', () => {
+    expect(run(`flag ${CTF_FLAG}`)).toContain('captured');
+    expect(run(`flag ${CTF_FLAG.toUpperCase()}`)).toContain('captured');
+  });
+  test('a wrong guess is rejected', () => {
+    expect(run('flag flag{nope}')).toContain('not it');
   });
 });
 

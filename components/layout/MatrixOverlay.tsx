@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const CHARS = 'ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ0123456789:."=*+-<>¦｜╌';
-const WORDS = ['HIRE ME', 'bromscandium', 'yaroslav', 'fullstack', 'i use arch btw', 'ukraine', 'swe', 'development', 'terminal'];
+const WORDS = ['HIRE ME', 'bromscandium', 'yaroslav', 'fullstack', 'i use arch btw', 'ukraine', 'swe', 'development', 'terminal', 'catch the flag'];
 const COLORS = ['#f8ad40', '#56b6c2', '#98c379', '#e5c07b'];
 const FONT = 15;
 

@@ -1,6 +1,7 @@
 import type { Combo } from '@/lib/i18n';
 import { ALL_COMBOS } from '@/store/constants';
 import { useEffect, useRef } from 'react';
+import { BsLogo } from '../BsLogo';
 import { Tab } from './Tab';
 
 interface Props {
@@ -60,6 +61,9 @@ export const TabBar = ({
 
   return (
     <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-black bg-panel-5">
+      <div className="flex shrink-0 select-none items-center pl-3.5 pr-3" title="bromscandium">
+        <BsLogo height={18} />
+      </div>
       {tabsOpen.map((t) => (
         <Tab
           key={t}
