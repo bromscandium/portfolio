@@ -1,4 +1,5 @@
 import { SECTION_LABELS } from '@/lib/config';
+import { syncFavicon } from '@/lib/favicon';
 import { arrowDirection } from '@/lib/keys';
 import { splitCombo } from '@/lib/modes';
 import { ALL_COMBOS } from '@/store/constants';
@@ -13,6 +14,7 @@ export const useTerminalEffects = () => {
 
   useEffect(() => {
     useTerminal.getState().restore();
+    syncFavicon();
   }, []);
 
   useEffect(() => {

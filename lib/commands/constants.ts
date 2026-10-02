@@ -1,4 +1,5 @@
 import { SECTION_LABELS, SHELL } from '@/lib/config';
+import { PROJECT_COUNT } from '@/lib/data/projectCount';
 
 export const SECTIONS: Record<string, number> = {
   ...Object.fromEntries(SECTION_LABELS.map((label, i) => [label.toLowerCase(), i])),
@@ -15,5 +16,5 @@ export const NEOFETCH = [
   `   /      \\       Shell: ${SHELL} + spaceship`,
   '  /   ..   \\      Role: Full-Stack Engineer',
   ' /   |  |   \\     Stack: Next.js · Python · Docker',
-  '/_-``    ``-_\\    Uptime: 4+ years · 17 projects',
+  `/_-\`\`    \`\`-_\\    Uptime: 4+ years · ${PROJECT_COUNT} projects`,
 ];

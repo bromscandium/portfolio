@@ -1,5 +1,5 @@
 import type { Combo, Lang, Mode } from '@/lib/i18n';
-import { splitCombo } from '@/lib/modes';
+import { isAccent, isTheme, splitCombo } from '@/lib/modes';
 import { STORAGE_KEYS, readLS, removeLS, writeLS } from '@/lib/storage';
 import type { StateCreator } from 'zustand';
 import { ALL_COMBOS } from '../constants';
@@ -43,6 +43,10 @@ export const createSessionSlice: StateCreator<TerminalState, [], [], SessionSlic
       const l = readLS(STORAGE_KEYS.lang);
       const savedLang: Lang = l === 'uk' || l === 'en' ? l : 'en';
       if (readLS(STORAGE_KEYS.crt) === '1') set({ crtOn: true });
+      const th = readLS(STORAGE_KEYS.theme);
+      if (isTheme(th)) set({ theme: th });
+      const ac = readLS(STORAGE_KEYS.accent);
+      if (isAccent(ac)) set({ accent: ac });
       const attempts = Number(readLS(STORAGE_KEYS.hireAttempts) || 0);
       if (attempts > 0) set({ hireAttempts: attempts, baited: true });
       if (m === 'dev' || m === 'human') {

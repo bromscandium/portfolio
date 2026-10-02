@@ -69,7 +69,7 @@ export const HireCheck = () => {
     <div className="flex h-full flex-col">
       <div className="mb-6 font-mono text-[14px]">
         <span className="font-bold text-orange">❯ </span>
-        <span className="text-[#eee]">./hire-me</span>
+        <span className="text-fg">./hire-me</span>
       </div>
       <div
         ref={formRef}
@@ -89,13 +89,13 @@ export const HireCheck = () => {
 
           <div className="mt-6 text-[14px] text-fg">{c.prompt}</div>
           <div className="mt-1 text-[12px] leading-[1.6] text-fg-6">{c.sub}</div>
-          {clicked && <div className="mt-3 text-[12px] leading-[1.6] text-[#e06c75]">{c.clickTaunt}</div>}
+          {clicked && <div className="mt-3 text-[12px] leading-[1.6] text-red">{c.clickTaunt}</div>}
 
           <div className="mt-auto flex h-14 items-end gap-4">
             <button
               ref={hireRef}
               onClick={hire}
-              className="relative z-20 w-28 cursor-pointer rounded-btn border-none bg-orange px-5 py-3 text-[13px] font-bold text-black transition-transform duration-200 ease-out hover:bg-orange-dark"
+              className="relative z-20 w-28 cursor-pointer rounded-btn border-none bg-orange px-5 py-3 text-[13px] font-bold text-on-orange transition-transform duration-200 ease-out hover:bg-orange-dark"
             >
               {c.yes}
             </button>
@@ -105,7 +105,7 @@ export const HireCheck = () => {
               onKeyDown={(e) => {
                 if (e.key === 'n' || e.key === 'N') reject();
               }}
-              className="w-28 rounded-btn border border-line-6 bg-transparent px-5 py-3 text-[13px] text-fg-5 transition-colors hover:border-[#e06c75]"
+              className="w-28 rounded-btn border border-line-6 bg-transparent px-5 py-3 text-[13px] text-fg-5 transition-colors hover:border-red"
             >
               {noLabel}
             </button>

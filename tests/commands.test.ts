@@ -30,6 +30,10 @@ const makeCtx = (pwd: string[] = ['portfolio']) => {
     setContactClosed: rec('setContactClosed'),
     requestClose: rec('requestClose'),
     checkout: rec('checkout'),
+    theme: 'dark',
+    setTheme: rec('setTheme'),
+    accent: 'default',
+    setAccent: rec('setAccent'),
     lang: 'en',
     pwd,
     setPwd: rec('setPwd'),
@@ -392,6 +396,66 @@ describe('ctf flag hunt', () => {
   });
   test('a wrong guess is rejected', () => {
     expect(run('flag flag{nope}')).toContain('not it');
+  });
+});
+
+describe('theme', () => {
+  const runT = (cmd: string) => {
+    const { ctx, calls } = makeCtx();
+    return { out: text(runCommand(cmd, ctx)), calls };
+  };
+  test('bare theme prints usage and the current theme + color', () => {
+    const { out, calls } = runT('theme');
+    expect(out).toContain('usage: theme [dark|light]');
+    expect(out).toContain('current: dark · color default');
+    expect(calls.setAccent).toBeUndefined();
+    expect(calls.setTheme).toBeUndefined();
+  });
+  test('positional dark/light switches the theme', () => {
+    expect(runT('theme light').calls.setTheme).toEqual([['light']]);
+    expect(runT('theme LIGHT').calls.setTheme).toEqual([['light']]);
+    const same = runT('theme dark');
+    expect(same.out).toContain('already dark');
+    expect(same.calls.setTheme).toBeUndefined();
+  });
+  test('theme and color combine in one call', () => {
+    const { out, calls } = runT('theme light --color blue');
+    expect(calls.setTheme).toEqual([['light']]);
+    expect(calls.setAccent).toEqual([['blue']]);
+    expect(out).toContain('theme set to light');
+    expect(out).toContain('color set to blue');
+  });
+  test('unknown theme or bad color changes nothing at all', () => {
+    const t = runT('theme blue');
+    expect(t.out).toContain("unknown theme 'blue'");
+    expect(t.calls.setTheme).toBeUndefined();
+    const c = runT('theme light --color pink');
+    expect(c.out).toContain("invalid color 'pink'");
+    expect(c.calls.setTheme).toBeUndefined();
+    expect(c.calls.setAccent).toBeUndefined();
+  });
+  test('--color <value> and --color=<value> set the accent', () => {
+    expect(runT('theme --color red').calls.setAccent).toEqual([['red']]);
+    expect(runT('theme --color=blue').calls.setAccent).toEqual([['blue']]);
+    expect(runT('theme --color GREEN').calls.setAccent).toEqual([['green']]);
+  });
+  test('default is a no-op when already active', () => {
+    const { out, calls } = runT('theme --color default');
+    expect(out).toContain('already default');
+    expect(calls.setAccent).toBeUndefined();
+  });
+  test('invalid or missing color is an error and changes nothing', () => {
+    const bad = runT('theme --color pink');
+    expect(bad.out).toContain("invalid color 'pink'");
+    expect(bad.calls.setAccent).toBeUndefined();
+    const missing = runT('theme --color');
+    expect(missing.out).toContain('requires a value');
+    expect(missing.calls.setAccent).toBeUndefined();
+  });
+  test('unknown arguments warn but still apply', () => {
+    const { out, calls } = runT('theme --color red --loud');
+    expect(out).toContain("ignoring unknown argument '--loud'");
+    expect(calls.setAccent).toEqual([['red']]);
   });
 });
 

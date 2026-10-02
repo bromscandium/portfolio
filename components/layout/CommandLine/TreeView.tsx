@@ -139,10 +139,10 @@ export const TreeView = ({ actions, onExit }: Props) => {
               activate(f);
             }}
             className="cursor-pointer whitespace-pre"
-            style={{ background: active ? '#161616' : 'transparent' }}
+            style={{ background: active ? 'var(--color-panel-4)' : 'transparent' }}
           >
             <span className="text-fg-9">{f.prefix}</span>
-            <span style={{ color: active ? 'var(--color-orange)' : isProject ? '#56b6c2' : '#ddd' }}>
+            <span style={{ color: active ? 'var(--color-orange)' : isProject ? 'var(--color-cyan-img)' : 'var(--color-text)' }}>
               {marker}
               {f.node.label}
             </span>

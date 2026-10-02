@@ -22,7 +22,7 @@ const ContactButton = ({ link }: { link: ContactLink }) => (
     target="_blank"
     rel="noopener noreferrer"
     title={link.label}
-    className="flex h-12.5 w-12.5 items-center justify-center rounded-card border border-[#262626] text-fg-3 transition-all duration-300 hover:border-orange hover:!text-orange"
+    className="flex h-12.5 w-12.5 items-center justify-center rounded-card border border-line-4 text-fg-3 transition-all duration-300 hover:border-orange hover:!text-orange"
   >
     <Icon name={link.icon} size={20} />
   </a>

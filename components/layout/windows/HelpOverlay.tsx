@@ -68,7 +68,7 @@ export const HelpOverlay = ({ onClose }: Props) => (
       <>
         <div className="flex items-center gap-2 border-b border-line-3 bg-panel-6 px-4.5 py-3 text-[12px] text-fg-3">
           <span className="font-bold text-orange">❯ </span>
-          <span className="text-[#eee]">man keybindings</span>
+          <span className="text-fg">man keybindings</span>
           <button onClick={close} className="ml-auto cursor-pointer border-none bg-transparent text-fg-6 transition-colors hover:text-orange">
             ✕
           </button>

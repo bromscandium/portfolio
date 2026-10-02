@@ -1,8 +1,8 @@
 import { CTF_BEACON, CTF_DECOY, CTF_FLAG, LINKS, SHELL } from '../config';
-import { education, experience, hackathons, portfolio, skillMap } from '../data';
+import { education, experience, hackathons, portfolio, PROJECT_COUNT, skillMap } from '../data';
 import { mailto, projectPath } from '../helpers';
 import { JOB_COPY, PROJECT_DESC, slugify } from '../i18n';
-import { BRANCH_TO_MODE, MODE_META, MODES } from '../modes';
+import { ACCENTS, BRANCH_TO_MODE, isAccent, isTheme, MODE_META, MODES, THEMES } from '../modes';
 import { NEOFETCH } from './constants';
 import { children, displayPwd, resolvePath } from './fs';
 import { COMMANDS, findCommand } from './registry';
@@ -197,6 +197,38 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
 
     case 'uname':
       return [...warnArgs(args, ['-a', '-r', '-s', '-m', '-n']), ok('Linux bromscandium 6.6.0-arch x86_64 GNU/Linux')];
+
+    case 'theme': {
+      const eq = args.find((a) => a.startsWith('--color='));
+      const at = args.indexOf('--color');
+      const hasColor = Boolean(eq) || at >= 0;
+      const color = (eq ? eq.slice('--color='.length) : at >= 0 ? args[at + 1] : undefined)?.toLowerCase();
+      const rest = args.filter((a, k) => a !== eq && k !== at && !(at >= 0 && k === at + 1));
+      const mode = rest.find((a) => !a.startsWith('-'))?.toLowerCase();
+      const warn = warnArgs(rest, [], 1);
+      const colors = ACCENTS.join(', ');
+      if (!hasColor && !mode)
+        return [...warn, ok(`usage: theme [${THEMES.join('|')}] [--color <${ACCENTS.join('|')}>]`, 'muted'), ok(`current: ${ctx.theme} · color ${ctx.accent}`)];
+      if (mode && !isTheme(mode)) return [...warn, ok(`theme: unknown theme '${mode}' (choose: ${THEMES.join(', ')} · colors go in --color)`, 'error')];
+      if (hasColor && !color) return [...warn, ok(`theme: option '--color' requires a value (${colors})`, 'error')];
+      if (hasColor && !isAccent(color ?? null)) return [...warn, ok(`theme: invalid color '${color}' (choose: ${colors})`, 'error')];
+      const out = [...warn];
+      if (mode && isTheme(mode)) {
+        if (mode === ctx.theme) out.push(ok(`theme is already ${mode}`, 'muted'));
+        else {
+          ctx.setTheme(mode);
+          out.push(ok(`theme set to ${mode}`, 'accent'));
+        }
+      }
+      if (color && isAccent(color)) {
+        if (color === ctx.accent) out.push(ok(`color is already ${color}`, 'muted'));
+        else {
+          ctx.setAccent(color);
+          out.push(ok(`color set to ${color}`, 'accent'));
+        }
+      }
+      return out;
+    }
 
     case 'uptime':
       return [...warnArgs(args), ok('up 4+ years,  1 user,  load average: 0.19, 0.42, 0.69', 'muted')];
@@ -395,7 +427,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           ok('yaroslav yeromenko · full-stack engineer'),
           ok('prague · remote · open to full-time', 'muted'),
           ok('stack: React · Next.js · Python · FastAPI · Docker', 'muted'),
-          ok('4+ yrs · 17 projects · 10+ hackathons · 1.5k+ commits', 'muted'),
+          ok(`4+ yrs · ${PROJECT_COUNT} projects · 10+ hackathons · 1.5k+ commits`, 'muted'),
         ];
       }
       return [...warn, ok('yaroslav')];

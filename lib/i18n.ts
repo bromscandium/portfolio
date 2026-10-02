@@ -1,7 +1,7 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
-import type { Lang, Mode } from './modes';
-import { LOCALE_LABEL, MODE_META, MODES } from './modes';
+import type { Lang, Mode, Theme } from './modes';
+import { LOCALE_LABEL, MODE_META, MODES, THEME_LABEL, THEMES } from './modes';
 import type { JobCopy, Option } from './types';
 
 export type { Combo, Lang, Mode } from './modes';
@@ -54,6 +54,7 @@ export interface Strings {
   modalPath: (title: string, slug: string) => string;
   langValue: (hovering: boolean) => string;
   viewValue: (hovering: boolean) => string;
+  themeValue: (theme: Theme, hovering: boolean) => string;
   lastUpdated: (iso: string) => string;
 }
 
@@ -79,7 +80,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       (uk
         ? '4+ роки будую масштабовані продукти від початку до кінця: React/Next.js, Python/FastAPI, автоматизовані DevOps-деплої. B2B E-commerce, НГО, LLM-системи. Prague · Remote.'
         : '4+ years shipping scalable products end-to-end: React/Next.js, Python/FastAPI, automated DevOps. B2B E-commerce, NGOs, LLM systems. Prague · Remote.'),
-    stmtColor: human ? '#c4c4c4' : '#6f7a68',
+    stmtColor: human ? 'var(--color-text)' : 'color-mix(in srgb, var(--color-green) 35%, var(--color-fg-6))',
     counterLabels: {
       years: uk ? 'роки досвіду' : 'yrs experience',
       projects: uk ? 'проєктів' : 'projects',
@@ -157,6 +158,10 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
       const other = MODES.find((m) => m !== mode) ?? mode;
       return MODE_META[hovering ? other : mode].label[lang];
     },
+    themeValue: (theme: Theme, hovering: boolean) => {
+      const other = THEMES.find((t) => t !== theme) ?? theme;
+      return THEME_LABEL[hovering ? other : theme][lang];
+    },
   };
 };
 
@@ -168,6 +173,30 @@ export const slugify = (title: string): string => {
 };
 
 export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
+  23: {
+    en: [
+      'OSB (Open Source Budget) is a local-first personal finance tracker for Android: accounts, budgets, reports, recurring payments and full multi-currency, with real bank sync instead of hand-tuned notification parsers. Monobank and Binance connect through their APIs, other banks through a native notification listener, and a Bluecoins importer makes switching free.',
+      'Expo SDK 57 and React Native 0.86 with React 19.2, TypeScript 6 strict, expo-router, NativeWind and i18next in English and Ukrainian. Four custom Kotlin modules cover what Expo does not, from reading bank notifications to the system back gesture. Data lives in SQLite through Drizzle ORM live queries, TanStack Query owns network state and zustand only UI state, and money is a branded integer micro-unit type, so a float amount is a compile error.',
+      'Cash goes in by voice or plain text: an offline rule parser first, a bring-your-own-key cloud model only as a fallback that proposes and never writes on its own, with speech transcribed on the device. No key ships in any build, secrets live in the Android Keystore. Covered by unit, database and load tests, Jest component tests and Maestro end-to-end flows, with CI and fastlane store metadata.',
+    ],
+    uk: [
+      'OSB (Open Source Budget) — local-first трекер особистих фінансів для Android: рахунки, бюджети, звіти, регулярні платежі й повна мультивалютність, зі справжньою синхронізацією банків замість вручну налаштованих парсерів сповіщень. Monobank і Binance підключені через їхні API, інші банки — через нативний слухач сповіщень, а імпорт із Bluecoins робить перехід безкоштовним.',
+      'Expo SDK 57 і React Native 0.86 з React 19.2, TypeScript 6 strict, expo-router, NativeWind та i18next англійською й українською. Чотири власні модулі на Kotlin закривають те, чого немає в Expo, — від читання банківських сповіщень до системного жесту «назад». Дані зберігаються в SQLite через live-запити Drizzle ORM, TanStack Query відповідає за мережевий стан, zustand — лише за стан інтерфейсу, а гроші — це брендований тип цілих мікроодиниць, тож сума у float просто не скомпілюється.',
+      'Готівку вводять голосом або звичайним текстом: спершу офлайн-парсер правил, а хмарна модель із власним ключем — лише як запасний варіант, що пропонує запис і ніколи не пише сама; мовлення розпізнається на пристрої. Жоден ключ не вшивається у збірку, секрети лежать в Android Keystore. Покрито unit-, database- і навантажувальними тестами, компонентними тестами на Jest та e2e-сценаріями на Maestro, з CI і метаданими магазину через fastlane.',
+    ],
+  },
+  22: {
+    en: [
+      'A real-time training platform built for a civil-society workshop in Brussels: every participant plays a timed simulation on their own device, a facilitator steers the room from a live console, and each run ends in a personal PDF report.',
+      'Next.js 16 App Router and React 19 on Bun, TypeScript strict. The server is authoritative: a pure reducer replays an append-only event log on every move, owns the question clock and keeps scoring deterministic. Storage sits behind one contract with two drivers, PostgreSQL via postgres.js and an in-memory fallback, so the whole app can run from a laptop over a hotspot.',
+      'Privacy by design: pseudonyms only, no personal data columns, nothing in the browser but an HMAC-signed session cookie, scrypt-hashed logins. Bilingual interface and PDFs rendered with @react-pdf/renderer and an embedded Noto Sans. Shipped as a Docker multi-stage build to Railway, with GitHub Actions running lint, typecheck, Vitest suites, knip and the build.',
+    ],
+    uk: [
+      'Платформа для тренінгів у реальному часі, створена для воркшопу громадянського суспільства в Брюсселі: кожен учасник проходить симуляцію з таймером на своєму пристрої, ведучий керує кімнатою з живої консолі, а кожне проходження завершується персональним PDF-звітом.',
+      'Next.js 16 App Router і React 19 на Bun, TypeScript strict. Сервер авторитетний: чистий reducer на кожен хід відтворює append-only журнал подій, сам веде таймер питання й робить оцінювання детермінованим. Сховище — за одним контрактом із двома драйверами, PostgreSQL через postgres.js і in-memory, тож увесь застосунок можна запустити з ноутбука через хотспот.',
+      'Приватність у самій архітектурі: лише псевдоніми, жодних колонок з персональними даними, у браузері тільки підписана HMAC сесійна cookie, паролі хешуються scrypt. Двомовний інтерфейс і PDF на @react-pdf/renderer з вбудованим Noto Sans. Деплой — Docker multi-stage build на Railway, GitHub Actions запускає lint, typecheck, тести Vitest, knip і збірку.',
+    ],
+  },
   21: {
     en: [
       'The full-stack quiz platform built during the Meduzzen engineering internship — a multi-language quiz system with real-time analytics.',

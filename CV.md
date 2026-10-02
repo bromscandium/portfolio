@@ -4,7 +4,7 @@
 
 [kkmshbiu@protonmail.com](mailto:kkmshbiu@protonmail.com) · [github.com/bromscandium](https://github.com/bromscandium) · [linkedin.com/in/yaroslav-yeromenko](https://www.linkedin.com/in/yaroslav-yeromenko/)
 
-`4+ yrs experience · 17 projects · 10+ hackathons`
+`4+ yrs experience · 19 projects · 10+ hackathons`
 
 ---
 

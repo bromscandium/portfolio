@@ -34,7 +34,7 @@ const CoverFallback = ({ project, errorFile }: { project: Project; errorFile?: s
   }));
 
   return (
-    <div className="relative flex aspect-[16/10] w-full select-none flex-col justify-center gap-1 overflow-hidden bg-gradient-to-br from-panel-1 to-[#080808] px-5 font-mono text-[10px] leading-[1.7]">
+    <div className="relative flex aspect-[16/10] w-full select-none flex-col justify-center gap-1 overflow-hidden bg-gradient-to-br from-panel-1 to-bg px-5 font-mono text-[10px] leading-[1.7]">
       <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[.07]">
         <defs>
           <pattern id={`grid-${seed}`} width="22" height="22" patternUnits="userSpaceOnUse" patternTransform={`rotate(${angle})`}>
@@ -49,7 +49,7 @@ const CoverFallback = ({ project, errorFile }: { project: Project; errorFile?: s
       {lines.map((l) => (
         <LogLine key={l.hash} hash={l.hash} verb={l.verb} tech={l.tech} />
       ))}
-      {errorFile && <div className="text-[#e06c75]">error: {errorFile} not loaded</div>}
+      {errorFile && <div className="text-red">error: {errorFile} not loaded</div>}
       <div className="flex items-center gap-1 text-fg-8">
         <span>$</span>
         <span className="blink inline-block h-[1em] w-1.5 bg-orange/70" aria-hidden="true" />

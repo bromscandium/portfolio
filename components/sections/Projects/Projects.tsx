@@ -32,8 +32,8 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
     style={{
       padding: '7px 14px',
       background: active ? 'var(--color-orange)' : 'transparent',
-      borderColor: active ? 'var(--color-orange)' : '#2a2a2a',
-      color: active ? '#000' : '#8a8a8a',
+      borderColor: active ? 'var(--color-orange)' : 'var(--color-line-5)',
+      color: active ? 'var(--color-on-orange)' : 'var(--color-fg-4)',
     }}
   >
     {label} <span className="opacity-[.55]">({count})</span>

@@ -67,7 +67,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-[#0a0a0a]"
+      className="fixed inset-x-0 bottom-6.5 z-[150] flex flex-col border-t border-line-4 bg-bg"
       style={{ height, animation: closing ? 'termOut .22s ease-in forwards' : 'termIn .26s ease-out' }}
     >
       <div
@@ -111,7 +111,7 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                   value={input}
                   onChange={(e) => onInputChange(e.target.value)}
                   onKeyDown={onKeyDown}
-                  className="w-full border-none bg-transparent font-mono text-[13px] text-[#eee] outline-none"
+                  className="w-full border-none bg-transparent font-mono text-[13px] text-fg outline-none"
                   spellCheck={false}
                   autoComplete="off"
                   autoCapitalize="off"
@@ -130,7 +130,10 @@ export const CommandLine = ({ open, onOpen, onClose, actions }: Props) => {
                   <span
                     key={o.value}
                     className="whitespace-pre"
-                    style={{ background: i === menu.index ? '#161616' : 'transparent', color: i === menu.index ? 'var(--color-orange)' : '#8a8a8a' }}
+                    style={{
+                      background: i === menu.index ? 'var(--color-panel-4)' : 'transparent',
+                      color: i === menu.index ? 'var(--color-orange)' : 'var(--color-fg-4)',
+                    }}
                   >
                     {o.label ?? o.value}
                     {o.dir && <span className="text-fg-8">/</span>}

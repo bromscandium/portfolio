@@ -1,8 +1,12 @@
 export const MODES = ['dev', 'human'] as const;
 export const LANGS = ['en', 'uk'] as const;
+export const THEMES = ['dark', 'light'] as const;
+export const ACCENTS = ['default', 'red', 'blue', 'green'] as const;
 
 export type Mode = (typeof MODES)[number];
 export type Lang = (typeof LANGS)[number];
+export type Theme = (typeof THEMES)[number];
+export type Accent = (typeof ACCENTS)[number];
 export type Combo = `${Mode}-${Lang}`;
 
 export const COMBOS: Combo[] = MODES.flatMap((m) => LANGS.map((l) => `${m}-${l}` as Combo));
@@ -47,3 +51,12 @@ export const LOCALE_LABEL: Record<Lang, string> = {
   en: 'en_US.UTF-8',
   uk: 'uk_UA.UTF-8',
 };
+
+export const THEME_LABEL: Record<Theme, Record<Lang, string>> = {
+  dark: { en: 'dark', uk: 'темна' },
+  light: { en: 'light', uk: 'світла' },
+};
+
+export const isTheme = (v: string | null): v is Theme => v !== null && (THEMES as readonly string[]).includes(v);
+
+export const isAccent = (v: string | null): v is Accent => v !== null && (ACCENTS as readonly string[]).includes(v);
