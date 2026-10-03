@@ -4,6 +4,8 @@ export const STORAGE_KEYS = {
   tabs: 'brom_tabs',
   history: 'brom_history',
   crt: 'brom_crt',
+  theme: 'brom_theme',
+  accent: 'brom_accent',
   hireAttempts: 'brom_hire_attempts',
 } as const;
 

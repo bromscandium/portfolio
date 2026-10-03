@@ -8,5 +8,6 @@ export * from './experience';
 export * from './hackathons';
 export * from './hero';
 export * from './portfolio';
+export * from './projectCount';
 export * from './skills';
 export * from './skillTokens';

@@ -1,14 +1,33 @@
+import { syncFavicon } from '@/lib/favicon';
+import type { Accent, Theme } from '@/lib/modes';
 import { STORAGE_KEYS, writeLS } from '@/lib/storage';
 import type { StateCreator } from 'zustand';
 import type { TerminalState } from '../terminal';
 
 let toastT: ReturnType<typeof setTimeout> | null = null;
 
+const applyTheme = (theme: Theme) => {
+  writeLS(STORAGE_KEYS.theme, theme);
+  if (theme === 'light') document.documentElement.dataset.theme = 'light';
+  else delete document.documentElement.dataset.theme;
+  syncFavicon();
+};
+
+const applyAccent = (accent: Accent) => {
+  writeLS(STORAGE_KEYS.accent, accent);
+  if (accent === 'default') delete document.documentElement.dataset.accent;
+  else document.documentElement.dataset.accent = accent;
+  syncFavicon();
+};
+
 export interface OverlaySlice {
   picker: boolean;
   plusOpen: boolean;
   langHover: boolean;
   viewHover: boolean;
+  themeHover: boolean;
+  theme: Theme;
+  accent: Accent;
   typedN: number;
   session: number;
   phase: 'boot' | 'unload' | 'run';
@@ -33,6 +52,10 @@ export interface OverlaySlice {
   setPlusOpen: (v: boolean) => void;
   setLangHover: (v: boolean) => void;
   setViewHover: (v: boolean) => void;
+  setThemeHover: (v: boolean) => void;
+  setTheme: (v: Theme) => void;
+  toggleTheme: () => void;
+  setAccent: (v: Accent) => void;
   toggleHelp: () => void;
   openHelp: () => void;
   closeHelp: () => void;
@@ -54,6 +77,9 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   plusOpen: false,
   langHover: false,
   viewHover: false,
+  themeHover: false,
+  theme: 'dark',
+  accent: 'default',
   typedN: 0,
   session: 0,
   phase: 'boot',
@@ -90,6 +116,21 @@ export const createOverlaySlice: StateCreator<TerminalState, [], [], OverlaySlic
   setPlusOpen: (v) => set({ plusOpen: v }),
   setLangHover: (v) => set({ langHover: v }),
   setViewHover: (v) => set({ viewHover: v }),
+  setThemeHover: (v) => set({ themeHover: v }),
+  setTheme: (v) => {
+    applyTheme(v);
+    set({ theme: v });
+  },
+  toggleTheme: () =>
+    set((st) => {
+      const theme: Theme = st.theme === 'light' ? 'dark' : 'light';
+      applyTheme(theme);
+      return { theme };
+    }),
+  setAccent: (v) => {
+    applyAccent(v);
+    set({ accent: v });
+  },
   toggleHelp: () => set((st) => ({ helpOpen: !st.helpOpen, paletteOpen: false })),
   openHelp: () => set({ helpOpen: true, paletteOpen: false }),
   closeHelp: () => set({ helpOpen: false }),

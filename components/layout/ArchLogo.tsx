@@ -3,8 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const PHRASE = 'i use Arch btw';
-const ORANGE = '#f8ad40';
-const CYAN = '#56b6c2';
+const cssVar = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 interface Particle {
   ch: string;
@@ -31,6 +30,8 @@ const Overlay = ({
     const icon = iconRef.current;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx || !icon) return;
+    const ORANGE = cssVar('--color-orange');
+    const CYAN = cssVar('--color-cyan-img');
 
     const dpr = window.devicePixelRatio || 1;
     const W = window.innerWidth;
@@ -178,7 +179,7 @@ export const ArchLogo = () => {
         className="absolute inset-0 m-0 select-none font-mono text-[10px] font-bold leading-[1.25] transition-opacity duration-500 ease-out"
         style={{
           opacity: hover ? 1 : 0,
-          background: `linear-gradient(90deg, ${ORANGE}, ${CYAN}, ${ORANGE})`,
+          background: 'linear-gradient(90deg, var(--color-orange), var(--color-cyan-img), var(--color-orange))',
           backgroundSize: '200% 100%',
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',

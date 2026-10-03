@@ -20,9 +20,9 @@ const ModeButton = ({ mode, lang, onPick }: { mode: Mode; lang: Lang; onPick: (m
           : 'cursor-pointer rounded-card border border-line-6 bg-transparent px-4.5 py-4 text-left transition-colors duration-300 hover:border-orange'
       }
     >
-      <span className={meta.primary ? 'text-[13px] font-bold text-black' : 'text-[13px] font-bold text-fg'}>{meta.label[lang]}</span>
+      <span className={meta.primary ? 'text-[13px] font-bold text-on-orange' : 'text-[13px] font-bold text-fg'}>{meta.label[lang]}</span>
       <br />
-      <span className={meta.primary ? 'text-[11px] text-black/[.65]' : 'text-[11px] text-fg-5'}>{meta.desc[lang]}</span>
+      <span className={meta.primary ? 'text-[11px] text-on-orange/[.65]' : 'text-[11px] text-fg-5'}>{meta.desc[lang]}</span>
     </button>
   );
 };
@@ -38,7 +38,7 @@ export const ProfilePicker = ({ lang, onPick }: Props) => {
         <div className="flex flex-col gap-4 p-6.5">
           <div className="mb-1 text-[14px]">
             <span className="font-bold text-orange">❯ </span>
-            <span className="text-[#eee]">{c.who}</span>
+            <span className="text-fg">{c.who}</span>
           </div>
           {MODES.map((m) => (
             <ModeButton key={m} mode={m} lang={sel} onPick={(mode) => onPick(mode, sel)} />
@@ -54,8 +54,8 @@ export const ProfilePicker = ({ lang, onPick }: Props) => {
                   style={{
                     padding: '4px 10px',
                     background: sel === l.key ? 'var(--color-orange)' : 'transparent',
-                    borderColor: sel === l.key ? 'var(--color-orange)' : '#2a2a2a',
-                    color: sel === l.key ? '#000' : '#8a8a8a',
+                    borderColor: sel === l.key ? 'var(--color-orange)' : 'var(--color-line-5)',
+                    color: sel === l.key ? 'var(--color-on-orange)' : 'var(--color-fg-4)',
                   }}
                 >
                   {l.label}

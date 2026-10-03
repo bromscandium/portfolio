@@ -85,7 +85,7 @@ export const Terminal = () => {
             key={n}
             onClick={() => t.goTo(i)}
             className="shrink-0 cursor-pointer whitespace-nowrap rounded-btn border-none bg-transparent px-2 py-1 font-mono text-[12px]"
-            style={{ color: t.active === i ? 'var(--color-orange)' : '#8a8a8a' }}
+            style={{ color: t.active === i ? 'var(--color-orange)' : 'var(--color-fg-4)' }}
           >
             {n}
           </button>
@@ -113,6 +113,11 @@ export const Terminal = () => {
         onLangEnter={() => t.setLangHover(true)}
         onLangLeave={() => t.setLangHover(false)}
         onLangClick={() => t.setCombo(t.mode, t.lang === 'uk' ? 'en' : 'uk')}
+        themeValue={s.themeValue(t.theme, t.themeHover)}
+        themeHover={t.themeHover}
+        onThemeEnter={() => t.setThemeHover(true)}
+        onThemeLeave={() => t.setThemeHover(false)}
+        onThemeClick={t.toggleTheme}
       />
 
       <main
@@ -172,6 +177,10 @@ export const Terminal = () => {
             setContactClosed: t.setContactClosed,
             requestClose: t.requestClose,
             checkout: t.checkout,
+            theme: t.theme,
+            setTheme: t.setTheme,
+            accent: t.accent,
+            setAccent: t.setAccent,
             lang: t.lang,
           }}
         />

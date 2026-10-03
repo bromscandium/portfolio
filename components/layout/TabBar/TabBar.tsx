@@ -60,7 +60,7 @@ export const TabBar = ({
   }, [plusOpen, setPlusOpen]);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-black bg-panel-5">
+    <div className="fixed inset-x-0 top-0 z-[200] flex h-9.5 items-stretch border-b border-bg bg-panel-5">
       <div className="flex shrink-0 select-none items-center pl-3.5 pr-3" title="bromscandium">
         <BsLogo height={18} />
       </div>
@@ -114,7 +114,7 @@ export const TabBar = ({
                 <button
                   key={c}
                   onClick={() => onOpenCombo(c)}
-                  className="flex cursor-pointer items-center justify-between gap-4 rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-[#222] hover:text-orange"
+                  className="flex cursor-pointer items-center justify-between gap-4 rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-line-3 hover:text-orange"
                 >
                   <span>+ {shortLabelFor(c)}</span>
                   <span className="text-[10px] text-fg-6">⌥{ALL_COMBOS.indexOf(c) + 1}</span>
@@ -123,7 +123,7 @@ export const TabBar = ({
               <div className="my-1 border-t border-line-4" />
               <button
                 onClick={onOpenPalette}
-                className="flex cursor-pointer items-center justify-between rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-[#222] hover:text-orange"
+                className="flex cursor-pointer items-center justify-between rounded-btn border-none bg-transparent px-3 py-2.25 text-left font-mono text-[12px] text-fg-1 transition-colors hover:bg-line-3 hover:text-orange"
               >
                 <span>⌘ command palette</span>
                 <span className="text-[10px] text-fg-6">⌃K</span>

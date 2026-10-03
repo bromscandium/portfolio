@@ -28,7 +28,7 @@ const ProcRow = ({
         className={`flex items-baseline gap-3 py-0.5 ${clickable ? 'cursor-pointer rounded transition-colors hover:bg-panel-4' : ''}`}
       >
         <span className="shrink-0 text-[12px] text-fg-9">{last ? '└─' : '├─'}</span>
-        <span className="min-w-0 truncate text-[13px] text-[#ddd]">{name}</span>
+        <span className="min-w-0 truncate text-[13px] text-text">{name}</span>
         <span className="ml-auto shrink-0 text-[11px] text-orange">{yLabel}</span>
       </div>
       {clickable && (
@@ -91,7 +91,7 @@ export const SkillCard = ({ region }: { region: SkillRegion }) => {
           />
         ))}
         {!human && (
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[#1a1a1a] pt-2.5 text-[10px] text-fg-8">
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line-0 pt-2.5 text-[10px] text-fg-8">
             <span>
               CPU <span className="tabular-nums text-orange">{totalCpu.toFixed(1)}%</span>
             </span>

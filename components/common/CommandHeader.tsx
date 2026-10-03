@@ -24,7 +24,7 @@ export const CommandHeader = ({ command, args, heading, variant = 'main', classN
   return (
     <div className={`${variant === 'sub' ? 'text-[13px]' : 'text-[14px]'} ${className}`}>
       <span className="font-bold text-orange">❯ </span>
-      <span className="text-[#eee]">{command}</span>
+      <span className="text-fg">{command}</span>
       {args && <span className="text-ghost">{args}</span>}
     </div>
   );

@@ -1,6 +1,6 @@
 import { portfolio } from '../data';
 import { slugify } from '../i18n';
-import { MODES, MODE_META } from '../modes';
+import { ACCENTS, MODES, MODE_META, THEMES } from '../modes';
 import type { CompletionOption } from './types';
 
 export const CATEGORIES = ['pet', 'hackathon', 'university', 'professional'];
@@ -63,6 +63,11 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'history', usage: 'command history' },
   { name: 'cmatrix', usage: 'enter the matrix (any key exits)' },
   { name: 'crt', usage: 'toggle retro CRT mode' },
+  {
+    name: 'theme',
+    usage: `dark/light + accent color · theme [${THEMES.join('|')}] [--color <${ACCENTS.join('|')}>]`,
+    options: () => opts([...THEMES, ...ACCENTS.map((a) => `--color ${a}`)], false),
+  },
   { name: 'echo', usage: 'print text ($USER, $SHELL…)' },
   { name: 'email', usage: 'open email' },
   { name: 'github', usage: 'open GitHub' },

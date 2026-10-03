@@ -29,7 +29,10 @@ export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
   return (
     <div className="grid grid-cols-[26px_1fr] gap-4.5">
       <div className="flex flex-col items-center">
-        <span className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange" style={{ background: index === 0 ? 'var(--color-orange)' : '#0c0c0c' }} />
+        <span
+          className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange"
+          style={{ background: index === 0 ? 'var(--color-orange)' : 'var(--color-bg)' }}
+        />
         <span className="w-px flex-1 bg-line-4" />
       </div>
       <div className="pb-11">
@@ -74,7 +77,7 @@ export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
 export const EduRow = ({ item }: { item: Education }) => (
   <div className="flex items-baseline justify-between gap-4">
     <div>
-      <div className="text-[14px] font-semibold text-[#eee]">{item.title}</div>
+      <div className="text-[14px] font-semibold text-fg">{item.title}</div>
       <div className="mt-0.75 text-[12px] text-fg-5">{item.detail}</div>
     </div>
     <span className="whitespace-nowrap text-[12px] text-yellow">{item.period}</span>
@@ -85,8 +88,8 @@ export const HackRow = ({ item }: { item: Hackathon }) => (
   <div className="flex items-baseline justify-between gap-4">
     <div>
       <div className="flex items-center gap-2.5">
-        <span className="text-[14px] font-semibold text-[#eee]">{item.event}</span>
-        {item.win && <span className="rounded-badge bg-orange px-1.75 py-0.5 text-[9px] font-bold tracking-[2px] text-black">WINNER</span>}
+        <span className="text-[14px] font-semibold text-fg">{item.event}</span>
+        {item.win && <span className="rounded-badge bg-orange px-1.75 py-0.5 text-[9px] font-bold tracking-[2px] text-on-orange">WINNER</span>}
       </div>
       <div className="mt-0.75 text-[12px] text-fg-5">
         <span className="text-orange">{item.project}</span> · {item.role}

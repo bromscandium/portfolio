@@ -1,4 +1,4 @@
-import type { Lang, Mode } from '../modes';
+import type { Accent, Lang, Mode, Theme } from '../modes';
 
 export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
 
@@ -40,6 +40,10 @@ export interface CmdContext {
   setContactClosed: (v: boolean) => void;
   requestClose: () => void;
   checkout: (m: Mode) => void;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+  accent: Accent;
+  setAccent: (a: Accent) => void;
   lang: Lang;
   pwd: Seg;
   setPwd: (p: Seg) => void;

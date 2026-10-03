@@ -33,20 +33,20 @@ const Body = ({ human, uk, onConfirm, cancel }: { human: boolean; uk: boolean; o
       <div className="flex flex-col gap-4 p-[26px]">
         <div className="text-[14px]">
           {!human && <span className="font-bold text-orange">❯ </span>}
-          <span className="text-[#eee]">{c.q} </span>
+          <span className="text-fg">{c.q} </span>
           {!human && <span className="text-fg-5">[y/n]</span>}
         </div>
         <div className="text-[12px] text-fg-5">{c.desc}</div>
         <div className="mt-1 flex gap-3">
           <button
             onClick={onConfirm}
-            className="cursor-pointer rounded-btn border-none bg-orange px-5 py-2.5 font-mono text-[13px] font-semibold text-black transition-colors duration-300 hover:bg-orange-dark"
+            className="cursor-pointer rounded-btn border-none bg-orange px-5 py-2.5 font-mono text-[13px] font-semibold text-on-orange transition-colors duration-300 hover:bg-orange-dark"
           >
             {c.close}
           </button>
           <button
             onClick={cancel}
-            className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-5 py-2.5 font-mono text-[13px] text-[#ccc] transition-colors duration-300 hover:border-orange hover:!text-orange"
+            className="cursor-pointer rounded-btn border border-line-6 bg-transparent px-5 py-2.5 font-mono text-[13px] text-text transition-colors duration-300 hover:border-orange hover:!text-orange"
           >
             {c.cancel}
           </button>

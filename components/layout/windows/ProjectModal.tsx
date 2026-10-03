@@ -13,7 +13,7 @@ interface Props {
 const Paragraph = ({ text }: { text: string }) => <Body className="m-0">{text}</Body>;
 
 const TechChip = ({ label }: { label: string }) => (
-  <span className="rounded-badge border border-[#262626] bg-panel-4 px-2.25 py-1 text-[11px] text-[#aaa]">{label}</span>
+  <span className="rounded-badge border border-line-4 bg-panel-4 px-2.25 py-1 text-[11px] text-fg-2">{label}</span>
 );
 
 const ModalLink = ({ link }: { link: ProjectLink }) => (

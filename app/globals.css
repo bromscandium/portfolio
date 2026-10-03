@@ -42,12 +42,95 @@
   --color-green: #98c379;
   --color-green-dot: #28c840;
   --color-yellow: #e5c07b;
+  --color-red: #e06c75;
+  --color-text: #cccccc;
+  --color-on-orange: #000000;
 
   --radius-badge: 3px;
   --radius-btn: 4px;
   --radius-card: 6px;
   --radius-window: 8px;
   --radius-modal: 10px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #f2f1ec;
+  --color-panel-0: #f4f3ef;
+  --color-panel-1: #f5f4f0;
+  --color-panel-2: #f6f5f1;
+  --color-panel-3: #f7f6f3;
+  --color-panel-4: #f8f7f4;
+  --color-panel-5: #f9f8f5;
+  --color-panel-6: #faf9f7;
+
+  --color-line-0: #e7e6e0;
+  --color-line-1: #e3e2dc;
+  --color-line-2: #dfded8;
+  --color-line-3: #dbdad4;
+  --color-line-4: #d4d3cc;
+  --color-line-5: #cac8c1;
+  --color-line-6: #bebcb4;
+
+  --color-fg: #141414;
+  --color-fg-1: #363636;
+  --color-fg-2: #3c3c3c;
+  --color-fg-3: #4d4d4d;
+  --color-fg-4: #585858;
+  --color-fg-5: #5c5c5c;
+  --color-fg-6: #696969;
+  --color-ghost: #56608f;
+  --color-fg-7: #747474;
+  --color-fg-8: #8d8d8d;
+  --color-fg-9: #9a9a9a;
+  --color-fg-10: #a8a8a8;
+  --color-fg-11: #c6c4bd;
+
+  --color-orange: #b45309;
+  --color-orange-dark: #9a3412;
+  --color-cyan: #0f766e;
+  --color-cyan-img: #0e7490;
+  --color-green: #4d7c0f;
+  --color-green-dot: #16a34a;
+  --color-yellow: #8a6100;
+  --color-red: #b91c1c;
+  --color-text: #2b2b2b;
+  --color-on-orange: #ffffff;
+}
+
+:root[data-accent='red'] {
+  --color-orange: #f07178;
+  --color-orange-dark: #e5555e;
+}
+
+:root[data-accent='blue'] {
+  --color-orange: #61afef;
+  --color-orange-dark: #3b8fe0;
+}
+
+:root[data-accent='green'] {
+  --color-orange: #89d185;
+  --color-orange-dark: #5fbf5a;
+}
+
+:root[data-theme='light'][data-accent='red'] {
+  --color-orange: #b91c1c;
+  --color-orange-dark: #991b1b;
+}
+
+:root[data-theme='light'][data-accent='blue'] {
+  --color-orange: #1d4ed8;
+  --color-orange-dark: #1e40af;
+}
+
+:root[data-theme='light'][data-accent='green'] {
+  --color-orange: #15803d;
+  --color-orange-dark: #166534;
 }
 
 * {
@@ -62,7 +145,7 @@ body {
 
 body {
   background: var(--color-bg);
-  color: #cccccc;
+  color: var(--color-text);
   font-family: var(--font-mono);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -71,7 +154,7 @@ body {
 
 @layer base {
   a {
-    color: #cccccc;
+    color: var(--color-text);
     text-decoration: none;
     transition: color 0.3s ease;
   }
@@ -82,7 +165,7 @@ body {
 
 ::selection {
   background: var(--color-orange);
-  color: #000;
+  color: var(--color-on-orange);
 }
 
 a:focus-visible,
@@ -104,7 +187,7 @@ input:focus-visible {
   height: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: var(--color-line-5);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -222,6 +305,12 @@ input:focus-visible {
   background:
     repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.13) 0, rgba(255, 255, 255, 0.13) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 2.5px),
     radial-gradient(ellipse at center, rgba(248, 173, 64, 0.06) 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+:root[data-theme='light'] .crt-overlay {
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.07) 0, rgba(0, 0, 0, 0.07) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 2.5px),
+    radial-gradient(ellipse at center, rgba(180, 83, 9, 0.04) 0%, rgba(0, 0, 0, 0.04) 45%, rgba(0, 0, 0, 0.14) 100%);
 }
 
 @keyframes overlayIn {

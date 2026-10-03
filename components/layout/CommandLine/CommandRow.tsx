@@ -4,13 +4,13 @@ import type { Tone } from '@/lib/commands';
 import { PathLine } from './PathLine';
 
 const TONE: Record<Tone, string> = {
-  default: '#b5b5b5',
-  muted: '#565f89',
-  error: '#e06c75',
+  default: 'var(--color-fg-2)',
+  muted: 'var(--color-ghost)',
+  error: 'var(--color-red)',
   accent: 'var(--color-orange)',
-  green: '#98c379',
-  cyan: '#56b6c2',
-  yellow: '#e5c07b',
+  green: 'var(--color-green)',
+  cyan: 'var(--color-cyan-img)',
+  yellow: 'var(--color-yellow)',
 };
 
 export const CommandRow = ({ row }: { row: Row }) => {
@@ -19,7 +19,7 @@ export const CommandRow = ({ row }: { row: Row }) => {
       <div className="mt-2 first:mt-0">
         <PathLine path={row.path} />
         <div className="whitespace-pre-wrap break-words">
-          <span className="text-orange">❯</span> <span className="text-[#eee]">{row.text}</span>
+          <span className="text-orange">❯</span> <span className="text-fg">{row.text}</span>
         </div>
       </div>
     );

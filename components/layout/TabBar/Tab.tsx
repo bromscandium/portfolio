@@ -61,11 +61,11 @@ export const Tab = ({ combo, active, label, isLast, onSelect, onConfirmClose, on
       onDragOver={dragOver}
       onDrop={preventDrop}
       onDragEnd={onDragEnd}
-      className={`mt-1 flex w-55 min-w-16 shrink cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-t-card border-black px-4 text-[12px] md:shrink-0 ${active ? 'border-r' : 'border-x'}`}
+      className={`mt-1 flex w-55 min-w-16 shrink cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-t-card border-bg px-4 text-[12px] md:shrink-0 ${active ? 'border-r' : 'border-x'}`}
       style={{
-        background: active ? '#0c0c0c' : '#131313',
-        color: active ? '#bbb' : '#666',
-        boxShadow: active ? 'inset 0 2px 0 rgba(248,173,64,.5)' : 'none',
+        background: active ? 'var(--color-bg)' : 'var(--color-panel-2)',
+        color: active ? 'var(--color-fg-1)' : 'var(--color-fg-6)',
+        boxShadow: active ? 'inset 0 2px 0 color-mix(in srgb, var(--color-orange) 50%, transparent)' : 'none',
         animation: closing ? 'tabOut .23s ease-in forwards' : 'tabIn .28s ease-out',
         pointerEvents: closing ? 'none' : undefined,
       }}

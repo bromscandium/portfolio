@@ -1,4 +1,7 @@
 import { SITE_URL } from '@/lib/config';
+import { PROJECT_COUNT } from '@/lib/data/projectCount';
+import { FAVICON_ID } from '@/lib/favicon';
+import { STORAGE_KEYS } from '@/lib/storage';
 import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono, Jura } from 'next/font/google';
 import './globals.css';
@@ -17,8 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const DESCRIPTION =
-  'Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and 17 shipped projects.';
+const DESCRIPTION = `Yaroslav Yeromenko — Full-Stack Engineer (Next.js · Python · Docker). Portfolio styled as an authentic developer terminal: experience, skill stack, and ${PROJECT_COUNT} shipped projects.`;
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -34,7 +36,6 @@ export const metadata: Metadata = {
   creator: 'Yaroslav Yeromenko',
   keywords: ['Yaroslav Yeromenko', 'bromscandium', 'Full-Stack Engineer', 'Next.js', 'Python', 'Docker', 'PostgreSQL', 'CI/CD', 'portfolio', 'terminal'],
   robots: { index: false, follow: false },
-  icons: { icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }] },
   openGraph: {
     type: 'website',
     url: SITE_URL,
@@ -49,9 +50,15 @@ export const metadata: Metadata = {
   },
 };
 
+const THEME_SCRIPT = `try{var d=document.documentElement,a=localStorage.getItem('${STORAGE_KEYS.accent}');if(localStorage.getItem('${STORAGE_KEYS.theme}')==='light')d.dataset.theme='light';if(a==='red'||a==='blue'||a==='green')d.dataset.accent=a}catch(e){}`;
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className={`${jura.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${jura.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <link id={FAVICON_ID} rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
       <body>{children}</body>
     </html>
   );
