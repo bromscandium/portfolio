@@ -34,7 +34,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 22,
-    image: '',
+    image: '/covers/quiet-channel.webp',
     title: 'Quiet Channel',
     technologies: ['Next.js', 'TypeScript', 'React 19', 'Bun', 'PostgreSQL', 'Tailwind CSS', 'react-pdf', 'Vitest', 'Docker', 'Railway', 'GitHub Actions'],
     live: null,
