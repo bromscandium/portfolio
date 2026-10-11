@@ -63,7 +63,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 3,
-    image: '',
+    image: '/covers/jan-diddy.webp',
     title: 'Jan Diddy',
     technologies: ['Python', 'python-telegram-bot', 'FastAPI', 'PostgreSQL', 'Tortoise ORM', 'Redis', 'PyTorch', 'QLoRA', 'ORPO', 'Docker'],
     live: null,
