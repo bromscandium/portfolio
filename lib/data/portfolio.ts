@@ -34,7 +34,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 22,
-    image: '',
+    image: '/covers/quiet-channel.webp',
     title: 'Quiet Channel',
     technologies: ['Next.js', 'TypeScript', 'React 19', 'Bun', 'PostgreSQL', 'Tailwind CSS', 'react-pdf', 'Vitest', 'Docker', 'Railway', 'GitHub Actions'],
     live: null,
@@ -63,7 +63,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 3,
-    image: '',
+    image: '/covers/jan-diddy.webp',
     title: 'Jan Diddy',
     technologies: ['Python', 'python-telegram-bot', 'FastAPI', 'PostgreSQL', 'Tortoise ORM', 'Redis', 'PyTorch', 'QLoRA', 'ORPO', 'Docker'],
     live: null,
@@ -94,7 +94,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 21,
-    image: '',
+    image: '/covers/quiz-app.webp',
     title: 'Quiz App',
     technologies: ['Next.js', 'Redux Toolkit', 'MUI', 'Auth0', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker'],
     live: null,
