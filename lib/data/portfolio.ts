@@ -94,7 +94,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 21,
-    image: '',
+    image: '/covers/quiz-app.webp',
     title: 'Quiz App',
     technologies: ['Next.js', 'Redux Toolkit', 'MUI', 'Auth0', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker'],
     live: null,
