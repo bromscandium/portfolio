@@ -173,6 +173,18 @@ export const slugify = (title: string): string => {
 };
 
 export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
+  24: {
+    en: [
+      'An internal desktop app for the internal-alerts queue of the Pepper support team, built together with a teammate: it reads incoming alerts, checks each one against production data and closes only the ones that are genuinely resolved, signed as the engineer using it rather than a bot.',
+      'Python 3.12 with uv, a pywebview window over a local HTML interface, boto3 for the AWS checks and the Intercom API for the queue, with credentials kept in the system keychain. Runs on macOS, Linux and Windows, with an audit log of who acted on what.',
+      'My part: the Windows build (a shortcut without a console window, the app icon, Explorer integration, a rotating log file) and stricter close checks, so a guardrail alert that still blocks every run is no longer counted as resolved, plus statistics that count tickets closed outside the app.',
+    ],
+    uk: [
+      'Внутрішній десктопний застосунок для черги внутрішніх алертів команди підтримки Pepper, зроблений разом із колегою: він читає нові алерти, перевіряє кожен на продакшн-даних і закриває лише ті, що справді вирішені, від імені інженера, а не бота.',
+      'Python 3.12 з uv, вікно pywebview поверх локального HTML-інтерфейсу, boto3 для перевірок в AWS і Intercom API для черги, облікові дані зберігаються в системному keychain. Працює на macOS, Linux і Windows, з журналом аудиту, хто що зробив.',
+      'Моя частина: збірка під Windows (ярлик без вікна консолі, іконка застосунку, інтеграція з Провідником, лог-файл з ротацією) і суворіші перевірки перед закриттям, щоб guardrail-алерт, який досі блокує кожен запуск, більше не вважався вирішеним, а також статистика, що враховує тікети, закриті поза застосунком.',
+    ],
+  },
   23: {
     en: [
       'OSB (Open Source Budget) is a local-first personal finance tracker for Android: accounts, budgets, reports, recurring payments and full multi-currency, with real bank sync instead of hand-tuned notification parsers. Monobank and Binance connect through their APIs, other banks through a native notification listener, and a Bluecoins importer makes switching free.',

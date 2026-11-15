@@ -2,6 +2,15 @@ import type { Project } from '../types';
 
 export const portfolio: Project[] = [
   {
+    id: 24,
+    image: '',
+    title: 'Alert Console',
+    technologies: ['Python', 'uv', 'pywebview', 'boto3', 'AWS', 'Intercom API', 'keyring', 'Windows', 'Linux', 'macOS'],
+    live: null,
+    github: null,
+    category: 'professional',
+  },
+  {
     id: 4,
     image: '/covers/portfolio.webp',
     title: 'Portfolio',
