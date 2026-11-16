@@ -3,7 +3,7 @@ import type { Job } from '../types';
 export const experience: Job[] = [
   {
     hash: 'b6e2c11',
-    period: 'Jun 2026 — Present',
+    period: 'Jun 2026 — Nov 2026',
     org: 'UVIK Software',
     orgLink: 'https://www.linkedin.com/company/uvik-software/',
   },
