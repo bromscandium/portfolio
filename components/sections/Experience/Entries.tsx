@@ -1,6 +1,9 @@
 import { Body, Heading } from '@/components/common/Typography';
 import { useHuman, useStrings } from '@/hooks/useStrings';
+import { prUrl } from '@/lib/config';
+import { portfolio } from '@/lib/data';
 import type { Education, Hackathon, Job, ProjectLink } from '@/lib/types';
+import { useTerminal } from '@/store/terminal';
 
 const Point = ({ text }: { text: string }) => {
   const i = text.indexOf(': ');
@@ -23,16 +26,64 @@ const RefLink = ({ link }: { link: ProjectLink }) => (
   </a>
 );
 
+const SHIMMER = {
+  background: 'linear-gradient(90deg, var(--color-orange), var(--color-cyan-img), var(--color-orange))',
+  backgroundSize: '200% 100%',
+  animation: 'archShimmer 2s linear infinite',
+} as const;
+
+const SEEKING = {
+  ...SHIMMER,
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+} as const;
+
+const dotStyle = (job: Job, index: number) =>
+  job.seeking ? { ...SHIMMER, borderColor: 'transparent' } : { background: index === 0 ? 'var(--color-orange)' : 'var(--color-bg)' };
+
+const OrgName = ({ job }: { job: Job }) => (
+  <span className="font-light text-fg-3">
+    {' — '}
+    {job.orgLink ? (
+      <a href={job.orgLink} target="_blank" rel="noopener noreferrer" className="text-fg-3 hover:!text-orange">
+        {job.org}
+      </a>
+    ) : (
+      job.org
+    )}
+  </span>
+);
+
+const ProjectRef = ({ id }: { id: number }) => {
+  const project = portfolio.find((p) => p.id === id);
+  if (!project) return null;
+
+  const open = () => useTerminal.getState().openProject(id);
+
+  return (
+    <button
+      onClick={open}
+      className="cursor-pointer border-0 border-b border-solid border-orange/40 bg-transparent p-0 pb-0.25 font-mono text-[12px] text-orange hover:!text-orange-dark"
+    >
+      {project.title}
+    </button>
+  );
+};
+
+const PrBadge = ({ n }: { n: number }) => (
+  <a href={prUrl(n)} target="_blank" rel="noopener noreferrer" className="text-green hover:!text-orange">
+    (PR #{n} open)
+  </a>
+);
+
 export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
   const human = useHuman();
   const copy = useStrings().jobCopy(job.hash);
   return (
     <div className="grid grid-cols-[26px_1fr] gap-4.5">
       <div className="flex flex-col items-center">
-        <span
-          className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange"
-          style={{ background: index === 0 ? 'var(--color-orange)' : 'var(--color-bg)' }}
-        />
+        <span className="mt-1.5 h-2.75 w-2.75 rounded-full border-2 border-orange" style={dotStyle(job, index)} />
         <span className="w-px flex-1 bg-line-4" />
       </div>
       <div className="pb-11">
@@ -40,20 +91,13 @@ export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
           {!human && <span className="font-semibold text-orange">{job.hash}</span>}
           <span className="text-yellow">{job.period}</span>
           <span className="text-ghost">{copy.loc}</span>
-          {!human && index === 0 && <span className="text-green">(HEAD -&gt; main)</span>}
+          {job.pr ? <PrBadge n={job.pr} /> : !human && index === 0 && <span className="text-green">(HEAD -&gt; main)</span>}
         </div>
         <Heading variant="role" as="div" className="mt-2.5">
-          {copy.role}
-          <span className="font-light text-fg-3">
-            {' — '}
-            {job.orgLink ? (
-              <a href={job.orgLink} target="_blank" rel="noopener noreferrer" className="text-fg-3 hover:!text-orange">
-                {job.org}
-              </a>
-            ) : (
-              job.org
-            )}
+          <span className={job.seeking ? 'font-bold' : undefined} style={job.seeking ? SEEKING : undefined}>
+            {copy.role}
           </span>
+          {job.org && <OrgName job={job} />}
         </Heading>
         <div className="mt-2 text-[12px] italic text-fg-5">{copy.summary}</div>
         <div className="mt-3.5 flex flex-col gap-2">
@@ -61,10 +105,14 @@ export const JobEntry = ({ job, index }: { job: Job; index: number }) => {
             <Point key={k} text={pt} />
           ))}
         </div>
-        {job.links && (
+        {(job.links || job.projects || job.pr) && (
           <div className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 pl-3">
             <span className="text-[12px] text-fg-9">↳</span>
-            {job.links.map((l) => (
+            {job.pr && <RefLink link={{ label: `pull request #${job.pr}`, href: prUrl(job.pr) }} />}
+            {job.projects?.map((id) => (
+              <ProjectRef key={id} id={id} />
+            ))}
+            {job.links?.map((l) => (
               <RefLink key={l.href} link={l} />
             ))}
           </div>

@@ -1,6 +1,6 @@
 import type { Accent, Lang, Mode, Theme } from '../modes';
 
-export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow';
+export type Tone = 'default' | 'muted' | 'error' | 'accent' | 'green' | 'cyan' | 'yellow' | 'shimmer';
 
 export interface LsRow {
   perms: string;

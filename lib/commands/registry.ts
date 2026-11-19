@@ -55,6 +55,7 @@ export const COMMANDS: CommandSpec[] = [
   { name: 'docker', usage: 'ps [--filter label=<region>] | images | inspect <region>', options: () => opts(['ps', 'images', 'inspect'], false) },
   { name: 'contact', usage: 'list contacts · --open jumps to section · --close hangs up', options: () => opts(['--open', '--close'], false) },
   { name: 'whoami', usage: 'identity (-v for details)' },
+  { name: 'status', usage: 'looking for a job, or the current position' },
   { name: 'neofetch', usage: 'system + stack summary' },
   { name: 'man', usage: 'keyboard shortcuts' },
   { name: 'date', usage: 'current date' },

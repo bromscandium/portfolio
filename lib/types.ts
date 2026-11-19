@@ -29,6 +29,9 @@ export interface Job {
   org: string;
   orgLink?: string;
   links?: ProjectLink[];
+  seeking?: boolean;
+  pr?: number | null;
+  projects?: number[];
 }
 
 export interface JobCopy {

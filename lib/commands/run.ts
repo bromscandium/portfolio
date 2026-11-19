@@ -41,6 +41,15 @@ const pacman = (flags: string[]): CmdLine[] => {
   ];
 };
 
+const workStatus = (): CmdLine => {
+  if (experience.some((job) => job.seeking)) return ok('Looking for a job', 'shimmer');
+
+  const current = experience.find((job) => !job.org.includes('Open Source'));
+  if (!current) return ok('no position yet', 'muted');
+
+  return ok(`${JOB_COPY[current.hash]?.en.role ?? ''} @ ${current.org}`);
+};
+
 const sizeOf = (p: { id: number; technologies: string[] }): string => {
   const chars = (PROJECT_DESC[p.id]?.en.join(' ').length ?? 0) + p.technologies.join('').length;
   return `${(chars / 170).toFixed(1)}k`;
@@ -316,7 +325,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
           const jc = JOB_COPY[j.hash]?.en;
           const g = graph ? '* ' : '';
           out.push(ok(`${g}commit ${j.hash}${i === 0 ? ' (HEAD -> main)' : ''}`, i === 0 ? 'accent' : 'yellow'));
-          out.push(ok(`${graph ? '| ' : ''}  ${jc?.role ?? ''} — ${j.org}`));
+          out.push(ok(`${graph ? '| ' : ''}  ${jc?.role ?? ''}${j.org ? ` — ${j.org}` : ''}`));
           out.push(ok(`${graph ? '| ' : ''}  ${j.period} · ${jc?.loc ?? ''}`, 'muted'));
           if (graph && i < experience.length - 1) out.push(ok('|', 'muted'));
         });
@@ -361,7 +370,7 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
         const tags: { name: string; line: CmdLine }[] = [
           ...experience.map((j) => {
             const jc = JOB_COPY[j.hash]?.en;
-            const name = `work/${slugify(j.org)}`;
+            const name = `work/${slugify(j.org || (jc?.role ?? ''))}`;
             return { name, line: ok(`${name}   ${jc?.role ?? ''} · ${j.period}`, 'accent') };
           }),
           ...education.map((e) => {
@@ -432,6 +441,9 @@ export const runCommand = (raw: string, ctx: CmdContext): CmdLine[] => {
       }
       return [...warn, ok('yaroslav')];
     }
+
+    case 'status':
+      return [...warnArgs(args), workStatus()];
 
     case 'neofetch':
       return [...warnArgs(args), ...NEOFETCH.map((t) => ok(t, 'accent'))];
