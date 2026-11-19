@@ -4,19 +4,37 @@ import { prUrl } from '@/lib/config';
 import { portfolio } from '@/lib/data';
 import type { Education, Hackathon, Job, ProjectLink } from '@/lib/types';
 import { useTerminal } from '@/store/terminal';
+import { useState } from 'react';
 
 const Point = ({ text }: { text: string }) => {
+  const [open, setOpen] = useState(false);
   const i = text.indexOf(': ');
-  const label = i > 0 ? text.slice(0, i) : '';
-  const rest = i > 0 ? text.slice(i + 2) : text;
+  if (i <= 0) {
+    return (
+      <Body as="div" className="flex gap-3 !leading-[1.6]">
+        <span className="text-fg-9">│</span>
+        <span>{text}</span>
+      </Body>
+    );
+  }
+
+  const toggle = () => setOpen((was) => !was);
+  const height = open ? 'max-h-80' : 'max-h-[1.6em] group-hover:max-h-80';
+  const fade = open ? 'opacity-100' : 'opacity-0 group-hover:opacity-100';
+
   return (
-    <Body as="div" className="flex gap-3 !leading-[1.6]">
-      <span className="text-fg-9">│</span>
-      <span>
-        {label && <span className="font-semibold text-fg-2">{label}: </span>}
-        {rest}
-      </span>
-    </Body>
+    <div className="group cursor-pointer" onClick={toggle}>
+      <Body as="div" className="flex gap-3 !leading-[1.6]">
+        <span className="text-fg-9 transition-colors group-hover:text-orange">│</span>
+        <span className={`block overflow-hidden transition-[max-height] duration-300 ease-out ${height}`}>
+          <span className="font-semibold text-fg-2">{text.slice(0, i)}</span>
+          <span className={`transition-opacity duration-300 ease-out ${fade}`}>
+            <span className="font-semibold text-fg-2">: </span>
+            {text.slice(i + 2)}
+          </span>
+        </span>
+      </Body>
+    </div>
   );
 };
 
