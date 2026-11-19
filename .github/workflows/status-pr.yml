@@ -1,0 +1,31 @@
+name: Status PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  only-status:
+    if: github.event.pull_request.head.repo.fork || startsWith(github.head_ref, 'lfaj/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Touch only lib/data/status.json
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          echo "$changed"
+          other=$(echo "$changed" | grep -v '^lib/data/status.json$' || true)
+          if [ -n "$other" ]; then
+            echo "::error::A status pull request may change lib/data/status.json only."
+            exit 1
+          fi
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun test tests/status.test.ts
