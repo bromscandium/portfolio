@@ -51,6 +51,7 @@ export interface Strings {
   yLabel: (y: number) => string;
   regionStatus: (maxY: number) => string;
   projCount: (n: number) => string;
+  moreBtn: (n: number) => string;
   modalPath: (title: string, slug: string) => string;
   langValue: (hovering: boolean) => string;
   viewValue: (hovering: boolean) => string;
@@ -146,6 +147,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     regionStatus: (maxY: number) =>
       human ? (uk ? `${maxY} ${maxY === 1 ? 'рік' : 'роки'}` : `${maxY} ${maxY === 1 ? 'year' : 'years'}`) : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
+    moreBtn: (n: number) => (human ? (uk ? `Показати ще ${n}` : `Show ${n} more`) : `more ~/projects  # +${n}`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => LOCALE_LABEL[hovering ? (uk ? 'en' : 'uk') : uk ? 'uk' : 'en'],
     lastUpdated: (iso: string) => {
