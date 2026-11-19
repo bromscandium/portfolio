@@ -21,7 +21,7 @@ export const portfolio: Project[] = [
   },
   {
     id: 23,
-    image: '',
+    image: '/covers/osb.webp',
     title: 'OSB',
     technologies: [
       'React Native',
