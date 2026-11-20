@@ -1,5 +1,6 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
+import { STATUS_HASH, statusCopy } from './data/status';
 import type { Lang, Mode, Theme } from './modes';
 import { LOCALE_LABEL, MODE_META, MODES, THEME_LABEL, THEMES } from './modes';
 import type { JobCopy, Option } from './types';
@@ -51,6 +52,7 @@ export interface Strings {
   yLabel: (y: number) => string;
   regionStatus: (maxY: number) => string;
   projCount: (n: number) => string;
+  moreBtn: (n: number) => string;
   modalPath: (title: string, slug: string) => string;
   langValue: (hovering: boolean) => string;
   viewValue: (hovering: boolean) => string;
@@ -146,6 +148,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     regionStatus: (maxY: number) =>
       human ? (uk ? `${maxY} ${maxY === 1 ? 'рік' : 'роки'}` : `${maxY} ${maxY === 1 ? 'year' : 'years'}`) : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
+    moreBtn: (n: number) => (human ? (uk ? `Показати ще ${n}` : `Show ${n} more`) : `more ~/projects  # +${n}`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => LOCALE_LABEL[hovering ? (uk ? 'en' : 'uk') : uk ? 'uk' : 'en'],
     lastUpdated: (iso: string) => {
@@ -404,11 +407,13 @@ export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
 };
 
 export const JOB_COPY: Record<string, { en: JobCopy; uk: JobCopy }> = {
+  [STATUS_HASH]: statusCopy,
   b6e2c11: {
     en: {
       role: 'Software Support Engineer',
       loc: 'Remote',
-      summary: 'Delivered technical system diagnostics, production issue resolution, internal tooling and AI-assisted support workflows for a B2B E-commerce platform.',
+      summary:
+        'Delivered technical system diagnostics, production issue resolution, internal tooling and AI-assisted support workflows for a B2B E-commerce platform.',
       points: [
         'Production Diagnostics & Hotfixing: Investigated backend anomalies within Django and Python services, analyzing AWS CloudWatch log traces to identify code level issues and ship fixes to data integration generators and ERP order exporters through reviewed PRs.',
         'AI-Assisted Engineering: Worked daily with Claude Code, building custom skills and agent workflows for ticket investigation, internal alert triage, resolution notes and shift handoffs, connected to Redash, AWS, Intercom, Slack and GitHub.',
@@ -422,7 +427,7 @@ export const JOB_COPY: Record<string, { en: JobCopy; uk: JobCopy }> = {
       loc: 'Віддалено',
       summary: 'Технічна діагностика систем, усунення продакшн-проблем, внутрішні інструменти та AI-процеси підтримки для B2B E-commerce платформи.',
       points: [
-        'Діагностика та фікси продакшену: досліджував бекенд-аномалії в сервісах на Django/Python, аналізував трейси логів AWS CloudWatch, щоб локалізувати проблеми на рівні коду, і випускав виправлення генераторів інтеграцій даних та експортерів замовлень в ERP через PR з рев\'ю.',
+        "Діагностика та фікси продакшену: досліджував бекенд-аномалії в сервісах на Django/Python, аналізував трейси логів AWS CloudWatch, щоб локалізувати проблеми на рівні коду, і випускав виправлення генераторів інтеграцій даних та експортерів замовлень в ERP через PR з рев'ю.",
         'Розробка з AI: щодня працював із Claude Code, створював власні скіли та агентні процеси для розслідування тікетів, тріажу внутрішніх алертів, нотаток про вирішення і передачі змін, з підключенням до Redash, AWS, Intercom, Slack і GitHub.',
         'Внутрішні інструменти: разом із колегою розробляв десктопний застосунок для черги алертів (Python, pywebview, boto3), що перевіряє кожен алерт на продакшн-даних; додав збірку під Windows і безпечніші перевірки перед закриттям.',
         'Цілісність системи та валідація даних: забезпечував стабільність платформи, моніторячи стан систем у Grafana і виконуючи SQL-запити в Redash для перевірки узгодженості даних між PostgreSQL і кешем Redis.',

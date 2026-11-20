@@ -1,17 +1,21 @@
 import type { Job } from '../types';
+import { statusJob } from './status';
 
 export const experience: Job[] = [
+  statusJob,
   {
     hash: 'b6e2c11',
     period: 'Jun 2026 — Nov 2026',
     org: 'UVIK Software',
     orgLink: 'https://www.linkedin.com/company/uvik-software/',
+    projects: [24],
   },
   {
     hash: 'f8ad40e',
     period: 'May 2025 — Present',
     org: 'Self-employed & Open Source',
     orgLink: 'https://github.com/bromscandium',
+    projects: [23],
     links: [
       { label: 'BromiumJS', href: 'https://github.com/bromscandium/bromiumjs' },
       { label: 'LLM engine', href: 'https://github.com/bromscandium/jan-diddy-llm' },
