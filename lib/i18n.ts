@@ -1,5 +1,6 @@
 import { SHELL, TERMINAL_ROOT } from './config';
 import { skillMap } from './data/skills';
+import { STATUS_HASH, statusCopy } from './data/status';
 import type { Lang, Mode, Theme } from './modes';
 import { LOCALE_LABEL, MODE_META, MODES, THEME_LABEL, THEMES } from './modes';
 import type { JobCopy, Option } from './types';
@@ -51,6 +52,7 @@ export interface Strings {
   yLabel: (y: number) => string;
   regionStatus: (maxY: number) => string;
   projCount: (n: number) => string;
+  moreBtn: (n: number) => string;
   modalPath: (title: string, slug: string) => string;
   langValue: (hovering: boolean) => string;
   viewValue: (hovering: boolean) => string;
@@ -146,6 +148,7 @@ export const getStrings = (mode: Mode, lang: Lang): Strings => {
     regionStatus: (maxY: number) =>
       human ? (uk ? `${maxY} ${maxY === 1 ? 'рік' : 'роки'}` : `${maxY} ${maxY === 1 ? 'year' : 'years'}`) : `Up ${maxY} ${maxY === 1 ? 'year' : 'years'}`,
     projCount: (n: number) => (human ? `${n}${uk ? ' проєктів' : ' projects'}` : `${n} entries`),
+    moreBtn: (n: number) => (human ? (uk ? `Показати ще ${n}` : `Show ${n} more`) : `more ~/projects  # +${n}`),
     modalPath: (title: string, slug: string) => (human ? `${title}${uk ? ' — деталі' : ' — details'}` : `~/projects/${slug} — maximized`),
     langValue: (hovering: boolean) => LOCALE_LABEL[hovering ? (uk ? 'en' : 'uk') : uk ? 'uk' : 'en'],
     lastUpdated: (iso: string) => {
@@ -173,16 +176,26 @@ export const slugify = (title: string): string => {
 };
 
 export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
-  23: {
+  24: {
     en: [
-      'OSB (Open Source Budget) is a local-first personal finance tracker for Android: accounts, budgets, reports, recurring payments and full multi-currency, with real bank sync instead of hand-tuned notification parsers. Monobank and Binance connect through their APIs, other banks through a native notification listener, and a Bluecoins importer makes switching free.',
-      'Expo SDK 57 and React Native 0.86 with React 19.2, TypeScript 6 strict, expo-router, NativeWind and i18next in English and Ukrainian. Four custom Kotlin modules cover what Expo does not, from reading bank notifications to the system back gesture. Data lives in SQLite through Drizzle ORM live queries, TanStack Query owns network state and zustand only UI state, and money is a branded integer micro-unit type, so a float amount is a compile error.',
-      'Cash goes in by voice or plain text: an offline rule parser first, a bring-your-own-key cloud model only as a fallback that proposes and never writes on its own, with speech transcribed on the device. No key ships in any build, secrets live in the Android Keystore. Covered by unit, database and load tests, Jest component tests and Maestro end-to-end flows, with CI and fastlane store metadata.',
+      'An internal desktop app for the internal-alerts queue of the Pepper support team, built together with a teammate: it reads incoming alerts, checks each one against production data and closes only the ones that are genuinely resolved, signed as the engineer using it rather than a bot.',
+      'Python 3.12 with uv, a pywebview window over a local HTML interface, boto3 for the AWS checks and the Intercom API for the queue, with credentials kept in the system keychain. Runs on macOS, Linux and Windows, with an audit log of who acted on what.',
+      'My part: the Windows build (a shortcut without a console window, the app icon, Explorer integration, a rotating log file) and stricter close checks, so a guardrail alert that still blocks every run is no longer counted as resolved, plus statistics that count tickets closed outside the app.',
     ],
     uk: [
-      'OSB (Open Source Budget) — local-first трекер особистих фінансів для Android: рахунки, бюджети, звіти, регулярні платежі й повна мультивалютність, зі справжньою синхронізацією банків замість вручну налаштованих парсерів сповіщень. Monobank і Binance підключені через їхні API, інші банки — через нативний слухач сповіщень, а імпорт із Bluecoins робить перехід безкоштовним.',
-      'Expo SDK 57 і React Native 0.86 з React 19.2, TypeScript 6 strict, expo-router, NativeWind та i18next англійською й українською. Чотири власні модулі на Kotlin закривають те, чого немає в Expo, — від читання банківських сповіщень до системного жесту «назад». Дані зберігаються в SQLite через live-запити Drizzle ORM, TanStack Query відповідає за мережевий стан, zustand — лише за стан інтерфейсу, а гроші — це брендований тип цілих мікроодиниць, тож сума у float просто не скомпілюється.',
-      'Готівку вводять голосом або звичайним текстом: спершу офлайн-парсер правил, а хмарна модель із власним ключем — лише як запасний варіант, що пропонує запис і ніколи не пише сама; мовлення розпізнається на пристрої. Жоден ключ не вшивається у збірку, секрети лежать в Android Keystore. Покрито unit-, database- і навантажувальними тестами, компонентними тестами на Jest та e2e-сценаріями на Maestro, з CI і метаданими магазину через fastlane.',
+      'Внутрішній десктопний застосунок для черги внутрішніх алертів команди підтримки Pepper, зроблений разом із колегою: він читає нові алерти, перевіряє кожен на продакшн-даних і закриває лише ті, що справді вирішені, від імені інженера, а не бота.',
+      'Python 3.12 з uv, вікно pywebview поверх локального HTML-інтерфейсу, boto3 для перевірок в AWS і Intercom API для черги, облікові дані зберігаються в системному keychain. Працює на macOS, Linux і Windows, з журналом аудиту, хто що зробив.',
+      'Моя частина: збірка під Windows (ярлик без вікна консолі, іконка застосунку, інтеграція з Провідником, лог-файл з ротацією) і суворіші перевірки перед закриттям, щоб guardrail-алерт, який досі блокує кожен запуск, більше не вважався вирішеним, а також статистика, що враховує тікети, закриті поза застосунком.',
+    ],
+  },
+  23: {
+    en: [
+      'OSB (Open Source Budget) is a local-first personal finance tracker for Android and iOS: accounts, budgets, reports, recurring payments and multi-currency, with Monobank and Binance synced through their APIs instead of notification parsing, and an assistant on your own Gemini, OpenAI or Anthropic key that proposes changes and writes nothing until you confirm.',
+      'Expo SDK 58, React Native, TypeScript strict, SQLite through Drizzle live queries, custom Kotlin modules and 24 languages. No key ships in any build, and money is an integer micro-unit type, so a float amount does not compile. Covered by unit, database, component and Maestro end-to-end tests in CI.',
+    ],
+    uk: [
+      'OSB (Open Source Budget) — local-first трекер особистих фінансів для Android та iOS: рахунки, бюджети, звіти, регулярні платежі й мультивалютність. Monobank і Binance синхронізуються через їхні API, а не через парсинг сповіщень, а асистент на власному ключі Gemini, OpenAI чи Anthropic пропонує зміни й нічого не записує без підтвердження.',
+      'Expo SDK 58, React Native, TypeScript strict, SQLite через live-запити Drizzle, власні модулі на Kotlin і 24 мови. Жоден ключ не вшивається у збірку, а гроші — цілі мікроодиниці, тож сума у float не скомпілюється. Покрито unit-, database-, компонентними та e2e-тестами на Maestro в CI.',
     ],
   },
   22: {
@@ -394,25 +407,31 @@ export const PROJECT_DESC: Record<number, { en: string[]; uk: string[] }> = {
 };
 
 export const JOB_COPY: Record<string, { en: JobCopy; uk: JobCopy }> = {
+  [STATUS_HASH]: statusCopy,
   b6e2c11: {
     en: {
       role: 'Software Support Engineer',
       loc: 'Remote',
-      summary: 'Delivered technical system diagnostics, production issue resolution, and system integrity operations for a B2B E-commerce platform.',
+      summary:
+        'Delivered technical system diagnostics, production issue resolution, internal tooling and AI-assisted support workflows for a B2B E-commerce platform.',
       points: [
-        'Production Diagnostics & Hotfixing: Investigated backend anomalies within Django and Python services, analyzing AWS CloudWatch log traces to identify code level issues and deploy production hotfixes.',
+        'Production Diagnostics & Hotfixing: Investigated backend anomalies within Django and Python services, analyzing AWS CloudWatch log traces to identify code level issues and ship fixes to data integration generators and ERP order exporters through reviewed PRs.',
+        'AI-Assisted Engineering: Worked daily with Claude Code, building custom skills and agent workflows for ticket investigation, internal alert triage, resolution notes and shift handoffs, connected to Redash, AWS, Intercom, Slack and GitHub.',
+        'Internal Tooling: Co-developed an internal desktop app for the alerts queue (Python, pywebview, boto3) that checks each alert against production data, adding the Windows build and safer close checks.',
         'System Integrity & Data Validation: Ensured platform stability by monitoring system health in Grafana and running SQL queries in Redash to verify data parity across PostgreSQL and Redis caching layers.',
-        'Cross-Functional Collaboration & Support: Partnered with core dev teams, product managers, and operations via Jira and Intercom to clarify L3 requirements, communicate technical context, and align cross-department workflows.',
+        'Team Problem Solving: Took internal alert on-call shifts, worked through root causes together with engineering, product and operations via Jira, Slack and Intercom, and wrote handoffs so the next shift could pick up any open case.',
       ],
     },
     uk: {
       role: 'Інженер підтримки ПЗ',
       loc: 'Віддалено',
-      summary: 'Технічна діагностика систем, усунення продакшн-проблем і підтримка цілісності системи для B2B E-commerce платформи.',
+      summary: 'Технічна діагностика систем, усунення продакшн-проблем, внутрішні інструменти та AI-процеси підтримки для B2B E-commerce платформи.',
       points: [
-        'Діагностика та хотфікси продакшену: досліджував бекенд-аномалії в сервісах на Django/Python, аналізував трейси логів AWS CloudWatch, щоб локалізувати проблеми на рівні коду й розгортати продакшн-виправлення.',
+        "Діагностика та фікси продакшену: досліджував бекенд-аномалії в сервісах на Django/Python, аналізував трейси логів AWS CloudWatch, щоб локалізувати проблеми на рівні коду, і випускав виправлення генераторів інтеграцій даних та експортерів замовлень в ERP через PR з рев'ю.",
+        'Розробка з AI: щодня працював із Claude Code, створював власні скіли та агентні процеси для розслідування тікетів, тріажу внутрішніх алертів, нотаток про вирішення і передачі змін, з підключенням до Redash, AWS, Intercom, Slack і GitHub.',
+        'Внутрішні інструменти: разом із колегою розробляв десктопний застосунок для черги алертів (Python, pywebview, boto3), що перевіряє кожен алерт на продакшн-даних; додав збірку під Windows і безпечніші перевірки перед закриттям.',
         'Цілісність системи та валідація даних: забезпечував стабільність платформи, моніторячи стан систем у Grafana і виконуючи SQL-запити в Redash для перевірки узгодженості даних між PostgreSQL і кешем Redis.',
-        'Міжкомандна співпраця та підтримка: працював з командами розробки, продакт-менеджерами й операціями через Jira та Intercom — уточнював вимоги рівня L3, доносив технічний контекст і синхронізував процеси між відділами.',
+        'Командне вирішення проблем: чергував на внутрішніх алертах, разом з інженерами, продактом і операціями шукав першопричини через Jira, Slack та Intercom і писав передачі змін, щоб наступна зміна могла підхопити будь-який відкритий кейс.',
       ],
     },
   },

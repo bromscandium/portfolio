@@ -11,7 +11,23 @@ const TONE: Record<Tone, string> = {
   green: 'var(--color-green)',
   cyan: 'var(--color-cyan-img)',
   yellow: 'var(--color-yellow)',
+  shimmer: 'var(--color-orange)',
 };
+
+const SHIMMER = {
+  background: 'linear-gradient(90deg, var(--color-orange), var(--color-cyan-img), var(--color-orange))',
+  backgroundSize: '200% 100%',
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  animation: 'archShimmer 2s linear infinite',
+} as const;
+
+const ShimmerLine = ({ text }: { text?: string }) => (
+  <div className="whitespace-pre-wrap break-words">
+    <span style={SHIMMER}>{text}</span>
+  </div>
+);
 
 export const CommandRow = ({ row }: { row: Row }) => {
   if (row.prompt) {
@@ -46,6 +62,8 @@ export const CommandRow = ({ row }: { row: Row }) => {
       </div>
     );
   }
+
+  if (row.tone === 'shimmer') return <ShimmerLine text={row.text} />;
 
   return (
     <div className="whitespace-pre-wrap break-words" style={{ color: TONE[row.tone ?? 'default'] }}>

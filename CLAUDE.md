@@ -1,7 +1,7 @@
 # Portfolio — project conventions
 
 ## Stack
-- Next.js 16.2 (App Router), React 19.2, TypeScript 5, Tailwind CSS v4, Zustand 5, static export (`output: 'export'`) → GitHub Pages (`bromscandium.com`).
+- Next.js 16.4 (App Router), React 19.2, TypeScript 5, Tailwind CSS v4, Zustand 5, static export (`output: 'export'`) → GitHub Pages (`bromscandium.com`).
 - Runtime: **bun only** (`bun run dev|build|lint`). Dev binds `-H 0.0.0.0` (WSL localhost fix); ngrok/dev origins via `ALLOWED_ORIGINS` in `.env` → `allowedDevOrigins`.
 - Single-page "terminal" UI: one `'use client'` tree under `app/page.tsx` → `components/layout/Terminal`. No routes (single session; splitting into pages would break the shell/scrollspy).
 - `robots: noindex`. Build injects last git-commit time as `NEXT_PUBLIC_BUILD_TIME` (footer "last updated").

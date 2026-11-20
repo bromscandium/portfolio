@@ -279,6 +279,10 @@ describe('contact & links', () => {
 
 // ─────────────────────────────────────────────── identity / info
 describe('info commands', () => {
+  test('status says the job search while it lasts', () => {
+    expect(run('status')).toBe('Looking for a job');
+  });
+
   test('whoami plain / verbose / bad flag', () => {
     expect(run('whoami')).toBe('yaroslav');
     expect(run('whoami -v')).toContain('full-stack engineer');

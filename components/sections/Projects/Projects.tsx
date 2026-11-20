@@ -23,6 +23,8 @@ interface Props {
   onCloseSearch: () => void;
 }
 
+const PAGE = 9;
+
 const catCount = (key: Category | 'all'): number => byCategory(key).length;
 
 const FilterChip = ({ label, count, active, onClick }: { label: string; count: number; active: boolean; onClick: () => void }) => (
@@ -40,10 +42,22 @@ const FilterChip = ({ label, count, active, onClick }: { label: string; count: n
   </button>
 );
 
+const MoreButton = ({ label, onClick }: { label: string; onClick: () => void }) => (
+  <div className="mt-6.5 flex justify-center">
+    <button
+      onClick={onClick}
+      className="cursor-pointer rounded-btn border border-line-5 bg-transparent px-4 py-2 font-mono text-[12px] text-fg-4 transition-colors hover:border-orange hover:text-orange"
+    >
+      {label}
+    </button>
+  </div>
+);
+
 export const Projects = ({ ref, projects, cat, onCat, hoverId, expandedId, onEnter, onLeave, onClick, dashSec, searchOpen, onCloseSearch }: Props) => {
   const strings = useStrings();
   const [query, setQuery] = useState('');
   const [sel, setSel] = useState(0);
+  const [shown, setShown] = useState({ cat, n: PAGE });
   const inputRef = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(
@@ -61,6 +75,10 @@ export const Projects = ({ ref, projects, cat, onCat, hoverId, expandedId, onEnt
   }, [searchOpen]);
 
   const selClamped = Math.min(sel, Math.max(0, filtered.length - 1));
+  const limit = shown.cat === cat ? shown.n : PAGE;
+  const visible = query ? filtered : filtered.slice(0, limit);
+  const nextBatch = Math.min(PAGE, filtered.length - visible.length);
+  const showMore = () => setShown({ cat, n: limit + PAGE });
 
   const onSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'ArrowDown') {
@@ -118,7 +136,7 @@ export const Projects = ({ ref, projects, cat, onCat, hoverId, expandedId, onEnt
         ))}
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((p, idx) => {
+        {visible.map((p, idx) => {
           const expanded = expandedId === p.id;
           const selected = searchOpen && !!query && idx === selClamped;
           return (
@@ -135,6 +153,7 @@ export const Projects = ({ ref, projects, cat, onCat, hoverId, expandedId, onEnt
           );
         })}
       </div>
+      {nextBatch > 0 && <MoreButton label={strings.moreBtn(nextBatch)} onClick={showMore} />}
       <div className="mt-6.5 text-center text-[12px] text-ghost">{strings.workHint}</div>
     </Section>
   );

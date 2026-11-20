@@ -27,6 +27,10 @@ export const LINKS = {
   linkedin: 'https://www.linkedin.com/in/yaroslav-yeromenko/',
 };
 
+export const REPO_URL = `${LINKS.github}/portfolio`;
+
+export const prUrl = (n: number): string => `${REPO_URL}/pull/${n}`;
+
 export const SECTION_LABELS = ['Intro', 'Experience', 'Skills', 'Projects', 'Contact'] as const;
 
 export const ARCH_LOGO = `      /\\
