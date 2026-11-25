@@ -51,6 +51,8 @@ export const skillMap: SkillRegion[] = [
       { name: 'RAG', y: 0.5 },
       { name: 'QLoRA fine-tuning', y: 0.5 },
       { name: 'Ollama', y: 0.5 },
+      { name: 'Claude Code', y: 0.5 },
+      { name: 'Antigravity', y: 0.5 },
     ],
   },
   {
